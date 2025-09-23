@@ -7,7 +7,12 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "lint": "eslint src --ext .js,.vue --fix",
+    "lint:check": "eslint src --ext .js,.vue",
+    "format": "prettier --write \"src/**/*.{js,vue,scss}\"",
+    "format:check": "prettier --check \"src/**/*.{js,vue,scss}\"",
+    "lint:staged": "lint-staged"
   },
   "dependencies": {
     "axios": "^0.18.0",
