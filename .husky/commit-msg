@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 检查提交信息格式
+# 格式：type(scope): subject
+# 例如：feat(user): add user login functionality
+
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|chore|revert)(\(.+\))?: .{1,50}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "Invalid commit message format!"
+    echo "Format: type(scope): subject"
+    echo "Types: feat, fix, docs, style, refactor, perf, test, chore, revert"
+    echo "Example: feat(user): add user login functionality"
+    echo "         fix(api): resolve authentication issue"
+    exit 1
+fi

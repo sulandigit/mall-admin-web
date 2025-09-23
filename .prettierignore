@@ -1,0 +1,37 @@
+# 依赖目录
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 构建输出目录
+dist/
+build/
+.nuxt/
+.next/
+out/
+
+# 运行时生成的文件
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# 配置文件
+package-lock.json
+yarn.lock
+
+# 静态资源
+static/tinymce4.7.5/
+*.min.js
+*.min.css
+
+# 模板文件
+*.hbs
+*.handlebars
+
+# Markdown 文件（可选，根据团队需求调整）
+# *.md
+
+# 特定的第三方库文件
+src/icons/
