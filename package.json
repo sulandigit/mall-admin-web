@@ -12,7 +12,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "echarts": "^4.2.0-rc.2",
-    "element-ui": "^2.3.7",
+    "element-plus": "^2.4.2",
+    "@element-plus/icons-vue": "^2.1.0",
     "js-cookie": "^2.2.0",
     "normalize.css": "^8.0.0",
     "nprogress": "^0.2.0",
@@ -53,6 +54,8 @@
     "shelljs": "^0.7.6",
     "svg-sprite-loader": "^3.7.3",
     "uglifyjs-webpack-plugin": "^1.1.1",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
     "url-loader": "^0.5.8",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
