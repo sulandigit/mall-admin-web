@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全存储基础测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+        .stat-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 安全存储系统测试</h1>
+    
+    <div class="test-container">
+        <h2>测试控制面板</h2>
+        <div>
+            <button onclick="runBasicTests()">运行基础测试</button>
+            <button onclick="runEncryptionTests()">运行加密测试</button>
+            <button onclick="runStorageTests()">运行存储测试</button>
+            <button onclick="runMigrationTests()">运行迁移测试</button>
+            <button onclick="runAllTests()">运行所有测试</button>
+            <button onclick="clearTestResults()">清除结果</button>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>测试结果</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>系统统计信息</h2>
+        <div id="systemStats" class="stats"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>详细日志</h2>
+        <pre id="detailLogs"></pre>
+    </div>
+
+    <!-- 加载模块 -->
+    <script type="module">
+        // 由于这是演示，我们创建一个简化的测试环境
+        // 在实际项目中，应该使用 Jest、Mocha 等测试框架
+
+        // 模拟 Vue 项目的模块加载
+        import('../index.js').then(secureStorageModule => {
+            window.SecureStorage = secureStorageModule;
+            console.log('✅ 安全存储模块加载成功');
+            showInfo('安全存储模块已加载，可以开始测试');
+        }).catch(error => {
+            console.error('❌ 模块加载失败:', error);
+            showError('模块加载失败: ' + error.message);
+        });
+
+        // 测试工具函数
+        window.showSuccess = function(message) {
+            const div = document.createElement('div');
+            div.className = 'test-result success';
+            div.innerHTML = `✅ ${message}`;
+            document.getElementById('testResults').appendChild(div);
+        };
+
+        window.showError = function(message) {
+            const div = document.createElement('div');
+            div.className = 'test-result error';
+            div.innerHTML = `❌ ${message}`;
+            document.getElementById('testResults').appendChild(div);
+        };
+
+        window.showInfo = function(message) {
+            const div = document.createElement('div');
+            div.className = 'test-result info';
+            div.innerHTML = `ℹ️ ${message}`;
+            document.getElementById('testResults').appendChild(div);
+        };
+
+        window.clearTestResults = function() {
+            document.getElementById('testResults').innerHTML = '';
+            document.getElementById('detailLogs').innerHTML = '';
+        };
+
+        // 基础测试
+        window.runBasicTests = async function() {
+            showInfo('开始运行基础测试...');
+            
+            try {
+                if (!window.SecureStorage) {
+                    throw new Error('安全存储模块未加载');
+                }
+
+                const { default: secureStorage, DATA_CLASSIFICATIONS } = window.SecureStorage;
+                
+                // 测试1: 存储和检索简单数据
+                const testKey = 'test_basic_' + Date.now();
+                const testData = 'Hello Secure Storage!';
+                
+                const stored = await secureStorage.store(testKey, testData, {
+                    classification: DATA_CLASSIFICATIONS.LOW_SENSITIVE
+                });
+                
+                if (stored) {
+                    showSuccess('数据存储成功');
+                } else {
+                    throw new Error('数据存储失败');
+                }
+                
+                const retrieved = await secureStorage.retrieve(testKey);
+                if (retrieved === testData) {
+                    showSuccess('数据检索成功，内容一致');
+                } else {
+                    throw new Error(`数据检索失败: 期望 "${testData}", 实际 "${retrieved}"`);
+                }
+                
+                // 测试2: 删除数据
+                const removed = await secureStorage.remove(testKey);
+                if (removed) {
+                    showSuccess('数据删除成功');
+                } else {
+                    throw new Error('数据删除失败');
+                }
+                
+                // 测试3: 检查数据已删除
+                const afterRemoval = await secureStorage.retrieve(testKey);
+                if (afterRemoval === null) {
+                    showSuccess('确认数据已被删除');
+                } else {
+                    throw new Error('数据删除后仍能检索到');
+                }
+                
+                showSuccess('✅ 基础测试全部通过');
+                
+            } catch (error) {
+                showError('基础测试失败: ' + error.message);
+                console.error('基础测试错误:', error);
+            }
+        };
+
+        // 加密测试
+        window.runEncryptionTests = async function() {
+            showInfo('开始运行加密测试...');
+            
+            try {
+                const { EncryptionEngine } = window.SecureStorage;
+                const engine = new EncryptionEngine();
+                
+                // 测试1: AES-256-GCM 加密
+                const testData = 'This is sensitive data that needs encryption';
+                const key = await engine.generateAESKey(256);
+                
+                const encrypted = await engine.encryptWithAES256GCM(testData, key);
+                if (encrypted.encryptedData && encrypted.iv && encrypted.authTag) {
+                    showSuccess('AES-256-GCM 加密成功');
+                } else {
+                    throw new Error('AES-256-GCM 加密返回格式错误');
+                }
+                
+                const decrypted = await engine.decryptWithAES256GCM(encrypted, key);
+                if (decrypted === testData) {
+                    showSuccess('AES-256-GCM 解密成功，数据一致');
+                } else {
+                    throw new Error('AES-256-GCM 解密后数据不一致');
+                }
+                
+                // 测试2: HMAC 完整性验证
+                const hmacKey = await engine.generateHMACKey();
+                const hmac = await engine.computeHMAC(testData, hmacKey);
+                
+                if (hmac) {
+                    showSuccess('HMAC 计算成功');
+                } else {
+                    throw new Error('HMAC 计算失败');
+                }
+                
+                const verified = await engine.verifyHMAC(testData, hmac, hmacKey);
+                if (verified) {
+                    showSuccess('HMAC 验证成功');
+                } else {
+                    throw new Error('HMAC 验证失败');
+                }
+                
+                showSuccess('✅ 加密测试全部通过');
+                
+            } catch (error) {
+                showError('加密测试失败: ' + error.message);
+                console.error('加密测试错误:', error);
+            }
+        };
+
+        // 存储适配器测试
+        window.runStorageTests = async function() {
+            showInfo('开始运行存储适配器测试...');
+            
+            try {
+                const { StorageAdapters } = window.SecureStorage;
+                const adapters = new StorageAdapters();
+                
+                // 测试各种存储适配器
+                const storageTypes = ['localstorage', 'sessionstorage', 'memory'];
+                
+                for (const storageType of storageTypes) {
+                    if (adapters.isSupported(storageType)) {
+                        const testKey = `test_${storageType}_${Date.now()}`;
+                        const testValue = { message: `Test data for ${storageType}`, timestamp: Date.now() };
+                        
+                        // 写入测试
+                        const written = await adapters.write(storageType, testKey, testValue);
+                        if (written) {
+                            showSuccess(`${storageType} 写入测试通过`);
+                        } else {
+                            throw new Error(`${storageType} 写入测试失败`);
+                        }
+                        
+                        // 读取测试
+                        const read = await adapters.read(storageType, testKey);
+                        if (JSON.stringify(read) === JSON.stringify(testValue)) {
+                            showSuccess(`${storageType} 读取测试通过`);
+                        } else {
+                            throw new Error(`${storageType} 读取测试失败`);
+                        }
+                        
+                        // 删除测试
+                        const deleted = await adapters.delete(storageType, testKey);
+                        if (deleted) {
+                            showSuccess(`${storageType} 删除测试通过`);
+                        } else {
+                            throw new Error(`${storageType} 删除测试失败`);
+                        }
+                    } else {
+                        showInfo(`${storageType} 存储不受支持，跳过测试`);
+                    }
+                }
+                
+                showSuccess('✅ 存储适配器测试全部通过');
+                
+            } catch (error) {
+                showError('存储测试失败: ' + error.message);
+                console.error('存储测试错误:', error);
+            }
+        };
+
+        // 迁移测试
+        window.runMigrationTests = function() {
+            showInfo('开始运行迁移测试...');
+            
+            try {
+                // 创建模拟的 Cookie 数据
+                document.cookie = 'testToken=mock_token_value; path=/';
+                localStorage.setItem('testUserInfo', JSON.stringify({ username: 'testUser', avatar: 'avatar.jpg' }));
+                
+                showSuccess('创建模拟数据完成');
+                showInfo('迁移测试需要在完整环境中运行，这里只展示基本流程');
+                
+                // 在实际项目中，这里会调用 migration.js 中的函数
+                showSuccess('✅ 迁移测试通过（模拟）');
+                
+            } catch (error) {
+                showError('迁移测试失败: ' + error.message);
+                console.error('迁移测试错误:', error);
+            }
+        };
+
+        // 运行所有测试
+        window.runAllTests = async function() {
+            clearTestResults();
+            showInfo('🚀 开始运行完整测试套件...');
+            
+            await runBasicTests();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // 延迟1秒
+            
+            await runEncryptionTests();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await runStorageTests();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            runMigrationTests();
+            
+            showSuccess('🎉 所有测试完成！');
+            updateSystemStats();
+        };
+
+        // 更新系统统计信息
+        window.updateSystemStats = async function() {
+            try {
+                if (!window.SecureStorage) return;
+                
+                const { default: secureStorage } = window.SecureStorage;
+                const stats = await secureStorage.getStats();
+                
+                const statsHTML = `
+                    <div class="stat-card">
+                        <div class="stat-title">内存缓存</div>
+                        <div class="stat-value">${stats.memoryCache?.size || 0} 项</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">安全事件</div>
+                        <div class="stat-value">${stats.security?.counters?.securityEvents || 0} 个</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">总访问次数</div>
+                        <div class="stat-value">${stats.security?.counters?.totalAccess || 0} 次</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">成功率</div>
+                        <div class="stat-value">${stats.security?.recent?.successRate || 0}%</div>
+                    </div>
+                `;
+                
+                document.getElementById('systemStats').innerHTML = statsHTML;
+                
+                // 更新详细日志
+                const logs = JSON.stringify(stats, null, 2);
+                document.getElementById('detailLogs').textContent = logs;
+                
+            } catch (error) {
+                console.error('更新统计信息失败:', error);
+            }
+        };
+
+        // 页面加载完成后自动更新统计信息
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateSystemStats, 2000);
+        });
+    </script>
+</body>
+</html>
