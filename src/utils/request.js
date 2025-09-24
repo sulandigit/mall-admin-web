@@ -2,6 +2,8 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import { handleError } from '@/utils/errorHandler'
+import { parseHttpError, parseBusinessError } from '@/utils/errorTypes'
 
 // 创建axios实例
 const service = axios.create({
@@ -10,56 +12,90 @@ const service = axios.create({
 })
 
 // request拦截器
-service.interceptors.request.use(config => {
-  if (store.getters.token) {
-    config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-  }
-  return config
-}, error => {
-  // Do something with request error
-  console.log(error) // for debug
-  Promise.reject(error)
-})
-
-// respone拦截器
-service.interceptors.response.use(
-  response => {
-  /**
-  * code为非200是抛错 可结合自己业务进行修改
-  */
-    const res = response.data
-    if (res.code !== 200) {
-      Message({
-        message: res.message,
-        type: 'error',
-        duration: 3 * 1000
-      })
-
-      // 401:未登录;
-      if (res.code === 401) {
-        MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('FedLogOut').then(() => {
-            location.reload()// 为了重新实例化vue-router对象 避免bug
-          })
-        })
-      }
-      return Promise.reject('error')
-    } else {
-      return response.data
+service.interceptors.request.use(
+  config => {
+    if (store.getters.token) {
+      config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
+    
+    // 添加请求开始时间，用于超时监控
+    config.metadata = { startTime: new Date() }
+    
+    return config
   },
   error => {
-    console.log('err' + error)// for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 3 * 1000
-    })
+    // 请求配置错误
+    const errorInfo = {
+      type: 'HTTP_BAD_REQUEST',
+      message: '请求配置错误',
+      level: 'medium',
+      extra: {
+        config: error.config,
+        originalError: error
+      }
+    }
+    
+    handleError(errorInfo)
     return Promise.reject(error)
+  }
+)
+
+// response拦截器
+service.interceptors.response.use(
+  response => {
+    // 计算请求时间
+    if (response.config.metadata?.startTime) {
+      const duration = new Date() - response.config.metadata.startTime
+      if (duration > 5000) { // 5秒以上记录为慢请求
+        console.warn(`慢请求检测: ${response.config.url} 耗时 ${duration}ms`)
+      }
+    }
+    
+    /**
+     * code为非200是抛错 可结合自己业务进行修改
+     */
+    const res = response.data
+    
+    // 成功响应
+    if (res.code === 200) {
+      return response.data
+    }
+    
+    // 业务错误处理
+    const businessError = parseBusinessError(res)
+    
+    // 特殊处理401未登录情况
+    if (res.code === 401) {
+      // 使用错误处理器的统一处理
+      handleError({
+        ...businessError,
+        extra: {
+          ...businessError.extra,
+          shouldLogout: true
+        }
+      })
+    } else {
+      // 其他业务错误
+      handleError(businessError)
+    }
+    
+    return Promise.reject(businessError)
+  },
+  error => {
+    // HTTP错误处理
+    const httpError = parseHttpError(error)
+    
+    // 添加请求上下文信息
+    httpError.extra = {
+      ...httpError.extra,
+      requestUrl: error.config?.url,
+      requestMethod: error.config?.method?.toUpperCase(),
+      requestData: error.config?.data,
+      requestParams: error.config?.params
+    }
+    
+    handleError(httpError)
+    return Promise.reject(httpError)
   }
 )
 
