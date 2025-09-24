@@ -1,0 +1,149 @@
+/**
+ * 响应式断点变量定义
+ * 移动端优先的响应式设计策略
+ */
+
+// ===== 断点定义 =====
+$mobile-max: 767px;
+$tablet-min: 768px;
+$tablet-max: 1023px;
+$desktop-min: 1024px;
+$desktop-large-min: 1440px;
+
+// ===== 容器最大宽度 =====
+$container-mobile: 100%;
+$container-tablet: 768px;
+$container-desktop: 1024px;
+$container-desktop-large: 1200px;
+
+// ===== 间距系统 =====
+// 基础间距单位
+$spacing-unit: 8px;
+
+// 移动端间距
+$mobile-spacing-xs: $spacing-unit; // 8px
+$mobile-spacing-sm: $spacing-unit * 2; // 16px
+$mobile-spacing-md: $spacing-unit * 3; // 24px
+$mobile-spacing-lg: $spacing-unit * 4; // 32px
+$mobile-spacing-xl: $spacing-unit * 6; // 48px
+
+// 桌面端间距
+$desktop-spacing-xs: $spacing-unit; // 8px
+$desktop-spacing-sm: $spacing-unit * 1.5; // 12px
+$desktop-spacing-md: $spacing-unit * 2.5; // 20px
+$desktop-spacing-lg: $spacing-unit * 3; // 24px
+$desktop-spacing-xl: $spacing-unit * 4; // 32px
+
+// ===== 触摸交互尺寸 =====
+$touch-target-min: 44px; // 最小触摸目标尺寸
+$touch-target-comfortable: 48px; // 舒适触摸目标尺寸
+$touch-padding: 12px; // 触摸元素内边距
+
+// ===== 字体系统 =====
+// 移动端字体尺寸
+$mobile-font-xs: 12px;
+$mobile-font-sm: 14px;
+$mobile-font-md: 16px;
+$mobile-font-lg: 18px;
+$mobile-font-xl: 20px;
+$mobile-font-xxl: 24px;
+
+// 桌面端字体尺寸
+$desktop-font-xs: 12px;
+$desktop-font-sm: 13px;
+$desktop-font-md: 14px;
+$desktop-font-lg: 16px;
+$desktop-font-xl: 18px;
+$desktop-font-xxl: 20px;
+
+// 行高
+$line-height-tight: 1.2;
+$line-height-normal: 1.4;
+$line-height-relaxed: 1.6;
+
+// ===== Z-Index 层级 =====
+$z-index-dropdown: 1000;
+$z-index-sticky: 1010;
+$z-index-fixed: 1020;
+$z-index-modal-backdrop: 1030;
+$z-index-modal: 1040;
+$z-index-popover: 1050;
+$z-index-tooltip: 1060;
+$z-index-notification: 1070;
+
+// 侧边栏层级
+$z-index-sidebar: 1001;
+$z-index-sidebar-overlay: 999;
+
+// ===== 动画时长 =====
+$transition-fast: 0.15s;
+$transition-normal: 0.28s;
+$transition-slow: 0.4s;
+
+// 缓动函数
+$ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+$ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+
+// ===== 颜色系统 =====
+// 主色调
+$primary-color: #409EFF;
+$primary-light: #66b1ff;
+$primary-dark: #3a8ee6;
+
+// 成功、警告、错误
+$success-color: #67C23A;
+$warning-color: #E6A23C;
+$danger-color: #F56C6C;
+$info-color: #909399;
+
+// 灰度系统
+$gray-50: #fafafa;
+$gray-100: #f4f4f5;
+$gray-200: #e4e7ed;
+$gray-300: #d3d7e3;
+$gray-400: #a8b0c0;
+$gray-500: #8b95a5;
+$gray-600: #6c7683;
+$gray-700: #4a5568;
+$gray-800: #2d3748;
+$gray-900: #1a202c;
+
+// 文本颜色
+$text-color-primary: #303133;
+$text-color-regular: #606266;
+$text-color-secondary: #909399;
+$text-color-placeholder: #c0c4cc;
+
+// 边框颜色
+$border-color-base: #dcdfe6;
+$border-color-light: #e4e7ed;
+$border-color-lighter: #ebeef5;
+$border-color-extra-light: #f2f6fc;
+
+// 背景颜色
+$background-color-base: #f5f7fa;
+$background-color-light: #fafbfc;
+
+// ===== 阴影系统 =====
+$shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+$shadow-dark: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+
+// 移动端阴影（更轻）
+$mobile-shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+$mobile-shadow-base: 0 2px 6px rgba(0, 0, 0, 0.1);
+$mobile-shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+// ===== 边框半径 =====
+$border-radius-sm: 2px;
+$border-radius-base: 4px;
+$border-radius-md: 6px;
+$border-radius-lg: 8px;
+$border-radius-xl: 12px;
+
+// 移动端边框半径（稍大）
+$mobile-border-radius-sm: 4px;
+$mobile-border-radius-base: 6px;
+$mobile-border-radius-md: 8px;
+$mobile-border-radius-lg: 12px;
+$mobile-border-radius-xl: 16px;
