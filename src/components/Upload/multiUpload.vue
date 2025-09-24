@@ -15,15 +15,26 @@
       <i class="el-icon-plus"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="">
+      <!-- 使用LazyImage组件替代普通img标签 -->
+      <lazy-image 
+        v-if="dialogImageUrl"
+        :src="dialogImageUrl" 
+        width="100%" 
+        :enable-webp="enableWebP"
+        alt="预览图片"
+      />
     </el-dialog>
   </div>
 </template>
 <script>
   import {policy} from '@/api/oss'
+  import LazyImage from '@/components/LazyImage'
 
   export default {
     name: 'multiUpload',
+    components: {
+      LazyImage
+    },
     props: {
       //图片属性数组
       value: Array,
@@ -31,6 +42,11 @@
       maxCount:{
         type:Number,
         default:5
+      },
+      // 是否启用WebP优化
+      enableWebP: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
