@@ -1,10 +1,81 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { lazyLoad, preloadRoutes } from '@/utils/routeHelper'
 
 Vue.use(Router)
 
-/* Layout */
-import Layout from '../views/layout/Layout'
+/* Layout - 懒加载 */
+const Layout = lazyLoad('layout/Layout')
+
+/**
+ * 路由懒加载帮助函数
+ * @param {string} path 组件路径
+ * @param {string} chunkName chunk名称，用于代码分割
+ * @returns {Function} 懒加载函数
+ */
+const lazyLoad = (path, chunkName) => {
+  return () => {
+    console.log(`开始加载路由组件: ${path}`)
+    
+    return import(
+      /* webpackChunkName: "[request]" */
+      `@/views/${path}`
+    ).then(module => {
+      console.log(`路由组件加载成功: ${path}`)
+      return module
+    }).catch(error => {
+      console.error(`路由组件加载失败: ${path}`, error)
+      
+      // 尝试重新加载
+      if (!error.__retryCount) {
+        error.__retryCount = 1
+        console.log(`正在重试加载: ${path}`)
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(import(`@/views/${path}`))
+          }, 1000)
+        })
+      }
+      
+      // 重试失败后返回错误组件
+      return import('@/views/error/RouteError').catch(() => {
+        // 如果错误组件也加载失败，返回一个默认的错误组件
+        return {
+          default: {
+            name: 'RouteError',
+            template: '<div style="text-align: center; padding: 50px;"><h2>页面加载失败</h2><p>请刷新页面重试</p></div>'
+          }
+        }
+      })
+    })
+  }
+}
+
+/**
+ * 路由预加载功能
+ * @param {Array} routes 需要预加载的路由路径
+ */
+const preloadRoutes = (routes) => {
+  if ('requestIdleCallback' in window) {
+    // 在浏览器空闲时间预加载
+    window.requestIdleCallback(() => {
+      routes.forEach(route => {
+        import(`@/views/${route}`).catch(error => {
+          console.warn(`预加载失败: ${route}`, error)
+        })
+      })
+    })
+  } else {
+    // 降级方案：使用setTimeout
+    setTimeout(() => {
+      routes.forEach(route => {
+        import(`@/views/${route}`).catch(error => {
+          console.warn(`预加载失败: ${route}`, error)
+        })
+      })
+    }, 2000)
+  }
+}
 
 /**
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -19,8 +90,8 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  {path: '/login', component: () => import('@/views/login/index'), hidden: true},
-  {path: '/404', component: () => import('@/views/404'), hidden: true},
+  {path: '/login', component: lazyLoad('login/index'), hidden: true},
+  {path: '/404', component: lazyLoad('404'), hidden: true},
   {
     path: '',
     component: Layout,
@@ -29,7 +100,7 @@ export const constantRouterMap = [
     children: [{
       path: 'home',
       name: 'home',
-      component: () => import('@/views/home/index'),
+      component: lazyLoad('home/index'),
       meta: {title: '仪表盘', icon: 'dashboard'}
     },
     {
@@ -56,86 +127,86 @@ export const asyncRouterMap = [
     children: [{
       path: 'product',
       name: 'product',
-      component: () => import('@/views/pms/product/index'),
+      component: lazyLoad('pms/product/index'),
       meta: {title: '商品列表', icon: 'product-list'}
     },
       {
         path: 'addProduct',
         name: 'addProduct',
-        component: () => import('@/views/pms/product/add'),
+        component: lazyLoad('pms/product/add'),
         meta: {title: '添加商品', icon: 'product-add'}
       },
       {
         path: 'updateProduct',
         name: 'updateProduct',
-        component: () => import('@/views/pms/product/update'),
+        component: lazyLoad('pms/product/update'),
         meta: {title: '修改商品', icon: 'product-add'},
         hidden: true
       },
       {
         path: 'productCate',
         name: 'productCate',
-        component: () => import('@/views/pms/productCate/index'),
+        component: lazyLoad('pms/productCate/index'),
         meta: {title: '商品分类', icon: 'product-cate'}
       },
       {
         path: 'addProductCate',
         name: 'addProductCate',
-        component: () => import('@/views/pms/productCate/add'),
+        component: lazyLoad('pms/productCate/add'),
         meta: {title: '添加商品分类'},
         hidden: true
       },
       {
         path: 'updateProductCate',
         name: 'updateProductCate',
-        component: () => import('@/views/pms/productCate/update'),
+        component: lazyLoad('pms/productCate/update'),
         meta: {title: '修改商品分类'},
         hidden: true
       },
       {
         path: 'productAttr',
         name: 'productAttr',
-        component: () => import('@/views/pms/productAttr/index'),
+        component: lazyLoad('pms/productAttr/index'),
         meta: {title: '商品类型', icon: 'product-attr'}
       },
       {
         path: 'productAttrList',
         name: 'productAttrList',
-        component: () => import('@/views/pms/productAttr/productAttrList'),
+        component: lazyLoad('pms/productAttr/productAttrList'),
         meta: {title: '商品属性列表'},
         hidden: true
       },
       {
         path: 'addProductAttr',
         name: 'addProductAttr',
-        component: () => import('@/views/pms/productAttr/addProductAttr'),
+        component: lazyLoad('pms/productAttr/addProductAttr'),
         meta: {title: '添加商品属性'},
         hidden: true
       },
       {
         path: 'updateProductAttr',
         name: 'updateProductAttr',
-        component: () => import('@/views/pms/productAttr/updateProductAttr'),
+        component: lazyLoad('pms/productAttr/updateProductAttr'),
         meta: {title: '修改商品属性'},
         hidden: true
       },
       {
         path: 'brand',
         name: 'brand',
-        component: () => import('@/views/pms/brand/index'),
+        component: lazyLoad('pms/brand/index'),
         meta: {title: '品牌管理', icon: 'product-brand'}
       },
       {
         path: 'addBrand',
         name: 'addBrand',
-        component: () => import('@/views/pms/brand/add'),
+        component: lazyLoad('pms/brand/add'),
         meta: {title: '添加品牌'},
         hidden: true
       },
       {
         path: 'updateBrand',
         name: 'updateBrand',
-        component: () => import('@/views/pms/brand/update'),
+        component: lazyLoad('pms/brand/update'),
         meta: {title: '编辑品牌'},
         hidden: true
       }
@@ -151,45 +222,45 @@ export const asyncRouterMap = [
       {
         path: 'order',
         name: 'order',
-        component: () => import('@/views/oms/order/index'),
+        component: lazyLoad('oms/order/index'),
         meta: {title: '订单列表', icon: 'product-list'}
       },
       {
         path: 'orderDetail',
         name: 'orderDetail',
-        component: () => import('@/views/oms/order/orderDetail'),
+        component: lazyLoad('oms/order/orderDetail'),
         meta: {title: '订单详情'},
         hidden:true
       },
       {
         path: 'deliverOrderList',
         name: 'deliverOrderList',
-        component: () => import('@/views/oms/order/deliverOrderList'),
+        component: lazyLoad('oms/order/deliverOrderList'),
         meta: {title: '发货列表'},
         hidden:true
       },
       {
         path: 'orderSetting',
         name: 'orderSetting',
-        component: () => import('@/views/oms/order/setting'),
+        component: lazyLoad('oms/order/setting'),
         meta: {title: '订单设置', icon: 'order-setting'}
       },
       {
         path: 'returnApply',
         name: 'returnApply',
-        component: () => import('@/views/oms/apply/index'),
+        component: lazyLoad('oms/apply/index'),
         meta: {title: '退货申请处理', icon: 'order-return'}
       },
       {
         path: 'returnReason',
         name: 'returnReason',
-        component: () => import('@/views/oms/apply/reason'),
+        component: lazyLoad('oms/apply/reason'),
         meta: {title: '退货原因设置', icon: 'order-return-reason'}
       },
       {
         path: 'returnApplyDetail',
         name: 'returnApplyDetail',
-        component: () => import('@/views/oms/apply/applyDetail'),
+        component: lazyLoad('oms/apply/applyDetail'),
         meta: {title: '退货原因详情'},
         hidden:true
       }
@@ -205,98 +276,98 @@ export const asyncRouterMap = [
       {
         path: 'flash',
         name: 'flash',
-        component: () => import('@/views/sms/flash/index'),
+        component: lazyLoad('sms/flash/index'),
         meta: {title: '秒杀活动列表', icon: 'sms-flash'}
       },
       {
         path: 'flashSession',
         name: 'flashSession',
-        component: () => import('@/views/sms/flash/sessionList'),
+        component: lazyLoad('sms/flash/sessionList'),
         meta: {title: '秒杀时间段列表'},
         hidden:true
       },
       {
         path: 'selectSession',
         name: 'selectSession',
-        component: () => import('@/views/sms/flash/selectSessionList'),
+        component: lazyLoad('sms/flash/selectSessionList'),
         meta: {title: '秒杀时间段选择'},
         hidden:true
       },
       {
         path: 'flashProductRelation',
         name: 'flashProductRelation',
-        component: () => import('@/views/sms/flash/productRelationList'),
+        component: lazyLoad('sms/flash/productRelationList'),
         meta: {title: '秒杀商品列表'},
         hidden:true
       },
       {
         path: 'coupon',
         name: 'coupon',
-        component: () => import('@/views/sms/coupon/index'),
+        component: lazyLoad('sms/coupon/index'),
         meta: {title: '优惠券列表', icon: 'sms-coupon'}
       },
       {
         path: 'addCoupon',
         name: 'addCoupon',
-        component: () => import('@/views/sms/coupon/add'),
+        component: lazyLoad('sms/coupon/add'),
         meta: {title: '添加优惠券'},
         hidden:true
       },
       {
         path: 'updateCoupon',
         name: 'updateCoupon',
-        component: () => import('@/views/sms/coupon/update'),
+        component: lazyLoad('sms/coupon/update'),
         meta: {title: '修改优惠券'},
         hidden:true
       },
       {
         path: 'couponHistory',
         name: 'couponHistory',
-        component: () => import('@/views/sms/coupon/history'),
+        component: lazyLoad('sms/coupon/history'),
         meta: {title: '优惠券领取详情'},
         hidden:true
       },
       {
         path: 'brand',
         name: 'homeBrand',
-        component: () => import('@/views/sms/brand/index'),
+        component: lazyLoad('sms/brand/index'),
         meta: {title: '品牌推荐', icon: 'product-brand'}
       },
       {
         path: 'new',
         name: 'homeNew',
-        component: () => import('@/views/sms/new/index'),
+        component: lazyLoad('sms/new/index'),
         meta: {title: '新品推荐', icon: 'sms-new'}
       },
       {
         path: 'hot',
         name: 'homeHot',
-        component: () => import('@/views/sms/hot/index'),
+        component: lazyLoad('sms/hot/index'),
         meta: {title: '人气推荐', icon: 'sms-hot'}
       },
       {
         path: 'subject',
         name: 'homeSubject',
-        component: () => import('@/views/sms/subject/index'),
+        component: lazyLoad('sms/subject/index'),
         meta: {title: '专题推荐', icon: 'sms-subject'}
       },
       {
         path: 'advertise',
         name: 'homeAdvertise',
-        component: () => import('@/views/sms/advertise/index'),
+        component: lazyLoad('sms/advertise/index'),
         meta: {title: '广告列表', icon: 'sms-ad'}
       },
       {
         path: 'addAdvertise',
         name: 'addHomeAdvertise',
-        component: () => import('@/views/sms/advertise/add'),
+        component: lazyLoad('sms/advertise/add'),
         meta: {title: '添加广告'},
         hidden:true
       },
       {
         path: 'updateAdvertise',
         name: 'updateHomeAdvertise',
-        component: () => import('@/views/sms/advertise/update'),
+        component: lazyLoad('sms/advertise/update'),
         meta: {title: '编辑广告'},
         hidden:true
       }
@@ -312,59 +383,59 @@ export const asyncRouterMap = [
       {
         path: 'admin',
         name: 'admin',
-        component: () => import('@/views/ums/admin/index'),
+        component: lazyLoad('ums/admin/index'),
         meta: {title: '用户列表', icon: 'ums-admin'}
       },
       {
         path: 'role',
         name: 'role',
-        component: () => import('@/views/ums/role/index'),
+        component: lazyLoad('ums/role/index'),
         meta: {title: '角色列表', icon: 'ums-role'}
       },
       {
         path: 'allocMenu',
         name: 'allocMenu',
-        component: () => import('@/views/ums/role/allocMenu'),
+        component: lazyLoad('ums/role/allocMenu'),
         meta: {title: '分配菜单'},
         hidden: true
       },
       {
         path: 'allocResource',
         name: 'allocResource',
-        component: () => import('@/views/ums/role/allocResource'),
+        component: lazyLoad('ums/role/allocResource'),
         meta: {title: '分配资源'},
         hidden: true
       },
       {
         path: 'menu',
         name: 'menu',
-        component: () => import('@/views/ums/menu/index'),
+        component: lazyLoad('ums/menu/index'),
         meta: {title: '菜单列表', icon: 'ums-menu'}
       },
       {
         path: 'addMenu',
         name: 'addMenu',
-        component: () => import('@/views/ums/menu/add'),
+        component: lazyLoad('ums/menu/add'),
         meta: {title: '添加菜单'},
         hidden: true
       },
       {
         path: 'updateMenu',
         name: 'updateMenu',
-        component: () => import('@/views/ums/menu/update'),
+        component: lazyLoad('ums/menu/update'),
         meta: {title: '修改菜单'},
         hidden: true
       },
       {
         path: 'resource',
         name: 'resource',
-        component: () => import('@/views/ums/resource/index'),
+        component: lazyLoad('ums/resource/index'),
         meta: {title: '资源列表', icon: 'ums-resource'}
       },
       {
         path: 'resourceCategory',
         name: 'resourceCategory',
-        component: () => import('@/views/ums/resource/categoryList'),
+        component: lazyLoad('ums/resource/categoryList'),
         meta: {title: '资源分类'},
         hidden: true
       }
@@ -373,9 +444,61 @@ export const asyncRouterMap = [
   {path: '*', redirect: '/404', hidden: true}
 ]
 
-export default new Router({
+const router = new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({y: 0}),
   routes: constantRouterMap
 })
+
+// 常用页面预加载列表
+const commonRoutes = [
+  'home/index',
+  'pms/product/index',
+  'oms/order/index',
+  'sms/coupon/index',
+  'ums/admin/index'
+]
+
+// 次要页面预加载列表（低优先级）
+const secondaryRoutes = [
+  'pms/brand/index',
+  'pms/productCate/index',
+  'oms/apply/index',
+  'sms/flash/index',
+  'ums/role/index',
+  'ums/menu/index'
+]
+
+// 启动预加载
+if (process.env.NODE_ENV === 'production') {
+  // 生产环境下才启用预加载
+  // 高优先级预加载常用页面
+  preloadRoutes(commonRoutes, { priority: 'normal', delay: 1000 })
+  
+  // 低优先级预加载次要页面
+  preloadRoutes(secondaryRoutes, { priority: 'low', delay: 5000 })
+} else {
+  // 开发环境下延迟预加载，避免影响开发体验
+  preloadRoutes(commonRoutes, { priority: 'low', delay: 3000 })
+}
+
+// 路由导航守卫 - 加载状态管理
+router.beforeEach((to, from, next) => {
+  // 可以在这里添加全局的loading状态
+  console.log(`路由导航: ${from.path} -> ${to.path}`)
+  next()
+})
+
+router.afterEach((to, from) => {
+  // 路由导航完成后的处理
+  console.log(`路由导航完成: ${to.path}`)
+})
+
+// 错误处理
+router.onError((error) => {
+  console.error('路由错误:', error)
+  // 可以在这里上报错误信息
+})
+
+export default router
 
