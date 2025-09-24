@@ -2,3 +2,41 @@
 $menuBg:#304156;
 $subMenuBg:#1f2d3d;
 $menuHover:#001528;
+
+// 主题变量定义
+// 亮主题
+$light-bg-color: #FFFFFF;
+$light-text-color: #303133;
+$light-border-color: #DCDFE6;
+$light-menu-bg: #304156;
+$light-submenu-bg: #1f2d3d;
+$light-menu-hover: #001528;
+
+// 暗主题
+$dark-bg-color: #1D1E1F;
+$dark-text-color: #CFD3DC;
+$dark-border-color: #4C4D4F;
+$dark-menu-bg: #1F1F1F;
+$dark-submenu-bg: #141414;
+$dark-menu-hover: #2D2D2D;
+
+// 通用主题变量
+$primary-color: #409EFF;
+$transition-duration: 0.3s;
+
+// 主题切换相关的SCSS混合器
+@mixin theme-background($color: var(--theme-bg-color)) {
+  background-color: $color;
+}
+
+@mixin theme-text($color: var(--theme-text-color)) {
+  color: $color;
+}
+
+@mixin theme-border($color: var(--theme-border-color), $width: 1px, $style: solid) {
+  border: $width $style $color;
+}
+
+@mixin theme-transition($property: all, $duration: $transition-duration) {
+  transition: $property $duration ease;
+}

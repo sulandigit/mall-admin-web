@@ -3,6 +3,7 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+@import './theme.scss';
 
 body {
   -moz-osx-font-smoothing: grayscale;
@@ -56,6 +57,8 @@ a:hover {
 
 .app-container {
   padding: 20px;
+  @include theme-background();
+  min-height: calc(100vh - 84px);
 }
 
 //搜索栏样式
@@ -98,42 +101,46 @@ a:hover {
   width: 720px;
   padding: 35px 35px 15px 35px;
   margin: 20px auto;
+  @include theme-background();
+  @include theme-border();
+  border-radius: 4px;
+  box-shadow: var(--theme-box-shadow);
 }
 
 //主标题
 .font-extra-large {
   font-size: 20px;
-  color: #303133;
+  @include theme-text();
 }
 
 //标题
 .font-title-large {
   font-size: 18px;
-  color: #303133;
+  @include theme-text();
 }
 
 //小标题
 .font-title-medium {
   font-size: 16px;
-  color: #303133;
+  @include theme-text();
 }
 
 //正文
 .font-medium {
   font-size: 16px;
-  color: #606266;
+  color: var(--theme-text-color);
 }
 
 //正文
 .font-small {
   font-size: 14px;
-  color: #606266;
+  color: var(--theme-text-color);
 }
 
 //正文（小）
 .font-extra-small {
   font-size: 13px;
-  color: #606266;
+  color: var(--theme-text-color);
 }
 
 .color-main {
