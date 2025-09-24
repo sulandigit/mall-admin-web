@@ -68,10 +68,12 @@
 <script>
   import {isvalidUsername} from '@/utils/validate';
   import {setSupport,getSupport,setCookie,getCookie} from '@/utils/support';
+  import errorHandlingMixin from '@/mixins/errorHandlingMixin'
   import login_center_bg from '@/assets/images/login_center_bg.png'
 
   export default {
     name: 'login',
+    mixins: [errorHandlingMixin],
     data() {
       const validateUsername = (rule, value, callback) => {
         if (!isvalidUsername(value)) {
@@ -122,24 +124,28 @@
         }
       },
       handleLogin() {
-        this.$refs.loginForm.validate(valid => {
+        this.$refs.loginForm.validate(async valid => {
           if (valid) {
-            // let isSupport = getSupport();
-            // if(isSupport===undefined||isSupport==null){
-            //   this.dialogVisible =true;
-            //   return;
-            // }
-            this.loading = true;
-            this.$store.dispatch('Login', this.loginForm).then(() => {
-              this.loading = false;
-              setCookie("username",this.loginForm.username,15);
-              setCookie("password",this.loginForm.password,15);
-              this.$router.push({path: '/'})
-            }).catch(() => {
-              this.loading = false
-            })
+            try {
+              await this.safeExecute(
+                async () => {
+                  await this.$store.dispatch('Login', this.loginForm)
+                  setCookie("username", this.loginForm.username, 15);
+                  setCookie("password", this.loginForm.password, 15);
+                  this.$router.push({path: '/'})
+                },
+                {
+                  showLoading: true,
+                  loadingText: '登录中...',
+                  showError: true
+                }
+              )
+            } catch (error) {
+              // 错误已经在safeExecute中处理
+              console.error('登录失败:', error)
+            }
           } else {
-            console.log('参数验证不合法！');
+            this.handleValidationError({ form: ['请检查输入信息'] })
             return false
           }
         })
