@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const CSPWebpackPlugin = require('./csp-webpack-plugin')
 
 const env = require('../config/prod.env')
 
@@ -73,6 +74,14 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
+    }),
+    // CSP策略插件 - 生产环境使用强制模式
+    CSPWebpackPlugin.forProduction({
+      verbose: false,
+      cspOptions: {
+        enableReporting: true,
+        reportUri: '/api/csp-report'
+      }
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
