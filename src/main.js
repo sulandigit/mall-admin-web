@@ -16,8 +16,27 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// CSRF防护系统
+import CSRFPlugin from '@/security/vue-plugin'
+
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
+
+// 安装CSRF防护插件
+Vue.use(CSRFPlugin, {
+  store,
+  router,
+  config: {
+    // 开发环境配置
+    debug: process.env.NODE_ENV === 'development',
+    // 跳过路由
+    skipRoutes: [
+      '/login',
+      '/auth/login',
+      '/auth/logout'
+    ]
+  }
+})
 
 Vue.config.productionTip = false
 
