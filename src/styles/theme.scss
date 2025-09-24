@@ -1,0 +1,95 @@
+// 主题相关的CSS变量定义
+
+// 浅色主题
+:root {
+  // 主色系
+  --primary-color: #409EFF;
+  --primary-light: #66b1ff;
+  --primary-dark: #337ecc;
+  
+  // 背景色
+  --bg-color: #ffffff;
+  --bg-color-light: #f5f7fa;
+  --bg-color-lighter: #fafafa;
+  
+  // 文字颜色
+  --text-color-primary: #303133;
+  --text-color-regular: #606266;
+  --text-color-secondary: #909399;
+  --text-color-placeholder: #c0c4cc;
+  
+  // 边框颜色
+  --border-color-base: #dcdfe6;
+  --border-color-light: #e4e7ed;
+  --border-color-lighter: #ebeef5;
+  --border-color-extra-light: #f2f6fc;
+  
+  // 侧边栏
+  --sidebar-bg: #304156;
+  --sidebar-sub-bg: #1f2d3d;
+  --sidebar-hover: #001528;
+  --sidebar-text: #bfcbd9;
+  --sidebar-active-text: #ffffff;
+  
+  // 导航栏
+  --navbar-bg: #ffffff;
+  --navbar-text: #606266;
+  --navbar-border: #e4e7ed;
+  
+  // 卡片
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  
+  // 表格
+  --table-bg: #ffffff;
+  --table-header-bg: #fafafa;
+  --table-stripe-bg: #fafafa;
+  --table-hover-bg: #f5f7fa;
+}
+
+// 深色主题
+[data-theme='dark'] {
+  // 主色系
+  --primary-color: #409EFF;
+  --primary-light: #66b1ff;
+  --primary-dark: #337ecc;
+  
+  // 背景色
+  --bg-color: #1a1a1a;
+  --bg-color-light: #2d2d2d;
+  --bg-color-lighter: #3a3a3a;
+  
+  // 文字颜色
+  --text-color-primary: #e5e5e5;
+  --text-color-regular: #cfcfcf;
+  --text-color-secondary: #a8a8a8;
+  --text-color-placeholder: #6c6c6c;
+  
+  // 边框颜色
+  --border-color-base: #4c4c4c;
+  --border-color-light: #414141;
+  --border-color-lighter: #363636;
+  --border-color-extra-light: #2b2b2b;
+  
+  // 侧边栏
+  --sidebar-bg: #1f1f1f;
+  --sidebar-sub-bg: #0f0f0f;
+  --sidebar-hover: #333333;
+  --sidebar-text: #bfcbd9;
+  --sidebar-active-text: #ffffff;
+  
+  // 导航栏
+  --navbar-bg: #2d2d2d;
+  --navbar-text: #e5e5e5;
+  --navbar-border: #4c4c4c;
+  
+  // 卡片
+  --card-bg: #2d2d2d;
+  --card-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+  
+  // 表格
+  --table-bg: #2d2d2d;
+  --table-header-bg: #3a3a3a;
+  --table-stripe-bg: #3a3a3a;
+  --table-hover-bg: #404040;
+}

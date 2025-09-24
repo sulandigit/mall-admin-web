@@ -1,4 +1,6 @@
 //sidebar
-$menuBg:#304156;
-$subMenuBg:#1f2d3d;
-$menuHover:#001528;
+$menuBg: var(--sidebar-bg);
+$subMenuBg: var(--sidebar-sub-bg);
+$menuHover: var(--sidebar-hover);
+$menuText: var(--sidebar-text);
+$subMenuActiveText: var(--sidebar-active-text);

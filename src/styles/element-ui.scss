@@ -15,6 +15,7 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  background-color: var(--card-bg);
 }
 
 //element ui upload
@@ -24,6 +25,85 @@
     .el-upload-dragger {
       width: 100%;
       height: 200px;
+    }
+  }
+}
+
+// Element UI 主题支持
+.el-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color-light);
+  color: var(--text-color-primary);
+}
+
+.el-table {
+  background-color: var(--table-bg);
+  color: var(--text-color-primary);
+  
+  th {
+    background-color: var(--table-header-bg);
+    color: var(--text-color-primary);
+  }
+  
+  .el-table__row {
+    background-color: var(--table-bg);
+    
+    &:hover {
+      background-color: var(--table-hover-bg);
+    }
+  }
+  
+  .el-table__row--striped {
+    background-color: var(--table-stripe-bg);
+  }
+}
+
+.el-input__inner {
+  background-color: var(--bg-color);
+  border-color: var(--border-color-base);
+  color: var(--text-color-primary);
+  
+  &::placeholder {
+    color: var(--text-color-placeholder);
+  }
+}
+
+.el-textarea__inner {
+  background-color: var(--bg-color);
+  border-color: var(--border-color-base);
+  color: var(--text-color-primary);
+  
+  &::placeholder {
+    color: var(--text-color-placeholder);
+  }
+}
+
+.el-select-dropdown {
+  background-color: var(--bg-color);
+  border-color: var(--border-color-light);
+}
+
+.el-menu {
+  background-color: var(--sidebar-bg);
+  
+  .el-menu-item {
+    color: var(--sidebar-text);
+    
+    &:hover {
+      background-color: var(--sidebar-hover);
+    }
+    
+    &.is-active {
+      background-color: var(--primary-color);
+      color: var(--sidebar-active-text);
+    }
+  }
+  
+  .el-submenu__title {
+    color: var(--sidebar-text);
+    
+    &:hover {
+      background-color: var(--sidebar-hover);
     }
   }
 }

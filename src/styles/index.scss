@@ -3,12 +3,15 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+@import './theme.scss';
 
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background-color: var(--bg-color-light);
+  color: var(--text-color-primary);
 }
 
 html {
@@ -51,11 +54,13 @@ a:hover {
 
 //main-container全局样式
 .app-main{
-  min-height: 100%
+  min-height: 100%;
+  background-color: var(--bg-color-light);
 }
 
 .app-container {
   padding: 20px;
+  background-color: var(--bg-color);
 }
 
 //搜索栏样式
@@ -103,37 +108,37 @@ a:hover {
 //主标题
 .font-extra-large {
   font-size: 20px;
-  color: #303133;
+  color: var(--text-color-primary);
 }
 
 //标题
 .font-title-large {
   font-size: 18px;
-  color: #303133;
+  color: var(--text-color-primary);
 }
 
 //小标题
 .font-title-medium {
   font-size: 16px;
-  color: #303133;
+  color: var(--text-color-primary);
 }
 
 //正文
 .font-medium {
   font-size: 16px;
-  color: #606266;
+  color: var(--text-color-regular);
 }
 
 //正文
 .font-small {
   font-size: 14px;
-  color: #606266;
+  color: var(--text-color-regular);
 }
 
 //正文（小）
 .font-extra-small {
   font-size: 13px;
-  color: #606266;
+  color: var(--text-color-regular);
 }
 
 .color-main {
