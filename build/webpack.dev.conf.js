@@ -9,6 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const CSPWebpackPlugin = require('./csp-webpack-plugin')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -56,6 +57,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true
+    }),
+    // CSP策略插件 - 开发环境使用report-only模式
+    CSPWebpackPlugin.forDevelopment({
+      verbose: true,
+      cspOptions: {
+        enableReporting: true,
+        reportUri: '/api/csp-report-dev'
+      }
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
