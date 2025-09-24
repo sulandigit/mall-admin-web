@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import CSRFInterceptor from '@/security/csrf-interceptor'
 
 // 创建axios实例
 const service = axios.create({
@@ -9,11 +10,23 @@ const service = axios.create({
   timeout: 15000 // 请求超时时间
 })
 
+// 初始化CSRF拦截器
+const csrfInterceptor = new CSRFInterceptor(service, {
+  enabled: true,
+  debug: process.env.NODE_ENV === 'development',
+  skipRoutes: ['/auth/login', '/auth/logout', '/auth/refresh'],
+  retryCount: 2,
+  retryDelay: 1000
+})
+
 // request拦截器
 service.interceptors.request.use(config => {
+  // 添加认证token
   if (store.getters.token) {
     config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
+  
+  // CSRF拦截器会自动处理CSRF token
   return config
 }, error => {
   // Do something with request error
@@ -54,13 +67,27 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error)// for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 3 * 1000
-    })
+    
+    // 检查是否是CSRF错误，如果是则由CSRF拦截器处理
+    if (error.isCSRFError) {
+      Message({
+        message: 'CSRF验证失败，请刷新页面重试',
+        type: 'error',
+        duration: 3 * 1000
+      })
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 3 * 1000
+      })
+    }
+    
     return Promise.reject(error)
   }
 )
 
 export default service
+
+// 导出CSRF拦截器实例，供其他模块使用
+export { csrfInterceptor }
