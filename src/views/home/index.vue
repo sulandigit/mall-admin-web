@@ -230,12 +230,12 @@
               :picker-options="pickerOptions">
             </el-date-picker>
             <div>
-              <ve-line
+              <line-chart
                 :data="chartData"
                 :legend-visible="false"
                 :loading="loading"
                 :data-empty="dataEmpty"
-                :settings="chartSettings"></ve-line>
+                :settings="chartSettings"></line-chart>
             </div>
           </div>
         </el-col>
@@ -246,6 +246,7 @@
 
 <script>
   import {str2Date} from '@/utils/date';
+  import LineChart from '@/components/Charts/LineChart';
   import img_home_order from '@/assets/images/home_order.png';
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
@@ -271,6 +272,9 @@
   };
   export default {
     name: 'home',
+    components: {
+      LineChart
+    },
     data() {
       return {
         pickerOptions: {

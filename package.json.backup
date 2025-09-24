@@ -4,14 +4,6 @@
   "description": "mall后台管理前端",
   "author": "macro",
   "private": true,
-  "sideEffects": [
-    "*.css",
-    "*.scss",
-    "*.vue",
-    "./src/styles/**/*",
-    "./src/icons/**/*",
-    "normalize.css"
-  ],
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
@@ -25,6 +17,7 @@
     "normalize.css": "^8.0.0",
     "nprogress": "^0.2.0",
     "sass": "^1.32.8",
+    "v-charts": "^1.19.0",
     "v-distpicker": "^1.0.20",
     "vue": "^2.7.2",
     "vue-router": "^3.0.1",
@@ -35,7 +28,6 @@
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.1",
-    "babel-plugin-component": "^1.1.1",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
