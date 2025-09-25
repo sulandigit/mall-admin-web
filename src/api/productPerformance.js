@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import mockApiService, { setupMockInterceptor } from '@/utils/mockApi'
 
 /**
  * 商品性能分析API接口
@@ -86,10 +87,34 @@ export function fetchProductCategories() {
   })
 }
 
-// 获取品牌列表（用于筛选）
+// 导出品牌列表（用于筛选）
 export function fetchBrandList() {
   return request({
     url: '/brand/listAll',
     method: 'get'
   })
 }
+
+// 设置模拟API拦截器
+const api = {
+  fetchPerformanceSummary,
+  fetchProductRanking,
+  fetchInventoryStatus,
+  fetchCategoryAnalysis,
+  fetchSalesTrend,
+  fetchBrandPerformance,
+  exportPerformanceReport,
+  exportPerformanceExcel,
+  fetchProductCategories,
+  fetchBrandList
+};
+
+// 启用演示模式时使用模拟数据
+if (process.env.NODE_ENV === 'development') {
+  console.log('🎭 演示模式已启用，使用模拟数据');
+  // 可以通过环境变量控制是否启用模拟API
+  const useMockApi = process.env.VUE_APP_USE_MOCK_API !== 'false';
+  mockApiService.enable(useMockApi);
+}
+
+export default setupMockInterceptor(api);
