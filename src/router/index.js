@@ -33,6 +33,12 @@ export const constantRouterMap = [
       meta: {title: '仪表盘', icon: 'dashboard'}
     },
     {
+      path: 'dashboard',
+      name: 'realTimeDashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: {title: '实时销售指标', icon: 'data-line'}
+    },
+    {
       name: 'document',
       path: 'https://www.macrozheng.com',
       meta: {title: '学习教程', icon: 'document'}
