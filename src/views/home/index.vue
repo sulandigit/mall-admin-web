@@ -1,5 +1,23 @@
 <template>
   <div class="app-container">
+    <!-- 轮播图区域 -->
+    <div class="carousel-section" v-if="shouldShowCarousel">
+      <home-carousel
+        :images="carouselImages"
+        :loading="carouselLoading"
+        :error="carouselError"
+        :auto-play="true"
+        :interval="4000"
+        :height="carouselHeight"
+        :show-indicators="true"
+        :show-arrows="'hover'"
+        :loop="true"
+        :pause-on-hover="true"
+        @change="handleCarouselChange"
+        @item-click="handleCarouselItemClick"
+      />
+    </div>
+    <!-- 学习资源链接区域 -->
     <div class="address-layout">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -246,6 +264,8 @@
 
 <script>
   import {str2Date} from '@/utils/date';
+  import { mapState, mapGetters, mapActions } from 'vuex';
+  import HomeCarousel from '@/components/HomeCarousel/index.vue';
   import img_home_order from '@/assets/images/home_order.png';
   import img_home_today_amount from '@/assets/images/home_today_amount.png';
   import img_home_yesterday_amount from '@/assets/images/home_yesterday_amount.png';
@@ -271,6 +291,9 @@
   };
   export default {
     name: 'home',
+    components: {
+      HomeCarousel
+    },
     data() {
       return {
         pickerOptions: {
@@ -307,11 +330,75 @@
         img_home_yesterday_amount
       }
     },
+    computed: {
+      // 映射 Vuex 状态
+      ...mapState('home', {
+        carouselImages: 'carouselImages',
+        carouselLoading: 'carouselLoading',
+        carouselError: 'carouselError'
+      }),
+      ...mapGetters('home', [
+        'validCarouselImages',
+        'hasCarouselImages',
+        'carouselImageCount',
+        'isCarouselLoading',
+        'hasCarouselError',
+        'carouselErrorMessage'
+      ]),
+      
+      // 是否显示轮播图
+      shouldShowCarousel() {
+        return this.hasCarouselImages || this.isCarouselLoading
+      },
+      
+      // 响应式轮播图高度
+      carouselHeight() {
+        if (window.innerWidth >= 1200) return '400px'
+        if (window.innerWidth >= 992) return '330px'
+        if (window.innerWidth >= 768) return '256px'
+        return '200px'
+      }
+    },
     created(){
       this.initOrderCountDate();
       this.getData();
+      this.loadCarouselData();
     },
     methods:{
+      // 映射 Vuex 操作
+      ...mapActions('home', [
+        'fetchCarouselImages',
+        'clearCarouselError',
+        'reloadCarouselImages'
+      ]),
+      
+      /**
+       * 加载轮播图数据
+       */
+      async loadCarouselData() {
+        try {
+          await this.fetchCarouselImages()
+        } catch (error) {
+          console.error('加载轮播图失败:', error)
+          // 静默失败，不影响页面其他功能
+        }
+      },
+      
+      /**
+       * 轮播图切换事件
+       */
+      handleCarouselChange(index) {
+        console.log('轮播图切换到:', index)
+        // 可以在这里添加统计代码
+      },
+      
+      /**
+       * 轮播图点击事件
+       */
+      handleCarouselItemClick(item) {
+        console.log('点击轮播图项:', item)
+        // 可以在这里添加点击统计
+      },
       handleDateChange(){
         this.getData();
       },
@@ -348,6 +435,14 @@
     margin-top: 40px;
     margin-left: 120px;
     margin-right: 120px;
+  }
+  
+  /* 轮播图区域样式 */
+  .carousel-section {
+    margin-bottom: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   }
 
   .address-layout {
@@ -438,5 +533,44 @@
   .address-content{
     padding: 20px;
     font-size: 18px
+  }
+  
+  /* 响应式设计 */
+  @media (max-width: 1200px) {
+    .app-container {
+      margin-left: 40px;
+      margin-right: 40px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .app-container {
+      margin-top: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    
+    .carousel-section {
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    
+    .mine-layout {
+      position: static;
+      width: auto;
+      height: auto;
+      margin-top: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .app-container {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    
+    .carousel-section {
+      margin-bottom: 15px;
+    }
   }
 </style>
