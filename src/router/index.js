@@ -138,6 +138,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/pms/brand/update'),
         meta: {title: '编辑品牌'},
         hidden: true
+      },
+      {
+        path: 'performance',
+        name: 'productPerformance',
+        component: () => import('@/views/pms/performance/index'),
+        meta: {title: '商品性能分析', icon: 'el-icon-data-analysis'}
       }
     ]
   },
