@@ -11,19 +11,19 @@
                 style="width: 100%;"
                 v-loading="listLoading" border>
         <el-table-column label="编号" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.id}}</template>
+          <template #default="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="名称" align="center">
-          <template slot-scope="scope">{{scope.row.name}}</template>
+          <template #default="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="创建时间" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatDateTime}}</template>
+          <template #default="scope">{{scope.row.createTime | formatDateTime}}</template>
         </el-table-column>
         <el-table-column label="排序" align="center">
-          <template slot-scope="scope">{{scope.row.sort}}</template>
+          <template #default="scope">{{scope.row.sort}}</template>
         </el-table-column>
         <el-table-column label="操作" width="180" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-button size="mini"
                        type="text"
                        @click="handleUpdate(scope.$index, scope.row)">编辑
@@ -50,10 +50,12 @@
           <el-input v-model="resourceCategory.sort" style="width: 250px"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="handleDialogConfirm()" size="small">确 定</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="handleDialogConfirm()" size="small">确 定</el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 </template>

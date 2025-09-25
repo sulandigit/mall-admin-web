@@ -1,7 +1,4 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-
-Vue.use(Router)
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 /* Layout */
 import Layout from '../views/layout/Layout'
@@ -370,12 +367,13 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {path: '*', redirect: '/404', hidden: true}
+  {path: '/:pathMatch(.*)*', redirect: '/404', hidden: true}
 ]
 
-export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({y: 0}),
+export default createRouter({
+  // history: createWebHistory(), //后端支持可开
+  history: createWebHashHistory(),
+  scrollBehavior: () => ({top: 0}),
   routes: constantRouterMap
 })
 

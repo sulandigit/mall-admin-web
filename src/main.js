@@ -1,10 +1,12 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 
 import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/locale/zh-cn'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import VCharts from 'v-charts'
 
 import '@/styles/index.scss' // global css
@@ -16,15 +18,21 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-Vue.use(ElementUI, { locale })
-Vue.use(VCharts)
+const app = createApp(App)
 
-Vue.config.productionTip = false
+// 注册 Element Plus 图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
-})
+// 全局挂载Element Plus方法，保持Vue 2兼容性
+app.config.globalProperties.$message = ElMessage
+app.config.globalProperties.$confirm = ElMessageBox.confirm
+app.config.globalProperties.$alert = ElMessageBox.alert
+
+app.use(ElementPlus, { locale: zhCn })
+app.use(VCharts)
+app.use(router)
+app.use(store)
+
+app.mount('#app')
