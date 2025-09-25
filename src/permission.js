@@ -2,7 +2,7 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/auth' // 验权
 
 const whiteList = ['/login'] // 不重定向白名单
@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {
-            Message.error(err || 'Verification failed, please login again')
+            ElMessage.error(err || 'Verification failed, please login again')
             next({ path: '/' })
           })
         })
