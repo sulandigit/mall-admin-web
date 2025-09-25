@@ -75,6 +75,26 @@
         size="mini">
         添加
       </el-button>
+      
+      <!-- 批量操作按钮 -->
+      <div class="bulk-operations">
+        <el-button
+          class="btn-bulk"
+          icon="el-icon-upload2"
+          @click="handleBulkImport"
+          size="mini"
+          type="primary">
+          批量导入
+        </el-button>
+        <el-button
+          class="btn-bulk"
+          icon="el-icon-download"
+          @click="handleBulkExport"
+          size="mini"
+          type="success">
+          批量导出
+        </el-button>
+      </div>
     </el-card>
     <div class="table-container">
       <el-table ref="productTable"
@@ -269,6 +289,17 @@
         <el-button type="primary" @click="handleEditSkuConfirm">确 定</el-button>
       </span>
     </el-dialog>
+    
+    <!-- 批量导入对话框 -->
+    <bulk-import-dialog
+      :visible.sync="importDialogVisible"
+      @import-success="handleImportSuccess"
+    ></bulk-import-dialog>
+    
+    <!-- 批量导出对话框 -->
+    <bulk-export-dialog
+      :visible.sync="exportDialogVisible"
+    ></bulk-export-dialog>
   </div>
 </template>
 <script>
@@ -283,6 +314,8 @@
   import {fetchList as fetchProductAttrList} from '@/api/productAttr'
   import {fetchList as fetchBrandList} from '@/api/brand'
   import {fetchListWithChildren} from '@/api/productCate'
+  import BulkImportDialog from '@/components/BulkImportDialog'
+  import BulkExportDialog from '@/components/BulkExportDialog'
 
   const defaultListQuery = {
     keyword: null,
@@ -296,6 +329,10 @@
   };
   export default {
     name: "productList",
+    components: {
+      BulkImportDialog,
+      BulkExportDialog
+    },
     data() {
       return {
         editSkuInfo:{
@@ -363,7 +400,10 @@
         }, {
           value: 0,
           label: '未审核'
-        }]
+        }],
+        // 批量导入/导出对话框状态
+        importDialogVisible: false,
+        exportDialogVisible: false
       }
     },
     created() {
@@ -640,10 +680,49 @@
           });
         });
         this.getList();
+      },
+      
+      // 批量导入相关方法
+      handleBulkImport() {
+        this.importDialogVisible = true
+      },
+      
+      handleImportSuccess(result) {
+        this.$message.success(`导入完成！成功导入 ${result.successCount} 条数据`)
+        // 刷新列表
+        this.getList()
+      },
+      
+      // 批量导出相关方法
+      handleBulkExport() {
+        this.exportDialogVisible = true
       }
     }
   }
 </script>
-<style></style>
+<style scoped>
+.operate-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.operate-container .el-button {
+  margin-left: 10px;
+}
+
+.bulk-operations {
+  display: flex;
+  align-items: center;
+}
+
+.btn-bulk {
+  margin-left: 10px;
+}
+
+.btn-add {
+  margin-left: auto;
+  margin-right: 10px;
+}</style>
 
 
