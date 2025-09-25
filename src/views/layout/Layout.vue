@@ -5,11 +5,17 @@
       <navbar></navbar>
       <app-main></app-main>
     </div>
+    <!-- 缓存监控组件 -->
+    <cache-monitor></cache-monitor>
+    <!-- 缓存状态指示器 -->
+    <cache-status-indicator></cache-status-indicator>
   </div>
 </template>
 
 <script>
 import { Navbar, Sidebar, AppMain } from './components'
+import CacheMonitor from '@/components/CacheMonitor'
+import CacheStatusIndicator from '@/components/CacheStatusIndicator'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
@@ -17,7 +23,9 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    CacheMonitor,
+    CacheStatusIndicator
   },
   mixins: [ResizeMixin],
   computed: {

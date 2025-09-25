@@ -283,6 +283,7 @@
   import {fetchList as fetchProductAttrList} from '@/api/productAttr'
   import {fetchList as fetchBrandList} from '@/api/brand'
   import {fetchListWithChildren} from '@/api/productCate'
+  import CacheViewMixin from '@/mixins/cacheView'
 
   const defaultListQuery = {
     keyword: null,
@@ -296,6 +297,7 @@
   };
   export default {
     name: "productList",
+    mixins: [CacheViewMixin],
     data() {
       return {
         editSkuInfo:{
@@ -367,9 +369,10 @@
       }
     },
     created() {
-      this.getList();
-      this.getBrandList();
-      this.getProductCateList();
+      // 由于使用了缓存混入，由initData方法处理初始化
+      // this.getList();
+      // this.getBrandList();
+      // this.getProductCateList();
     },
     watch: {
       selectProductCateValue: function (newValue) {
@@ -391,6 +394,12 @@
       }
     },
     methods: {
+      // 初始化数据方法，被缓存混入调用
+      initData() {
+        this.getList();
+        this.getBrandList();
+        this.getProductCateList();
+      },
       getProductSkuSp(row, index) {
         let spData = JSON.parse(row.spData);
         if(spData!=null&&index<spData.length){

@@ -15,6 +15,7 @@ import store from './store'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import '@/utils/cacheControl' // cache control service
 
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)

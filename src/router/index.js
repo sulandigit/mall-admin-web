@@ -16,6 +16,10 @@ import Layout from '../views/layout/Layout'
  * meta : {
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
+    keepAlive: true/false        whether to cache this view (default: false)
+    refreshOnActivated: true/false  whether to refresh data when activated (default: false)
+    cacheTimeout: number         cache timeout in milliseconds (default: 30*60*1000)
+    clearCache: true/false       whether to clear cache when leaving (default: false)
   }
  **/
 export const constantRouterMap = [
@@ -30,7 +34,12 @@ export const constantRouterMap = [
       path: 'home',
       name: 'home',
       component: () => import('@/views/home/index'),
-      meta: {title: '仪表盘', icon: 'dashboard'}
+      meta: { 
+        title: '仪表盘', 
+        icon: 'dashboard',
+        keepAlive: true,
+        refreshOnActivated: false
+      }
     },
     {
       name: 'document',
@@ -57,26 +66,47 @@ export const asyncRouterMap = [
       path: 'product',
       name: 'product',
       component: () => import('@/views/pms/product/index'),
-      meta: {title: '商品列表', icon: 'product-list'}
+      meta: { 
+        title: '商品列表', 
+        icon: 'product-list',
+        keepAlive: true,
+        refreshOnActivated: false,
+        cacheTimeout: 30 * 60 * 1000 // 30分钟
+      }
     },
       {
         path: 'addProduct',
         name: 'addProduct',
         component: () => import('@/views/pms/product/add'),
-        meta: {title: '添加商品', icon: 'product-add'}
+        meta: { 
+          title: '添加商品', 
+          icon: 'product-add',
+          keepAlive: false,
+          clearCache: true // 添加后清理列表缓存
+        }
       },
       {
         path: 'updateProduct',
         name: 'updateProduct',
         component: () => import('@/views/pms/product/update'),
-        meta: {title: '修改商品', icon: 'product-add'},
+        meta: { 
+          title: '修改商品', 
+          icon: 'product-add',
+          keepAlive: false,
+          clearCache: true // 修改后清理列表缓存
+        },
         hidden: true
       },
       {
         path: 'productCate',
         name: 'productCate',
         component: () => import('@/views/pms/productCate/index'),
-        meta: {title: '商品分类', icon: 'product-cate'}
+        meta: { 
+          title: '商品分类', 
+          icon: 'product-cate',
+          keepAlive: true,
+          refreshOnActivated: false
+        }
       },
       {
         path: 'addProductCate',
@@ -123,7 +153,12 @@ export const asyncRouterMap = [
         path: 'brand',
         name: 'brand',
         component: () => import('@/views/pms/brand/index'),
-        meta: {title: '品牌管理', icon: 'product-brand'}
+        meta: { 
+          title: '品牌管理', 
+          icon: 'product-brand',
+          keepAlive: true,
+          refreshOnActivated: false
+        }
       },
       {
         path: 'addBrand',
@@ -152,7 +187,13 @@ export const asyncRouterMap = [
         path: 'order',
         name: 'order',
         component: () => import('@/views/oms/order/index'),
-        meta: {title: '订单列表', icon: 'product-list'}
+        meta: { 
+          title: '订单列表', 
+          icon: 'product-list',
+          keepAlive: true,
+          refreshOnActivated: true, // 订单数据实时性要求高
+          cacheTimeout: 15 * 60 * 1000 // 15分钟
+        }
       },
       {
         path: 'orderDetail',
@@ -233,7 +274,12 @@ export const asyncRouterMap = [
         path: 'coupon',
         name: 'coupon',
         component: () => import('@/views/sms/coupon/index'),
-        meta: {title: '优惠券列表', icon: 'sms-coupon'}
+        meta: { 
+          title: '优惠券列表', 
+          icon: 'sms-coupon',
+          keepAlive: true,
+          refreshOnActivated: false
+        }
       },
       {
         path: 'addCoupon',
@@ -313,13 +359,23 @@ export const asyncRouterMap = [
         path: 'admin',
         name: 'admin',
         component: () => import('@/views/ums/admin/index'),
-        meta: {title: '用户列表', icon: 'ums-admin'}
+        meta: { 
+          title: '用户列表', 
+          icon: 'ums-admin',
+          keepAlive: true,
+          refreshOnActivated: false
+        }
       },
       {
         path: 'role',
         name: 'role',
         component: () => import('@/views/ums/role/index'),
-        meta: {title: '角色列表', icon: 'ums-role'}
+        meta: { 
+          title: '角色列表', 
+          icon: 'ums-role',
+          keepAlive: true,
+          refreshOnActivated: false
+        }
       },
       {
         path: 'allocMenu',
@@ -339,7 +395,12 @@ export const asyncRouterMap = [
         path: 'menu',
         name: 'menu',
         component: () => import('@/views/ums/menu/index'),
-        meta: {title: '菜单列表', icon: 'ums-menu'}
+        meta: { 
+          title: '菜单列表', 
+          icon: 'ums-menu',
+          keepAlive: true,
+          refreshOnActivated: false
+        }
       },
       {
         path: 'addMenu',
