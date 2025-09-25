@@ -138,6 +138,19 @@ export const asyncRouterMap = [
         component: () => import('@/views/pms/brand/update'),
         meta: {title: '编辑品牌'},
         hidden: true
+      },
+      {
+        path: 'report',
+        name: 'pmsReport',
+        meta: {title: '商品报表', icon: 'chart'},
+        children: [
+          {
+            path: 'inventory-turnover',
+            name: 'inventoryTurnover',
+            component: () => import('@/views/pms/report/inventory-turnover/index'),
+            meta: {title: '库存周转率报表', icon: 'turnover-chart'}
+          }
+        ]
       }
     ]
   },
