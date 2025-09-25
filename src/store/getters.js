@@ -6,6 +6,10 @@ const getters = {
   name: state => state.user.name,
   roles: state => state.user.roles,
   addRouters: state => state.permission.addRouters,
-  routers: state => state.permission.routers
+  routers: state => state.permission.routers,
+  cachedViews: state => state.cache.cachedViews,
+  cacheConfig: state => state.cache.cacheConfig,
+  cacheCount: state => state.cache.cacheCount,
+  cacheInfo: state => state.cache.cacheInfo
 }
 export default getters

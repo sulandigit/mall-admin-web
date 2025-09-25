@@ -182,6 +182,7 @@
   import {fetchList,closeOrder,deleteOrder} from '@/api/order'
   import {formatDate} from '@/utils/date';
   import LogisticsDialog from '@/views/oms/order/components/logisticsDialog';
+  import CacheViewMixin from '@/mixins/cacheView'
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
@@ -194,6 +195,7 @@
   };
   export default {
     name: "orderList",
+    mixins: [CacheViewMixin],
     components:{LogisticsDialog},
     data() {
       return {
@@ -268,7 +270,8 @@
       }
     },
     created() {
-      this.getList();
+      // 由于使用了缓存混入，由initData方法处理初始化
+      // this.getList();
     },
     filters: {
       formatCreateTime(time) {
@@ -308,6 +311,10 @@
       },
     },
     methods: {
+      // 初始化数据方法，被缓存混入调用
+      initData() {
+        this.getList();
+      },
       handleResetSearch() {
         this.listQuery = Object.assign({}, defaultListQuery);
       },
