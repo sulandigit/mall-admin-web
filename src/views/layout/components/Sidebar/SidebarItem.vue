@@ -6,14 +6,14 @@
         :key="item.children[0].name">
         <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
           <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
-          <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{item.children[0].meta.title}}</span>
+          <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{ getMenuTitle(item.children[0]) }}</span>
         </el-menu-item>
       </router-link>
 
       <el-submenu v-else :index="item.name||item.path" :key="item.name">
         <template slot="title">
           <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
-          <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
+          <span v-if="item.meta&&item.meta.title" slot="title">{{ getMenuTitle(item) }}</span>
         </template>
 
         <template v-for="child in item.children" v-if="!child.hidden">
@@ -22,13 +22,13 @@
           <a v-else-if="child.path.startsWith('http')" v-bind:href="child.path" target="_blank" :key="child.name">
             <el-menu-item :index="item.path+'/'+child.path">
               <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-              <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
+              <span v-if="child.meta&&child.meta.title" slot="title">{{ getMenuTitle(child) }}</span>
             </el-menu-item>
           </a>
           <router-link v-else :to="item.path+'/'+child.path" :key="child.name">
             <el-menu-item :index="item.path+'/'+child.path">
               <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-              <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
+              <span v-if="child.meta&&child.meta.title" slot="title">{{ getMenuTitle(child) }}</span>
             </el-menu-item>
           </router-link>
         </template>
@@ -59,6 +59,24 @@ export default {
         return true
       }
       return false
+    },
+    /**
+     * 获取菜单国际化标题
+     * @param {Object} route 路由对象
+     * @returns {string} 国际化后的标题
+     */
+    getMenuTitle(route) {
+      if (!route.meta || !route.meta.title) {
+        return ''
+      }
+      
+      // 如果路由配置中有i18n字段，优先使用国际化
+      if (route.meta.i18n && this.$te(route.meta.i18n)) {
+        return this.$t(route.meta.i18n)
+      }
+      
+      // 否则返回原始标题
+      return route.meta.title
     }
   }
 }

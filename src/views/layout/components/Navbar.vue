@@ -2,6 +2,18 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
+    
+    <!-- 语言切换组件 -->
+    <div class="language-container">
+      <language-switcher 
+        :show-icon="true" 
+        :show-text="true" 
+        placement="bottom" 
+        class="position-header"
+        @language-changed="onLanguageChanged"
+      />
+    </div>
+    
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar">
@@ -10,11 +22,11 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            首页
+            {{ $t('menu.dashboard') }}
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出</span>
+          <span @click="logout" style="display:block;">{{ $t('common.action.logout') || '退出' }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -25,11 +37,13 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    LanguageSwitcher
   },
   computed: {
     ...mapGetters([
@@ -45,6 +59,13 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
+    },
+    onLanguageChanged(locale) {
+      // 语言切换后的回调，可以在这里做一些业务操作
+      console.log('Language changed to:', locale)
+      
+      // 可以在这里重新加载某些数据或重置某些状态
+      // this.fetchData()
     }
   }
 }
@@ -67,6 +88,33 @@ export default {
     top: 16px;
     color: red;
   }
+  
+  // 语言切换组件样式
+  .language-container {
+    position: absolute;
+    right: 120px;
+    top: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    
+    ::v-deep .language-switcher {
+      &.position-header {
+        .language-trigger {
+          color: #606266;
+          
+          .language-text {
+            color: #606266;
+          }
+          
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+        }
+      }
+    }
+  }
+  
   .avatar-container {
     height: 50px;
     display: inline-block;
