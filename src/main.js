@@ -8,6 +8,7 @@ import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 import VCharts from 'v-charts'
 
 import '@/styles/index.scss' // global css
+import '@/styles/dashboard.scss' // dashboard styles
 
 import App from './App'
 import router from './router'
