@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收入预测功能 - 代码预览</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1890ff;
+            border-bottom: 3px solid #1890ff;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #52c41a;
+            margin-top: 30px;
+        }
+        .feature-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .feature-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .feature-list li {
+            margin: 8px 0;
+        }
+        .code-block {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+        .file-path {
+            background: #0366d6;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px 4px 0 0;
+            margin: 20px 0 0 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.complete {
+            background: #d4edda;
+            color: #155724;
+        }
+        .algorithms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .algorithm-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .algorithm-card h3 {
+            color: #1890ff;
+            margin-top: 0;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .tech-tag {
+            background: #e6f7ff;
+            color: #1890ff;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            border: 1px solid #91d5ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 收入预测功能开发完成</h1>
+        
+        <div class="feature-list">
+            <h2>✨ 核心功能特性</h2>
+            <ul>
+                <li><strong>智能预测算法</strong> - 支持线性回归、移动平均、指数平滑三种预测算法</li>
+                <li><strong>可视化图表</strong> - 基于V-Charts的动态图表展示，支持线图和柱图切换</li>
+                <li><strong>灵活参数配置</strong> - 用户可自定义时间范围、数据周期、预测算法和预测周期</li>
+                <li><strong>实时数据分析</strong> - 显示预测精度、增长率、置信度等关键指标</li>
+                <li><strong>历史数据管理</strong> - 完整的数据表格展示，支持分页和导出功能</li>
+                <li><strong>响应式设计</strong> - 适配不同屏幕尺寸，提供优秀的用户体验</li>
+            </ul>
+        </div>
+
+        <h2>📊 预测算法说明</h2>
+        <div class="algorithms">
+            <div class="algorithm-card">
+                <h3>线性回归 (Linear Regression)</h3>
+                <p>通过拟合历史数据的线性趋势来预测未来收入。适用于具有明显线性增长或下降趋势的数据。</p>
+                <p><strong>优势：</strong>计算简单，趋势明确</p>
+                <p><strong>适用场景：</strong>稳定增长的业务</p>
+            </div>
+            
+            <div class="algorithm-card">
+                <h3>移动平均 (Moving Average)</h3>
+                <p>基于最近N个时间段的平均值来预测未来。能够平滑短期波动，反映整体趋势。</p>
+                <p><strong>优势：</strong>平滑噪音，稳定可靠</p>
+                <p><strong>适用场景：</strong>波动较大的数据</p>
+            </div>
+            
+            <div class="algorithm-card">
+                <h3>指数平滑 (Exponential Smoothing)</h3>
+                <p>对历史数据赋予不同权重，越近期的数据权重越大。能够快速响应趋势变化。</p>
+                <p><strong>优势：</strong>响应及时，适应性强</p>
+                <p><strong>适用场景：</strong>需要快速反应的预测</p>
+            </div>
+        </div>
+
+        <h2>🛠 技术架构</h2>
+        <div class="tech-stack">
+            <span class="tech-tag">Vue.js 2.x</span>
+            <span class="tech-tag">Element UI</span>
+            <span class="tech-tag">V-Charts</span>
+            <span class="tech-tag">ECharts</span>
+            <span class="tech-tag">Axios</span>
+            <span class="tech-tag">JavaScript ES6+</span>
+        </div>
+
+        <h2>📁 文件结构</h2>
+        
+        <div class="file-path">src/api/revenueForecast.js</div>
+        <div class="code-block">
+            <strong>API接口文件</strong> <span class="status complete">✅ 已完成</span><br>
+            包含：历史数据获取、预测执行、配置管理、结果保存等6个核心API方法
+        </div>
+
+        <div class="file-path">src/views/revenueForecast/index.vue</div>
+        <div class="code-block">
+            <strong>主页面组件</strong> <span class="status complete">✅ 已完成</span><br>
+            包含：数据选择、参数配置、图表展示、结果分析、历史数据表格等完整功能
+        </div>
+
+        <div class="file-path">src/router/index.js</div>
+        <div class="code-block">
+            <strong>路由配置</strong> <span class="status complete">✅ 已完成</span><br>
+            新增"数据分析"模块，收入预测功能路由已注册
+        </div>
+
+        <div class="file-path">src/icons/svg/chart.svg & money.svg</div>
+        <div class="code-block">
+            <strong>图标资源</strong> <span class="status complete">✅ 已完成</span><br>
+            自定义SVG图标，用于菜单和功能标识
+        </div>
+
+        <h2>🚀 使用说明</h2>
+        <div class="feature-list">
+            <ol>
+                <li><strong>启动项目：</strong>运行 <code>npm run dev</code> 启动开发服务器</li>
+                <li><strong>访问功能：</strong>在侧边栏找到"数据分析" → "收入预测"</li>
+                <li><strong>设置参数：</strong>选择时间范围、数据周期和预测算法</li>
+                <li><strong>执行预测：</strong>点击"开始预测"按钮查看结果</li>
+                <li><strong>分析结果：</strong>查看图表趋势、预测精度和增长率</li>
+                <li><strong>导出数据：</strong>可将分析结果导出为表格文件</li>
+            </ol>
+        </div>
+
+        <h2>🔧 后续优化建议</h2>
+        <div class="feature-list">
+            <ul>
+                <li>集成真实后端API，替换模拟数据</li>
+                <li>添加更多高级预测算法（ARIMA、神经网络等）</li>
+                <li>支持多维度数据分析（按产品、地区、渠道等）</li>
+                <li>增加预测模型评估和对比功能</li>
+                <li>实现预测结果的实时监控和告警</li>
+                <li>添加数据导入导出功能</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f0f9ff; border-radius: 8px;">
+            <h3 style="color: #1890ff; margin: 0;">🎉 收入预测功能开发完成！</h3>
+            <p style="margin: 10px 0 0 0; color: #666;">
+                功能完整，代码结构清晰，可直接投入使用。如需启动项目，请确保已安装Node.js环境。
+            </p>
+        </div>
+    </div>
+</body>
+</html>

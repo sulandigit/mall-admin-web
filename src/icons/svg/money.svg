@@ -1,0 +1,22 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- 钱币符号 -->
+    <circle fill="#52c41a" cx="64" cy="64" r="45" stroke="#389e0d" stroke-width="3"/>
+    <text x="64" y="78" text-anchor="middle" font-family="Arial" font-size="48" font-weight="bold" fill="white">¥</text>
+    
+    <!-- 上升箭头 -->
+    <path fill="#1890ff" d="M90,30 L105,45 L97,45 L97,55 L83,55 L83,45 L75,45 Z"/>
+    
+    <!-- 光芒效果 -->
+    <g stroke="#faad14" stroke-width="2">
+      <line x1="64" y1="5" x2="64" y2="15"/>
+      <line x1="64" y1="113" x2="64" y2="123"/>
+      <line x1="5" y1="64" x2="15" y2="64"/>
+      <line x1="113" y1="64" x2="123" y2="64"/>
+      <line x1="20.7" y1="20.7" x2="27.8" y2="27.8"/>
+      <line x1="100.2" y1="100.2" x2="107.3" y2="107.3"/>
+      <line x1="107.3" y1="20.7" x2="100.2" y2="27.8"/>
+      <line x1="27.8" y1="100.2" x2="20.7" y2="107.3"/>
+    </g>
+  </g>
+</svg>
