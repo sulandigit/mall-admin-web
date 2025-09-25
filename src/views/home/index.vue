@@ -63,7 +63,11 @@
     </div>
     <el-card class="mine-layout">
       <div style="text-align: center">
-        <img width="150px" height="150px" src="http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg">
+        <img 
+          v-lazy="'http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg'"
+          width="150px" 
+          height="150px" 
+          alt="微信公众号二维码">
       </div>
       <div style="text-align: center">mall全套学习教程连载中！</div>
       <div style="text-align: center;margin-top: 5px"><span class="color-main">关注公号</span>，第一时间获取。</div>

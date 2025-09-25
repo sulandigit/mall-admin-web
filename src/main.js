@@ -8,6 +8,7 @@ import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 import VCharts from 'v-charts'
 
 import '@/styles/index.scss' // global css
+import '@/styles/lazy.css' // lazy load styles
 
 import App from './App'
 import router from './router'
@@ -15,9 +16,11 @@ import store from './store'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import directives from '@/directives' // custom directives
 
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
+Vue.use(directives) // 注册自定义指令
 
 Vue.config.productionTip = false
 
