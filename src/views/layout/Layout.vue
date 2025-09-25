@@ -5,21 +5,30 @@
       <navbar></navbar>
       <app-main></app-main>
     </div>
+    
+    <!-- 快捷键相关组件 -->
+    <shortcut-panel></shortcut-panel>
+    <shortcut-help-dialog></shortcut-help-dialog>
   </div>
 </template>
 
 <script>
 import { Navbar, Sidebar, AppMain } from './components'
+import ShortcutPanel from '@/components/ShortcutPanel'
+import ShortcutHelpDialog from '@/components/ShortcutHelp'
 import ResizeMixin from './mixin/ResizeHandler'
+import keyboardShortcutMixin from '@/mixins/keyboardShortcut'
 
 export default {
   name: 'layout',
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    ShortcutPanel,
+    ShortcutHelpDialog
   },
-  mixins: [ResizeMixin],
+  mixins: [ResizeMixin, keyboardShortcutMixin],
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar

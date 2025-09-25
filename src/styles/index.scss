@@ -1,158 +1,740 @@
+// 导入样式模块
 @import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
 
-body {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-}
-
+// 全局样式重置
 html {
   box-sizing: border-box;
+  font-size: 16px;
+  
+  @include respond-to('sm') {
+    font-size: 14px;
+  }
 }
 
 *,
 *:before,
 *:after {
   box-sizing: inherit;
+  margin: 0;
+  padding: 0;
 }
 
-div:focus{
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  color: $text-color-regular;
+  background-color: $background-color-light;
+  line-height: 1.6;
+}
+
+// 移除默认焦点样式
+div:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
 }
 
-a:focus,
-a:active {
-  outline: none;
-}
-
-a,
-a:focus,
-a:hover {
-  cursor: pointer;
+// 链接样式
+a {
   color: inherit;
   text-decoration: none;
-}
-
-.clearfix {
-  &:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
+  @include transition;
+  
+  &:hover {
+    color: $primary-color;
+  }
+  
+  &:focus,
+  &:active {
+    outline: none;
   }
 }
 
-//main-container全局样式
-.app-main{
-  min-height: 100%
+// 列表样式
+ul, ol {
+  list-style: none;
+}
+
+// 图片样式
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+// 输入框样式
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+// 按钮样式
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+  @include transition;
+}
+
+// 工具类
+.clearfix {
+  @include clearfix;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+// 间距工具类
+.m-0 { margin: 0 !important; }
+.mt-0 { margin-top: 0 !important; }
+.mr-0 { margin-right: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.ml-0 { margin-left: 0 !important; }
+
+.m-1 { margin: $spacing-xs !important; }
+.mt-1 { margin-top: $spacing-xs !important; }
+.mr-1 { margin-right: $spacing-xs !important; }
+.mb-1 { margin-bottom: $spacing-xs !important; }
+.ml-1 { margin-left: $spacing-xs !important; }
+
+.m-2 { margin: $spacing-sm !important; }
+.mt-2 { margin-top: $spacing-sm !important; }
+.mr-2 { margin-right: $spacing-sm !important; }
+.mb-2 { margin-bottom: $spacing-sm !important; }
+.ml-2 { margin-left: $spacing-sm !important; }
+
+.m-3 { margin: $spacing-md !important; }
+.mt-3 { margin-top: $spacing-md !important; }
+.mr-3 { margin-right: $spacing-md !important; }
+.mb-3 { margin-bottom: $spacing-md !important; }
+.ml-3 { margin-left: $spacing-md !important; }
+
+.m-4 { margin: $spacing-lg !important; }
+.mt-4 { margin-top: $spacing-lg !important; }
+.mr-4 { margin-right: $spacing-lg !important; }
+.mb-4 { margin-bottom: $spacing-lg !important; }
+.ml-4 { margin-left: $spacing-lg !important; }
+
+.m-5 { margin: $spacing-xl !important; }
+.mt-5 { margin-top: $spacing-xl !important; }
+.mr-5 { margin-right: $spacing-xl !important; }
+.mb-5 { margin-bottom: $spacing-xl !important; }
+.ml-5 { margin-left: $spacing-xl !important; }
+
+.p-0 { padding: 0 !important; }
+.pt-0 { padding-top: 0 !important; }
+.pr-0 { padding-right: 0 !important; }
+.pb-0 { padding-bottom: 0 !important; }
+.pl-0 { padding-left: 0 !important; }
+
+.p-1 { padding: $spacing-xs !important; }
+.pt-1 { padding-top: $spacing-xs !important; }
+.pr-1 { padding-right: $spacing-xs !important; }
+.pb-1 { padding-bottom: $spacing-xs !important; }
+.pl-1 { padding-left: $spacing-xs !important; }
+
+.p-2 { padding: $spacing-sm !important; }
+.pt-2 { padding-top: $spacing-sm !important; }
+.pr-2 { padding-right: $spacing-sm !important; }
+.pb-2 { padding-bottom: $spacing-sm !important; }
+.pl-2 { padding-left: $spacing-sm !important; }
+
+.p-3 { padding: $spacing-md !important; }
+.pt-3 { padding-top: $spacing-md !important; }
+.pr-3 { padding-right: $spacing-md !important; }
+.pb-3 { padding-bottom: $spacing-md !important; }
+.pl-3 { padding-left: $spacing-md !important; }
+
+.p-4 { padding: $spacing-lg !important; }
+.pt-4 { padding-top: $spacing-lg !important; }
+.pr-4 { padding-right: $spacing-lg !important; }
+.pb-4 { padding-bottom: $spacing-lg !important; }
+.pl-4 { padding-left: $spacing-lg !important; }
+
+.p-5 { padding: $spacing-xl !important; }
+.pt-5 { padding-top: $spacing-xl !important; }
+.pr-5 { padding-right: $spacing-xl !important; }
+.pb-5 { padding-bottom: $spacing-xl !important; }
+.pl-5 { padding-left: $spacing-xl !important; }
+
+// 主容器全局样式
+.app-main {
+  min-height: calc(100vh - #{$navBarHeight});
+  position: relative;
+  overflow: hidden;
 }
 
 .app-container {
-  padding: 20px;
+  padding: $spacing-xl;
+  
+  @include respond-to('sm') {
+    padding: $spacing-md;
+  }
 }
 
-//搜索栏样式
+// 业务样式组件
+
+// 搜索栏样式
 .filter-container {
-
+  @include card($spacing-lg);
+  margin-bottom: $spacing-lg;
+  
+  .filter-item {
+    display: inline-block;
+    margin-right: $spacing-md;
+    margin-bottom: $spacing-sm;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  
+  .filter-item-label {
+    @include text-primary;
+    margin-right: $spacing-sm;
+    white-space: nowrap;
+  }
 }
 
-//操作栏样式
+// 操作栏样式
 .operate-container {
-  margin-top: 20px;
+  @include flexBetween;
+  margin: $spacing-lg 0;
+  
+  .operate-left {
+    @include flexCenter;
+    
+    .operate-item {
+      margin-right: $spacing-md;
+      
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  .operate-right {
+    @include flexCenter;
+    
+    .btn-add {
+      // 由 Element UI 样式处理
+    }
+  }
 }
 
-.operate-container .btn-add {
-  float: right;
-}
-
-//表格栏样式
+// 表格栏样式
 .table-container {
-  margin-top: 20px;
+  @include card(0);
+  margin: $spacing-lg 0;
+  
+  .table-header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid $border-color-lighter;
+    @include flexBetween;
+    
+    .table-title {
+      @include text-primary;
+      font-size: $font-size-large;
+      font-weight: 600;
+    }
+    
+    .table-actions {
+      @include flexCenter;
+      
+      .action-item {
+        margin-left: $spacing-sm;
+      }
+    }
+  }
+  
+  .table-body {
+    // 由 Element UI 表格样式处理
+  }
 }
 
-//批量操作栏样式
+// 批量操作栏样式
 .batch-operate-container {
-  display: inline-block;
-  margin-top: 20px;
+  @include flexBetween;
+  padding: $spacing-md $spacing-lg;
+  background-color: $background-color-base;
+  border: 1px solid $border-color-lighter;
+  border-radius: $border-radius-base;
+  margin: $spacing-lg 0;
+  
+  .batch-info {
+    @include text-regular;
+    
+    .selected-count {
+      color: $primary-color;
+      font-weight: 600;
+    }
+  }
+  
+  .batch-actions {
+    @include flexCenter;
+    
+    .batch-action {
+      margin-left: $spacing-sm;
+    }
+  }
 }
 
-//分页栏样式
+// 分页栏样式
 .pagination-container {
-  display: inline-block;
-  float: right;
-  margin-top: 20px;
+  @include flexCenter;
+  padding: $spacing-lg;
+  
+  @include respond-to('sm') {
+    justify-content: center;
+  }
 }
 
-//添加、更新表单样式
+// 表单容器样式
 .form-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  width: 720px;
-  padding: 35px 35px 15px 35px;
-  margin: 20px auto;
+  @include card($spacing-xxl);
+  max-width: 800px;
+  margin: $spacing-xl auto;
+  
+  @include respond-to('sm') {
+    margin: $spacing-lg auto;
+    padding: $spacing-lg;
+  }
+  
+  .form-header {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+    
+    .form-title {
+      font-size: $font-size-extra-large;
+      color: $text-color-primary;
+      font-weight: 600;
+      margin-bottom: $spacing-sm;
+    }
+    
+    .form-subtitle {
+      @include text-secondary;
+    }
+  }
+  
+  .form-footer {
+    text-align: center;
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-color-lighter;
+  }
 }
 
-//主标题
+// 字体大小工具类
 .font-extra-large {
-  font-size: 20px;
-  color: #303133;
+  font-size: $font-size-extra-large;
+  color: $text-color-primary;
+  font-weight: 600;
 }
 
-//标题
 .font-title-large {
-  font-size: 18px;
-  color: #303133;
+  font-size: $font-size-large;
+  color: $text-color-primary;
+  font-weight: 600;
 }
 
-//小标题
 .font-title-medium {
-  font-size: 16px;
-  color: #303133;
+  font-size: $font-size-medium;
+  color: $text-color-primary;
+  font-weight: 600;
 }
 
-//正文
 .font-medium {
-  font-size: 16px;
-  color: #606266;
+  font-size: $font-size-medium;
+  color: $text-color-regular;
 }
 
-//正文
 .font-small {
-  font-size: 14px;
-  color: #606266;
+  font-size: $font-size-base;
+  color: $text-color-regular;
 }
 
-//正文（小）
 .font-extra-small {
-  font-size: 13px;
-  color: #606266;
+  font-size: $font-size-small;
+  color: $text-color-regular;
 }
 
-.color-main {
-  color: #409EFF;
+// 颜色工具类
+.color-primary {
+  color: $primary-color;
 }
 
 .color-success {
-  color: #67C23A;
+  color: $success-color;
 }
 
 .color-warning {
-  color: #E6A23C;
+  color: $warning-color;
 }
 
 .color-danger {
-  color: #F56C6C;
+  color: $danger-color;
 }
 
 .color-info {
-  color: #909399;
+  color: $info-color;
+}
+
+.color-main {
+  color: $primary-color;
+}
+
+// 背景颜色工具类
+.bg-primary {
+  background-color: $primary-color;
+  color: #fff;
+}
+
+.bg-success {
+  background-color: $success-color;
+  color: #fff;
+}
+
+.bg-warning {
+  background-color: $warning-color;
+  color: #fff;
+}
+
+.bg-danger {
+  background-color: $danger-color;
+  color: #fff;
+}
+
+.bg-info {
+  background-color: $info-color;
+  color: #fff;
+}
+
+.bg-light {
+  background-color: $background-color-light;
+}
+
+.bg-lighter {
+  background-color: $background-color-lighter;
+}
+
+// 边框工具类
+.border {
+  @include border;
+}
+
+.border-top {
+  border-top: 1px solid $border-color-base;
+}
+
+.border-right {
+  border-right: 1px solid $border-color-base;
+}
+
+.border-bottom {
+  border-bottom: 1px solid $border-color-base;
+}
+
+.border-left {
+  border-left: 1px solid $border-color-base;
+}
+
+.border-none {
+  border: none !important;
+}
+
+// 圆角工具类
+.rounded {
+  @include borderRadius;
+}
+
+.rounded-sm {
+  @include borderRadius($border-radius-small);
+}
+
+.rounded-circle {
+  @include borderRadius($border-radius-circle);
+}
+
+.rounded-none {
+  border-radius: 0 !important;
+}
+
+// 阴影工具类
+.shadow {
+  @include boxShadow;
+}
+
+.shadow-dark {
+  @include boxShadow($box-shadow-dark);
+}
+
+.shadow-light {
+  @include boxShadow($box-shadow-light);
+}
+
+.shadow-none {
+  box-shadow: none !important;
+}
+
+// 布局工具类
+.d-flex {
+  display: flex;
+}
+
+.d-inline-flex {
+  display: inline-flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.flex-shrink-1 {
+  flex-shrink: 1;
+}
+
+// 位置工具类
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+.position-sticky {
+  position: sticky;
+}
+
+// 滚动条样式
+.custom-scrollbar {
+  @include scrollBar;
+}
+
+// 特殊效果类
+.hover-shadow {
+  @include transition;
+  
+  &:hover {
+    @include boxShadow($box-shadow-light);
+    transform: translateY(-2px);
+  }
+}
+
+.hover-scale {
+  @include transition;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hover-opacity {
+  @include transition;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+// 加载状态
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  @include flexCenter;
+  z-index: $z-index-modal;
+  
+  .loading-spinner {
+    @include loading-animation;
+    width: 40px;
+    height: 40px;
+    border: 4px solid $border-color-lighter;
+    border-top-color: $primary-color;
+    border-radius: $border-radius-circle;
+  }
+}
+
+// 响应式工具类
+@include respond-to('sm') {
+  .d-sm-none {
+    display: none !important;
+  }
+  
+  .d-sm-block {
+    display: block !important;
+  }
+  
+  .d-sm-flex {
+    display: flex !important;
+  }
+}
+
+@include respond-to('md') {
+  .d-md-none {
+    display: none !important;
+  }
+  
+  .d-md-block {
+    display: block !important;
+  }
+  
+  .d-md-flex {
+    display: flex !important;
+  }
+}
+
+@include respond-to('lg') {
+  .d-lg-none {
+    display: none !important;
+  }
+  
+  .d-lg-block {
+    display: block !important;
+  }
+  
+  .d-lg-flex {
+    display: flex !important;
+  }
+}
+
+// 打印样式
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+  
+  body {
+    color: #000;
+    background: #fff;
+  }
+  
+  .app-main {
+    padding: 0;
+  }
+}
+
+// 无障碍访问
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+// 高对比度模式
+@media (prefers-contrast: high) {
+  body {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .border {
+    border-color: #000;
+  }
+}
+
+// 暗色主题支持（保留接口）
+@media (prefers-color-scheme: dark) {
+  // 可以在这里添加暗色主题样式
 }
 

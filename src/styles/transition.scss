@@ -1,32 +1,339 @@
-//globl transition css
+// 全局过渡动画样式
+@import './variables.scss';
+@import './mixin.scss';
 
-/*fade*/
+// 基础淡入淡出
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.28s;
 }
 
 .fade-enter,
-.fade-leave-active {
+.fade-leave-to {
   opacity: 0;
 }
 
-/*fade*/
+// 面包屑导航动画
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
 .breadcrumb-enter,
-.breadcrumb-leave-active {
+.breadcrumb-leave-to {
   opacity: 0;
   transform: translateX(20px);
 }
 
 .breadcrumb-move {
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
 .breadcrumb-leave-active {
   position: absolute;
+}
+
+// 侧边栏滑动动画
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+// 从左侧滑入
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-left-enter,
+.slide-left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+// 从右侧滑入
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-right-enter,
+.slide-right-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+// 从上方滑入
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-up-enter,
+.slide-up-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+// 从下方滑入
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter,
+.slide-down-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+// 缩放动画
+.zoom-enter-active,
+.zoom-leave-active {
+  transition: all 0.3s ease;
+}
+
+.zoom-enter,
+.zoom-leave-to {
+  transform: scale(0);
+  opacity: 0;
+}
+
+// 旋转动画
+.rotate-enter-active,
+.rotate-leave-active {
+  transition: all 0.3s ease;
+}
+
+.rotate-enter,
+.rotate-leave-to {
+  transform: rotate(180deg);
+  opacity: 0;
+}
+
+// 弹性动画
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+
+@include keyframes(bounce-in) {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// 翻转动画
+.flip-enter-active,
+.flip-leave-active {
+  transition: all 0.4s ease;
+}
+
+.flip-enter,
+.flip-leave-to {
+  transform: rotateY(180deg);
+  opacity: 0;
+}
+
+// 海沟效果
+some-enter-active {
+  animation: wave 0.5s ease-in-out;
+}
+
+@include keyframes(wave) {
+  0% {
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+// 菜单动画
+.menu-transition {
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+// 列表动画
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s;
+}
+
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-move {
+  transition: transform 0.3s;
+}
+
+// 模态框动画
+.modal-enter-active {
+  animation: modal-in 0.3s ease-out;
+}
+
+.modal-leave-active {
+  animation: modal-out 0.3s ease-in;
+}
+
+@include keyframes(modal-in) {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-60px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@include keyframes(modal-out) {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-60px);
+  }
+}
+
+// 浮动动画
+.float {
+  animation: float 2s ease-in-out infinite;
+}
+
+@include keyframes(float) {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+// 脉冲动画
+.pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@include keyframes(pulse) {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// 摇摆动画
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@include keyframes(shake) {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+// 闪烁动画
+.blink {
+  animation: blink 1s linear infinite;
+}
+
+@include keyframes(blink) {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+// 加载动画
+.loading {
+  @include loading-animation;
+}
+
+// 渐变动画类
+.transition-all {
+  transition: all $transition-base;
+}
+
+.transition-transform {
+  transition: transform $transition-base;
+}
+
+.transition-opacity {
+  transition: opacity $transition-fade;
+}
+
+.transition-color {
+  transition: color $transition-base, background-color $transition-base;
+}
+
+// 响应式动画优化
+@include respond-to('sm') {
+  // 在小屏幕上减少动画时间
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.15s;
+  }
+  
+  .slide-fade-enter-active,
+  .slide-fade-leave-active {
+    transition: all 0.2s ease;
+  }
+  
+  // 禁用一些复杂动画
+  .bounce-enter-active,
+  .bounce-leave-active {
+    animation: none;
+    transition: opacity 0.2s;
+  }
+}
+
+// 减少动画模式（辅助功能）
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
