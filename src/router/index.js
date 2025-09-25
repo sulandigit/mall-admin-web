@@ -43,6 +43,51 @@ export const constantRouterMap = [
       meta: {title: '视频教程', icon: 'video'}
     },
     ]
+  },
+  {
+    path: '/monitor',
+    component: Layout,
+    redirect: '/monitor/dashboard',
+    name: 'monitor',
+    meta: {title: '性能监控', icon: 'monitor'},
+    children: [
+      {
+        path: 'dashboard',
+        name: 'monitorDashboard',
+        component: () => import('@/views/monitor/dashboard/index'),
+        meta: {title: '监控总览', icon: 'dashboard'}
+      },
+      {
+        path: 'system',
+        name: 'monitorSystem',
+        component: () => import('@/views/monitor/system/index'),
+        meta: {title: '系统监控', icon: 'system'}
+      },
+      {
+        path: 'network',
+        name: 'monitorNetwork',
+        component: () => import('@/views/monitor/network/index'),
+        meta: {title: '网络监控', icon: 'network'}
+      },
+      {
+        path: 'database',
+        name: 'monitorDatabase',
+        component: () => import('@/views/monitor/database/index'),
+        meta: {title: '数据库监控', icon: 'database'}
+      },
+      {
+        path: 'application',
+        name: 'monitorApplication',
+        component: () => import('@/views/monitor/application/index'),
+        meta: {title: '应用监控', icon: 'application'}
+      },
+      {
+        path: 'alert',
+        name: 'monitorAlert',
+        component: () => import('@/views/monitor/alert/index'),
+        meta: {title: '告警配置', icon: 'alert'}
+      }
+    ]
   }
 ]
 
