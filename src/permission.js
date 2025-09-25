@@ -18,7 +18,11 @@ router.beforeEach((to, from, next) => {
           let menus=res.data.menus;
           let username=res.data.username;
           store.dispatch('GenerateRoutes', { menus,username }).then(() => { // 生成可访问的路由表
-            router.addRoutes(store.getters.addRouters); // 动态添加可访问路由表
+            // 使用addRoute逐个添加路由替代addRoutes
+            const routes = store.getters.addRouters || []
+            routes.forEach(route => {
+              router.addRoute(route)
+            })
             next({ ...to, replace: true })
           })
         }).catch((err) => {

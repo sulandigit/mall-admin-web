@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 
 import App from './App.vue'
 import router from './router'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -21,6 +22,9 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+
+// 注册SvgIcon组件
+app.component('svg-icon', SvgIcon)
 
 // 使用插件
 app.use(createPinia())
