@@ -299,6 +299,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/sms/advertise/update'),
         meta: {title: '编辑广告'},
         hidden:true
+      },
+      {
+        path: 'holiday-promotion',
+        name: 'holidayPromotion',
+        component: () => import('@/views/sms/holiday-promotion/index'),
+        meta: {title: '双11促销', icon: 'sms-flash'}
       }
     ]
   },

@@ -1,0 +1,592 @@
+// 双11节日促销主题样式
+
+// 主色调定义
+$primary-red: #FF4757;
+$secondary-red: #FF3742;
+$golden-yellow: #FFD700;
+$orange-accent: #FFA500;
+$text-white: #FFFFFF;
+$text-dark: #333333;
+
+// 渐变背景
+$holiday-gradient: linear-gradient(135deg, #{$primary-red} 0%, #{$orange-accent} 100%);
+$card-gradient: linear-gradient(45deg, #FF6B6B 0%, #FF8E53 100%);
+
+// 阴影效果
+$card-shadow: 0 8px 16px rgba(255, 71, 87, 0.3);
+$hover-shadow: 0 12px 24px rgba(255, 71, 87, 0.4);
+
+// 动画定义
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// 双11促销页面容器
+.holiday-promotion-page {
+  min-height: 100vh;
+  background: $holiday-gradient;
+  padding: 20px;
+  
+  .page-header {
+    text-align: center;
+    margin-bottom: 30px;
+    
+    .title {
+      font-size: 3rem;
+      font-weight: bold;
+      color: $text-white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 10px;
+      animation: slideInUp 0.8s ease-out;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: $golden-yellow;
+      animation: slideInUp 0.8s ease-out 0.2s backwards;
+    }
+  }
+  
+  .config-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    
+    .toggle-btn {
+      background: $text-white;
+      color: $primary-red;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      box-shadow: $card-shadow;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: $hover-shadow;
+      }
+    }
+  }
+}
+
+// 促销横幅样式
+.promotion-banner {
+  position: relative;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: $card-shadow;
+  animation: fadeIn 1s ease-out;
+  
+  .banner-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    background: $card-gradient;
+  }
+  
+  .banner-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: $text-white;
+    
+    .banner-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .banner-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+// 倒计时组件样式
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  
+  .countdown-item {
+    background: $text-white;
+    color: $primary-red;
+    padding: 15px 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 80px;
+    
+    .countdown-number {
+      font-size: 2rem;
+      font-weight: bold;
+      display: block;
+      line-height: 1;
+    }
+    
+    .countdown-label {
+      font-size: 0.9rem;
+      margin-top: 5px;
+      color: #666;
+    }
+  }
+  
+  .countdown-separator {
+    font-size: 2rem;
+    color: $text-white;
+    font-weight: bold;
+  }
+}
+
+// 优惠券中心样式
+.coupon-center {
+  margin-bottom: 30px;
+  
+  .section-title {
+    font-size: 1.8rem;
+    color: $text-white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .coupon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+  }
+}
+
+// 优惠券卡片样式
+.coupon-card {
+  background: $text-white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: $card-shadow;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: slideInUp 0.6s ease-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $hover-shadow;
+  }
+  
+  &.hot-coupon {
+    &::before {
+      content: 'HOT';
+      position: absolute;
+      top: 10px;
+      right: -20px;
+      background: $primary-red;
+      color: $text-white;
+      padding: 5px 30px;
+      font-size: 12px;
+      font-weight: bold;
+      transform: rotate(45deg);
+    }
+  }
+  
+  .coupon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    
+    .coupon-amount {
+      font-size: 2rem;
+      font-weight: bold;
+      color: $primary-red;
+    }
+    
+    .coupon-type {
+      background: $golden-yellow;
+      color: $text-dark;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+  }
+  
+  .coupon-info {
+    margin-bottom: 15px;
+    
+    .coupon-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: $text-dark;
+    }
+    
+    .coupon-condition {
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .coupon-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .coupon-validity {
+      font-size: 0.8rem;
+      color: #999;
+    }
+    
+    .receive-btn {
+      background: $primary-red;
+      color: $text-white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: $secondary-red;
+        transform: scale(1.05);
+      }
+      
+      &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      &.received {
+        background: #28a745;
+        
+        &:hover {
+          transform: none;
+        }
+      }
+      
+      &.receiving {
+        background: #ffc107;
+        animation: pulse 1s infinite;
+      }
+    }
+  }
+  
+  .stock-info {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    font-size: 0.8rem;
+    color: #999;
+    
+    &.low-stock {
+      color: $primary-red;
+      font-weight: bold;
+    }
+  }
+}
+
+// 促销商品展示样式
+.promotion-products {
+  margin-bottom: 30px;
+  
+  .section-title {
+    font-size: 1.8rem;
+    color: $text-white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .product-card {
+    background: $text-white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: $card-shadow;
+    transition: all 0.3s ease;
+    animation: slideInUp 0.6s ease-out;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: $hover-shadow;
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .product-info {
+      padding: 15px;
+      
+      .product-name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: $text-dark;
+      }
+      
+      .product-price {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        
+        .current-price {
+          font-size: 1.5rem;
+          color: $primary-red;
+          font-weight: bold;
+        }
+        
+        .original-price {
+          text-decoration: line-through;
+          color: #999;
+          font-size: 1rem;
+        }
+        
+        .discount {
+          background: $primary-red;
+          color: $text-white;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-size: 0.8rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+// 活动配置面板样式
+.activity-config {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100vh;
+  background: $text-white;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  transition: transform 0.4s ease;
+  z-index: 1001;
+  overflow-y: auto;
+  
+  &.visible {
+    transform: translateX(0);
+  }
+  
+  .config-header {
+    background: $primary-red;
+    color: $text-white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .config-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      color: $text-white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  
+  .config-content {
+    padding: 20px;
+    
+    .config-section {
+      margin-bottom: 30px;
+      
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: $text-dark;
+        padding-bottom: 5px;
+        border-bottom: 2px solid $primary-red;
+      }
+    }
+  }
+}
+
+// 配置面板遮罩
+.config-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  
+  &.visible {
+    opacity: 1;
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .holiday-promotion-page {
+    padding: 10px;
+    
+    .page-header .title {
+      font-size: 2rem;
+    }
+  }
+  
+  .promotion-banner {
+    .banner-content {
+      .banner-title {
+        font-size: 1.8rem;
+      }
+      
+      .banner-subtitle {
+        font-size: 1.2rem;
+      }
+    }
+  }
+  
+  .coupon-grid,
+  .product-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+  }
+  
+  .countdown-timer {
+    flex-wrap: wrap;
+    gap: 10px;
+    
+    .countdown-item {
+      min-width: 60px;
+      padding: 10px 15px;
+      
+      .countdown-number {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+  .activity-config {
+    width: 100%;
+    
+    .config-content {
+      padding: 15px;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .coupon-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// 加载动画
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid $text-white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// 成功提示样式
+.success-message {
+  background: #28a745;
+  color: $text-white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+// 错误提示样式
+.error-message {
+  background: #dc3545;
+  color: $text-white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
