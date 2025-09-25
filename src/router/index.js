@@ -303,6 +303,45 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/customer-behavior',
+    component: Layout,
+    redirect: '/customer-behavior/dashboard',
+    name: 'customerBehavior',
+    meta: {title: '客户行为分析', icon: 'chart'},
+    children: [
+      {
+        path: 'dashboard',
+        name: 'behaviorDashboard',
+        component: () => import('@/views/customer-behavior/dashboard'),
+        meta: {title: '行为仪表板', icon: 'dashboard'}
+      },
+      {
+        path: 'page-visit',
+        name: 'pageVisitAnalysis',
+        component: () => import('@/views/customer-behavior/page-visit'),
+        meta: {title: '页面访问统计', icon: 'chart'}
+      },
+      {
+        path: 'stay-time',
+        name: 'stayTimeAnalysis',
+        component: () => import('@/views/customer-behavior/stay-time'),
+        meta: {title: '停留时间分析', icon: 'time'}
+      },
+      {
+        path: 'bounce-rate',
+        name: 'bounceRateAnalysis',
+        component: () => import('@/views/customer-behavior/bounce-rate'),
+        meta: {title: '跳出率分析', icon: 'warning'}
+      },
+      {
+        path: 'user-profile',
+        name: 'userProfileAnalysis',
+        component: () => import('@/views/customer-behavior/user-profile'),
+        meta: {title: '用户画像分析', icon: 'user'}
+      }
+    ]
+  },
+  {
     path:'/ums',
     component: Layout,
     redirect: '/ums/admin',
