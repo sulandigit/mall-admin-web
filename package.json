@@ -7,7 +7,13 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:analyze": "cross-env NODE_ENV=production webpack --config build/webpack.analyze.conf.js",
+    "build:report": "npm run build --report",
+    "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --ext .js,.vue src --fix",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preview": "node build/build.js && serve dist"
   },
   "dependencies": {
     "axios": "^0.18.0",

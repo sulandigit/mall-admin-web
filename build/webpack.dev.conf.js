@@ -17,10 +17,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   },
-  // cheap-module-eval-source-map is faster for development
+  // 优化开发环境源映射
   devtool: config.dev.devtool,
-
-  // these devServer options should be customized in /config/index.js
+  
+  // 性能优化配置
+  cache: true,
+  
+  // 开发服务器配置
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: {
@@ -42,22 +45,56 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    }
+      // 优化文件监控
+      ignored: /node_modules/,
+      aggregateTimeout: 300
+    },
+    // 启用 gzip 压缩
+    compress: true,
+    // 优化编译性能
+    lazy: false,
+    // 提高安全性
+    disableHostCheck: false
   },
+  
+  // 性能优化
+  optimization: {
+    // 开发环境不进行代码分割，提高构建速度
+    splitChunks: {
+      chunks: 'async'
+    },
+    // 开发环境不进行压缩
+    minimize: false
+  },
+  
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
+    
+    // 热更新插件
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
+    
+    // 显示正确的文件名
+    new webpack.NamedModulesPlugin(),
+    
+    // 防止错误时输出文件
     new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
+    
+    // 性能优化：忽略 moment.js 的语言包
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    
+    // HTML 模板插件
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
+      // 开发环境优化
+      cache: true,
+      showErrors: true
     }),
-    // copy custom static assets
+    
+    // 复制静态资源
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),

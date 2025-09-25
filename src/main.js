@@ -16,6 +16,11 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 权限指令
+import { permission, role } from '@/utils/permission'
+Vue.directive('permission', permission)
+Vue.directive('role', role)
+
 Vue.use(ElementUI, { locale })
 Vue.use(VCharts)
 

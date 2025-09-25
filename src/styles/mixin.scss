@@ -1,3 +1,7 @@
+// 引入变量
+@import './variables.scss';
+
+// 清除浮动
 @mixin clearfix {
   &:after {
     content: "";
@@ -6,6 +10,7 @@
   }
 }
 
+// 自定义滚动条
 @mixin scrollBar {
   &::-webkit-scrollbar-track-piece {
     background: #d3dce6;
@@ -19,9 +24,205 @@
   }
 }
 
+// 相对定位布局
 @mixin relative {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+// 绝对定位居中
+@mixin absoluteCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 弹性布局 - 水平居中
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 弹性布局 - 水平居中，垂直分布
+@mixin flexCenterColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+// 弹性布局 - 两端对齐
+@mixin flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// 文本省略（单行）
+@mixin textEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 文本省略（多行）
+@mixin textEllipsisMulti($lines: 2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 阴影效果
+@mixin boxShadow($shadow: $box-shadow-base) {
+  box-shadow: $shadow;
+}
+
+// 边框样式
+@mixin border($color: $border-color-base, $width: 1px, $style: solid) {
+  border: $width $style $color;
+}
+
+// 圆角样式
+@mixin borderRadius($radius: $border-radius-base) {
+  border-radius: $radius;
+}
+
+// 过渡动画
+@mixin transition($transition: $transition-base) {
+  transition: $transition;
+}
+
+// 按钮样式
+@mixin button($bg-color: $primary-color, $text-color: #fff, $border-color: $primary-color) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-base;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: $transition-base;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// 输入框样式
+@mixin input {
+  border: 1px solid $border-color-base;
+  border-radius: $border-radius-base;
+  padding: 8px 12px;
+  font-size: $font-size-base;
+  transition: $transition-base;
+  
+  &:focus {
+    border-color: $primary-color;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+  }
+  
+  &:disabled {
+    background-color: $background-color-base;
+    color: $text-color-placeholder;
+    cursor: not-allowed;
+  }
+}
+
+// 卡片样式
+@mixin card($padding: $spacing-lg) {
+  background-color: $background-color-lighter;
+  border: 1px solid $border-color-lighter;
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-base;
+  padding: $padding;
+}
+
+// 响应式断点
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (max-width: #{$sm - 1}) {
+      @content;
+    }
+  }
+  @if $breakpoint == 'md' {
+    @media (min-width: #{$sm}) and (max-width: #{$md - 1}) {
+      @content;
+    }
+  }
+  @if $breakpoint == 'lg' {
+    @media (min-width: #{$md}) and (max-width: #{$lg - 1}) {
+      @content;
+    }
+  }
+  @if $breakpoint == 'xl' {
+    @media (min-width: #{$lg}) {
+      @content;
+    }
+  }
+}
+
+// 动画关键帧
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+// 加载动画
+@mixin loading-animation {
+  @include keyframes(loading) {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  animation: loading 1s linear infinite;
+}
+
+// 文本样式集合
+@mixin text-primary {
+  color: $text-color-primary;
+  font-size: $font-size-base;
+}
+
+@mixin text-regular {
+  color: $text-color-regular;
+  font-size: $font-size-base;
+}
+
+@mixin text-secondary {
+  color: $text-color-secondary;
+  font-size: $font-size-small;
+}
+
+@mixin text-placeholder {
+  color: $text-color-placeholder;
+  font-size: $font-size-small;
 }
 

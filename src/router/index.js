@@ -370,6 +370,45 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/config',
+    name: 'system',
+    meta: {title: '系统管理', icon: 'system'},
+    children: [
+      {
+        path: 'config',
+        name: 'systemConfig',
+        component: () => import('@/views/system/config/index'),
+        meta: {title: '系统配置', icon: 'system-config'}
+      },
+      {
+        path: 'log',
+        name: 'systemLog',
+        component: () => import('@/views/system/log/index'),
+        meta: {title: '系统日志', icon: 'system-log'}
+      },
+      {
+        path: 'backup',
+        name: 'systemBackup',
+        component: () => import('@/views/system/backup/index'),
+        meta: {title: '数据备份', icon: 'system-backup'}
+      },
+      {
+        path: 'notification',
+        name: 'systemNotification',
+        component: () => import('@/views/system/notification/index'),
+        meta: {title: '通知管理', icon: 'system-notification'}
+      },
+      {
+        path: 'file',
+        name: 'fileManager',
+        component: () => import('@/views/system/file/index'),
+        meta: {title: '文件管理', icon: 'file-manager'}
+      }
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true}
 ]
 

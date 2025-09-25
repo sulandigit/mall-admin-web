@@ -1,4 +1,10 @@
- //to reset element-ui default css
+// Element UI 主题定制
+@import './variables.scss';
+@import './mixin.scss';
+
+// 全局重置 Element UI 样式
+
+// 上传组件重置
 .el-upload {
   input[type="file"] {
     display: none !important;
@@ -9,7 +15,7 @@
   display: none;
 }
 
-//暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
+// 修复对话框定位问题
 .el-dialog {
   transform: none;
   left: 0;
@@ -17,13 +23,410 @@
   margin: 0 auto;
 }
 
-//element ui upload
+// 上传组件容器
 .upload-container {
   .el-upload {
     width: 100%;
     .el-upload-dragger {
       width: 100%;
       height: 200px;
+    }
+  }
+}
+
+// 按钮样式定制
+.el-button {
+  @include transition;
+  
+  // 主要按钮
+  &--primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    
+    &:hover {
+      background-color: lighten($primary-color, 10%);
+      border-color: lighten($primary-color, 10%);
+    }
+    
+    &:active {
+      background-color: darken($primary-color, 10%);
+      border-color: darken($primary-color, 10%);
+    }
+  }
+  
+  // 成功按钮
+  &--success {
+    background-color: $success-color;
+    border-color: $success-color;
+    
+    &:hover {
+      background-color: lighten($success-color, 10%);
+      border-color: lighten($success-color, 10%);
+    }
+  }
+  
+  // 警告按钮
+  &--warning {
+    background-color: $warning-color;
+    border-color: $warning-color;
+    
+    &:hover {
+      background-color: lighten($warning-color, 10%);
+      border-color: lighten($warning-color, 10%);
+    }
+  }
+  
+  // 危险按钮
+  &--danger {
+    background-color: $danger-color;
+    border-color: $danger-color;
+    
+    &:hover {
+      background-color: lighten($danger-color, 10%);
+      border-color: lighten($danger-color, 10%);
+    }
+  }
+  
+  // 小型按钮
+  &--mini {
+    padding: 4px 8px;
+    font-size: $font-size-extra-small;
+  }
+}
+
+// 表格样式定制
+.el-table {
+  // 表头样式
+  .el-table__header-wrapper {
+    .el-table__header {
+      th {
+        background-color: $background-color-base;
+        color: $text-color-primary;
+        font-weight: 600;
+        border-bottom: 1px solid $border-color-lighter;
+      }
+    }
+  }
+  
+  // 表格行样式
+  .el-table__body-wrapper {
+    .el-table__body {
+      tr {
+        &:hover {
+          background-color: $background-color-light;
+        }
+        
+        td {
+          border-bottom: 1px solid $border-color-extra-light;
+        }
+      }
+    }
+  }
+  
+  // 空数据样式
+  .el-table__empty-block {
+    background-color: $background-color-lighter;
+  }
+}
+
+// 分页样式定制
+.el-pagination {
+  .el-pager {
+    li {
+      &.active {
+        background-color: $primary-color;
+        color: #fff;
+      }
+      
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+  
+  .btn-prev,
+  .btn-next {
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+// 输入框样式定制
+.el-input {
+  .el-input__inner {
+    border-color: $border-color-base;
+    color: $text-color-regular;
+    
+    &:focus {
+      border-color: $primary-color;
+    }
+    
+    &::placeholder {
+      color: $text-color-placeholder;
+    }
+  }
+  
+  &.is-disabled {
+    .el-input__inner {
+      background-color: $background-color-base;
+      color: $text-color-placeholder;
+    }
+  }
+}
+
+// 选择框样式定制
+.el-select {
+  .el-input {
+    .el-input__inner {
+      cursor: pointer;
+    }
+  }
+}
+
+// 下拉菜单样式
+.el-dropdown-menu {
+  border: 1px solid $border-color-lighter;
+  box-shadow: $box-shadow-light;
+  
+  .el-dropdown-menu__item {
+    color: $text-color-regular;
+    
+    &:hover {
+      background-color: $background-color-light;
+      color: $primary-color;
+    }
+  }
+}
+
+// 卡片样式定制
+.el-card {
+  border: 1px solid $border-color-lighter;
+  box-shadow: $box-shadow-base;
+  
+  .el-card__header {
+    background-color: $background-color-base;
+    border-bottom: 1px solid $border-color-lighter;
+    color: $text-color-primary;
+    font-weight: 600;
+  }
+  
+  .el-card__body {
+    color: $text-color-regular;
+  }
+}
+
+// 消息样式定制
+.el-message {
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-light;
+  
+  &.el-message--success {
+    background-color: lighten($success-color, 45%);
+    border-color: lighten($success-color, 30%);
+    
+    .el-message__content {
+      color: darken($success-color, 10%);
+    }
+  }
+  
+  &.el-message--warning {
+    background-color: lighten($warning-color, 45%);
+    border-color: lighten($warning-color, 30%);
+    
+    .el-message__content {
+      color: darken($warning-color, 10%);
+    }
+  }
+  
+  &.el-message--error {
+    background-color: lighten($danger-color, 45%);
+    border-color: lighten($danger-color, 30%);
+    
+    .el-message__content {
+      color: darken($danger-color, 10%);
+    }
+  }
+  
+  &.el-message--info {
+    background-color: lighten($info-color, 45%);
+    border-color: lighten($info-color, 30%);
+    
+    .el-message__content {
+      color: darken($info-color, 10%);
+    }
+  }
+}
+
+// 标签页样式定制
+.el-tabs {
+  .el-tabs__header {
+    .el-tabs__nav-wrap {
+      &::after {
+        background-color: $border-color-lighter;
+      }
+    }
+    
+    .el-tabs__item {
+      color: $text-color-secondary;
+      
+      &.is-active {
+        color: $primary-color;
+      }
+      
+      &:hover {
+        color: $primary-color;
+      }
+    }
+    
+    .el-tabs__active-bar {
+      background-color: $primary-color;
+    }
+  }
+}
+
+// 表单样式定制
+.el-form {
+  .el-form-item {
+    .el-form-item__label {
+      color: $text-color-primary;
+      font-weight: 600;
+    }
+    
+    .el-form-item__error {
+      color: $danger-color;
+    }
+  }
+}
+
+// 对话框样式定制
+.el-dialog {
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-dark;
+  
+  .el-dialog__header {
+    background-color: $background-color-base;
+    border-bottom: 1px solid $border-color-lighter;
+    border-radius: $border-radius-base $border-radius-base 0 0;
+    
+    .el-dialog__title {
+      color: $text-color-primary;
+      font-weight: 600;
+    }
+  }
+  
+  .el-dialog__body {
+    color: $text-color-regular;
+  }
+  
+  .el-dialog__footer {
+    border-top: 1px solid $border-color-lighter;
+    background-color: $background-color-light;
+    border-radius: 0 0 $border-radius-base $border-radius-base;
+  }
+}
+
+// 菜单样式定制
+.el-menu {
+  &.el-menu--horizontal {
+    .el-menu-item {
+      &:hover {
+        background-color: rgba($primary-color, 0.1);
+        color: $primary-color;
+      }
+      
+      &.is-active {
+        color: $primary-color;
+        border-bottom-color: $primary-color;
+      }
+    }
+  }
+  
+  &.el-menu--vertical {
+    .el-menu-item {
+      &:hover {
+        background-color: $menuHover;
+        color: $menuActiveText;
+      }
+      
+      &.is-active {
+        background-color: $menuHover;
+        color: $menuActiveText;
+      }
+    }
+    
+    .el-submenu {
+      .el-submenu__title {
+        &:hover {
+          background-color: $menuHover;
+          color: $menuActiveText;
+        }
+      }
+    }
+  }
+}
+
+// 加载样式定制
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.9);
+  
+  .el-loading-spinner {
+    .el-loading-text {
+      color: $primary-color;
+    }
+    
+    .circular {
+      color: $primary-color;
+    }
+  }
+}
+
+// 步骤条样式定制
+.el-steps {
+  .el-step {
+    .el-step__head {
+      .el-step__icon {
+        &.is-process {
+          background-color: $primary-color;
+          border-color: $primary-color;
+        }
+        
+        &.is-finish {
+          background-color: $success-color;
+          border-color: $success-color;
+        }
+      }
+    }
+    
+    .el-step__title {
+      &.is-process {
+        color: $primary-color;
+      }
+      
+      &.is-finish {
+        color: $success-color;
+      }
+    }
+  }
+}
+
+// 响应式设计
+@include respond-to('sm') {
+  .el-dialog {
+    width: 90% !important;
+    margin: 5vh auto;
+  }
+  
+  .el-table {
+    font-size: $font-size-small;
+  }
+  
+  .el-pagination {
+    text-align: center;
+    
+    .el-pagination__total,
+    .el-pagination__sizes {
+      display: none;
     }
   }
 }
