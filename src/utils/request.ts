@@ -1,32 +1,44 @@
-import axios from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import { BaseResponse } from '@/types/api/base'
+
+// 请求配置接口
+interface RequestConfig extends AxiosRequestConfig {
+  skipErrorHandler?: boolean
+}
+
+// 响应数据接口
+interface ResponseData<T = any> extends BaseResponse<T> {}
 
 // 创建axios实例
-const service = axios.create({
+const service: AxiosInstance = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000 // 请求超时时间
 })
 
 // request拦截器
-service.interceptors.request.use(config => {
-  if (store.getters.token) {
-    config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+service.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    if (store.getters.token) {
+      config.headers!['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    }
+    return config
+  },
+  (error: any) => {
+    // Do something with request error
+    console.log(error) // for debug
+    return Promise.reject(error)
   }
-  return config
-}, error => {
-  // Do something with request error
-  console.log(error) // for debug
-  Promise.reject(error)
-})
+)
 
 // respone拦截器
 service.interceptors.response.use(
-  response => {
-  /**
-  * code为非200是抛错 可结合自己业务进行修改
-  */
+  (response: AxiosResponse<ResponseData>) => {
+    /**
+     * code为非200是抛错 可结合自己业务进行修改
+     */
     const res = response.data
     if (res.code !== 200) {
       Message({
@@ -47,12 +59,12 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject('error')
+      return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return response.data
     }
   },
-  error => {
+  (error: any) => {
     console.log('err' + error)// for debug
     Message({
       message: error.message,

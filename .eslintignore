@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+static/
+*.min.js
+*.d.ts
+coverage/
+.nyc_output/
+**/*.js.map
+**/*.d.ts.map
