@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'App'
-  }
+<script setup lang="ts">
+// Vue 3 Composition API with TypeScript
 </script>
 
 <style>
+#app {
+  height: 100vh;
+}
 </style>

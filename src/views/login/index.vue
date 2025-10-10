@@ -1,184 +1,314 @@
 <template>
-  <div>
-    <el-card class="login-form-layout">
-      <el-form autoComplete="on"
-               :model="loginForm"
-               :rules="loginRules"
-               ref="loginForm"
-               label-position="left">
-        <div style="text-align: center">
-          <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
+  <div class="login-container">
+    <div class="login-form-wrapper">
+      <div class="login-form">
+        <div class="title-container">
+          <h3 class="title">Mall Admin Web</h3>
+          <p class="subtitle">现代化后台管理系统</p>
         </div>
-        <h2 class="login-title color-main">mall-admin-web</h2>
-        <el-form-item prop="username">
-          <el-input name="username"
-                    type="text"
-                    v-model="loginForm.username"
-                    autoComplete="on"
-                    placeholder="请输入用户名">
-          <span slot="prefix">
-            <svg-icon icon-class="user" class="color-main"></svg-icon>
-          </span>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input name="password"
-                    :type="pwdType"
-                    @keyup.enter.native="handleLogin"
-                    v-model="loginForm.password"
-                    autoComplete="on"
-                    placeholder="请输入密码">
-          <span slot="prefix">
-            <svg-icon icon-class="password" class="color-main"></svg-icon>
-          </span>
-            <span slot="suffix" @click="showPwd">
-            <svg-icon icon-class="eye" class="color-main"></svg-icon>
-          </span>
-          </el-input>
-        </el-form-item>
-        <el-form-item style="margin-bottom: 60px;text-align: center">
-          <el-button style="width: 45%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
+
+        <el-form
+          ref="loginFormRef"
+          :model="loginForm"
+          :rules="loginRules"
+          class="login-form-content"
+          autocomplete="on"
+          label-position="left"
+        >
+          <el-form-item prop="username">
+            <span class="svg-container">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input
+              ref="usernameRef"
+              v-model="loginForm.username"
+              placeholder="用户名"
+              name="username"
+              type="text"
+              tabindex="1"
+              autocomplete="on"
+            />
+          </el-form-item>
+
+          <el-tooltip content="Caps lock is On" placement="right" manual>
+            <el-form-item prop="password">
+              <span class="svg-container">
+                <svg-icon icon-class="password" />
+              </span>
+              <el-input
+                :key="passwordType"
+                ref="passwordRef"
+                v-model="loginForm.password"
+                :type="passwordType"
+                placeholder="密码"
+                name="password"
+                tabindex="2"
+                autocomplete="on"
+                @keyup.enter="handleLogin"
+              />
+              <span class="show-pwd" @click="showPwd">
+                <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+              </span>
+            </el-form-item>
+          </el-tooltip>
+
+          <el-button
+            :loading="loading"
+            type="primary"
+            style="width: 100%; margin-bottom: 30px"
+            @click.prevent="handleLogin"
+          >
             登录
           </el-button>
-          <el-button style="width: 45%" type="primary" @click.native.prevent="handleTry">
-            获取体验账号
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-    <img :src="login_center_bg" class="login-center-layout">
-    <el-dialog
-      title="公众号二维码"
-      :visible.sync="dialogVisible"
-      :show-close="false"
-      :center="true"
-      width="30%">
-      <div style="text-align: center">
-        <span class="font-title-large"><span class="color-main font-extra-large">关注公众号</span>回复<span class="color-main font-extra-large">体验</span>获取体验账号</span>
-        <br>
-        <img src="http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg" width="160" height="160" style="margin-top: 10px">
+
+          <div style="position: relative">
+            <div class="tips">
+              <span>演示账号</span>
+              <span>用户名: admin</span>
+              <span>密码: 123456</span>
+            </div>
+          </div>
+        </el-form>
       </div>
-      <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="dialogConfirm">确定</el-button>
-      </span>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
-<script>
-  import {isvalidUsername} from '@/utils/validate';
-  import {setSupport,getSupport,setCookie,getCookie} from '@/utils/support';
-  import login_center_bg from '@/assets/images/login_center_bg.png'
+<script setup lang="ts">
+import { reactive, ref, onMounted, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { useUserStore } from '@/stores/user'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
-  export default {
-    name: 'login',
-    data() {
-      const validateUsername = (rule, value, callback) => {
-        if (!isvalidUsername(value)) {
-          callback(new Error('请输入正确的用户名'))
-        } else {
-          callback()
-        }
-      };
-      const validatePass = (rule, value, callback) => {
-        if (value.length < 3) {
-          callback(new Error('密码不能小于3位'))
-        } else {
-          callback()
-        }
-      };
-      return {
-        loginForm: {
-          username: '',
-          password: '',
-        },
-        loginRules: {
-          username: [{required: true, trigger: 'blur', validator: validateUsername}],
-          password: [{required: true, trigger: 'blur', validator: validatePass}]
-        },
-        loading: false,
-        pwdType: 'password',
-        login_center_bg,
-        dialogVisible:false,
-        supportDialogVisible:false
-      }
-    },
-    created() {
-      this.loginForm.username = getCookie("username");
-      this.loginForm.password = getCookie("password");
-      if(this.loginForm.username === undefined||this.loginForm.username==null||this.loginForm.username===''){
-        this.loginForm.username = 'admin';
-      }
-      if(this.loginForm.password === undefined||this.loginForm.password==null){
-        this.loginForm.password = '';
-      }
-    },
-    methods: {
-      showPwd() {
-        if (this.pwdType === 'password') {
-          this.pwdType = ''
-        } else {
-          this.pwdType = 'password'
-        }
-      },
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            // let isSupport = getSupport();
-            // if(isSupport===undefined||isSupport==null){
-            //   this.dialogVisible =true;
-            //   return;
-            // }
-            this.loading = true;
-            this.$store.dispatch('Login', this.loginForm).then(() => {
-              this.loading = false;
-              setCookie("username",this.loginForm.username,15);
-              setCookie("password",this.loginForm.password,15);
-              this.$router.push({path: '/'})
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('参数验证不合法！');
-            return false
-          }
+interface LoginForm {
+  username: string
+  password: string
+}
+
+const router = useRouter()
+const route = useRoute()
+const userStore = useUserStore()
+
+// 表单引用
+const loginFormRef = ref<FormInstance>()
+const usernameRef = ref()
+const passwordRef = ref()
+
+// 响应式数据
+const loginForm = reactive<LoginForm>({
+  username: 'admin',
+  password: '123456'
+})
+
+const loading = ref(false)
+const passwordType = ref('password')
+const redirect = ref<string | undefined>(undefined)
+const otherQuery = ref({})
+
+// 表单验证规则
+const loginRules: FormRules = {
+  username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+  password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
+}
+
+// 显示/隐藏密码
+const showPwd = () => {
+  if (passwordType.value === 'password') {
+    passwordType.value = ''
+  } else {
+    passwordType.value = 'password'
+  }
+  nextTick(() => {
+    passwordRef.value.focus()
+  })
+}
+
+// 处理登录
+const handleLogin = async () => {
+  if (!loginFormRef.value) return
+
+  try {
+    const valid = await loginFormRef.value.validate()
+    if (valid) {
+      loading.value = true
+      
+      try {
+        await userStore.login(loginForm)
+        ElMessage.success('登录成功')
+        
+        router.push({ 
+          path: redirect.value || '/', 
+          query: otherQuery.value 
         })
-      },
-      handleTry(){
-        this.dialogVisible =true
-      },
-      dialogConfirm(){
-        this.dialogVisible =false;
-        setSupport(true);
-      },
-      dialogCancel(){
-        this.dialogVisible = false;
-        setSupport(false);
+      } catch (error) {
+        console.error('Login error:', error)
+        ElMessage.error('登录失败，请检查用户名和密码')
+      } finally {
+        loading.value = false
+      }
+    }
+  } catch (error) {
+    console.error('Form validation error:', error)
+  }
+}
+
+// 获取其他查询参数
+const getOtherQuery = (query: any) => {
+  return Object.keys(query).reduce((acc: any, cur) => {
+    if (cur !== 'redirect') {
+      acc[cur] = query[cur]
+    }
+    return acc
+  }, {})
+}
+
+// 生命周期钩子
+onMounted(() => {
+  if (loginForm.username === '') {
+    usernameRef.value.focus()
+  } else if (loginForm.password === '') {
+    passwordRef.value.focus()
+  }
+})
+
+// 监听路由变化
+const watchRoute = () => {
+  const query = route.query
+  if (query) {
+    redirect.value = query.redirect as string
+    otherQuery.value = getOtherQuery(query)
+  }
+}
+
+watchRoute()
+</script>
+
+<style lang="scss" scoped>
+$bg: #2d3a4b;
+$light_gray: #fff;
+$cursor: #fff;
+
+@supports (-webkit-mask: none) and (not (caret-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+  }
+}
+
+.login-container {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .login-form-wrapper {
+    width: 520px;
+    max-width: 100%;
+    padding: 0 35px;
+  }
+
+  .login-form {
+    position: relative;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 50px 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+    .title-container {
+      text-align: center;
+      margin-bottom: 40px;
+
+      .title {
+        font-size: 26px;
+        color: #2d3a4b;
+        margin: 0 auto 10px;
+        font-weight: bold;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+
+    .el-input {
+      display: inline-block;
+      height: 47px;
+      width: 85%;
+
+      :deep(.el-input__wrapper) {
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        padding: 12px 5px 12px 15px;
+        color: $light_gray;
+        height: 47px;
+        caret-color: $cursor;
+
+        &.is-focus {
+          box-shadow: none !important;
+        }
+      }
+
+      input {
+        background: transparent;
+        border: 0;
+        -webkit-appearance: none;
+        border-radius: 0;
+        padding: 12px 5px 12px 15px;
+        color: #333;
+        height: 47px;
+        caret-color: #333;
+
+        &:-webkit-autofill {
+          box-shadow: 0 0 0 1000px transparent inset !important;
+          -webkit-text-fill-color: #333 !important;
+        }
+      }
+    }
+
+    .el-form-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #454545;
+    }
+
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: #889aa4;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+    }
+
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: #889aa4;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .tips {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+
+      span {
+        &:first-of-type {
+          margin-right: 16px;
+        }
       }
     }
   }
-</script>
-
-<style scoped>
-  .login-form-layout {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 360px;
-    margin: 140px auto;
-    border-top: 10px solid #409EFF;
-  }
-
-  .login-title {
-    text-align: center;
-  }
-
-  .login-center-layout {
-    background: #409EFF;
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    margin-top: 200px;
-  }
+}
 </style>
