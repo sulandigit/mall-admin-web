@@ -1,0 +1,43 @@
+{
+  "name": "mall-admin-web-test",
+  "version": "1.0.0",
+  "description": "测试API重试功能",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^27.0.0",
+    "axios-mock-adapter": "^1.20.0",
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.0",
+    "babel-jest": "^27.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapping": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/utils/request.js",
+      "src/utils/retryConfig.js",
+      "src/api/**/*.js"
+    ]
+  },
+  "babel": {
+    "presets": [
+      ["@babel/preset-env", {
+        "targets": {
+          "node": "current"
+        }
+      }]
+    ]
+  }
+}
