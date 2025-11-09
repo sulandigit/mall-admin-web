@@ -88,7 +88,13 @@
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
         <el-table-column label="商品图片" width="120" align="center">
-          <template slot-scope="scope"><img style="height: 80px" :src="scope.row.pic"></template>
+          <template slot-scope="scope">
+            <img 
+              v-lazy="scope.row.pic" 
+              class="product-image-lazy" 
+              style="height: 80px; width: 80px; object-fit: cover;"
+              :alt="scope.row.name">
+          </template>
         </el-table-column>
         <el-table-column label="商品名称" align="center">
           <template slot-scope="scope">
