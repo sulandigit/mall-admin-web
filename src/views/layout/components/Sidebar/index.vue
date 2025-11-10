@@ -1,5 +1,5 @@
 <template>
-  <scroll-bar>
+  <scroll-bar role="scrollbar" aria-label="侧边栏滚动区域">
     <el-menu
       mode="vertical"
       :show-timeout="200"
@@ -8,6 +8,10 @@
       background-color="#304156"
       text-color="#bfcbd9"
       active-text-color="#409EFF"
+      role="menu"
+      aria-label="主导航菜单"
+      :aria-expanded="!isCollapse"
+      v-keyboard-nav="{ role: 'menu', vertical: true }"
     >
       <sidebar-item :routes="routes"></sidebar-item>
     </el-menu>

@@ -1,0 +1,418 @@
+/**
+ * WCAG 2.1 AA 级无障碍样式
+ * 包括颜色对比度、字体大小、焦点样式等改进
+ */
+
+/* ========== 基础无障碍样式 ========== */
+
+/* 跳转链接样式 */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px 12px;
+  text-decoration: none;
+  z-index: 10000;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* 屏幕阅读器专用内容 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 焦点样式增强 */
+*:focus {
+  outline: 2px solid #409EFF;
+  outline-offset: 2px;
+}
+
+/* 移除默认的outline，但保留我们自定义的 */
+*:focus:not(.custom-focus) {
+  outline: 2px solid #409EFF;
+  outline-offset: 2px;
+}
+
+/* ========== Element UI 组件无障碍增强 ========== */
+
+/* 按钮无障碍改进 */
+.el-button {
+  min-height: 44px; /* WCAG 推荐的最小点击目标尺寸 */
+  min-width: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.el-button:focus {
+  outline: 2px solid #409EFF;
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.el-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 表单控件无障碍改进 */
+.el-input__inner,
+.el-textarea__inner,
+.el-select .el-input__inner {
+  min-height: 40px;
+  font-size: 14px;
+  border: 2px solid #dcdfe6;
+  transition: border-color 0.3s ease;
+}
+
+.el-input__inner:focus,
+.el-textarea__inner:focus,
+.el-select .el-input__inner:focus {
+  border-color: #409EFF;
+  outline: 2px solid #409EFF;
+  outline-offset: 2px;
+}
+
+/* 错误状态高对比度 */
+.el-form-item.is-error .el-input__inner,
+.el-form-item.is-error .el-textarea__inner {
+  border-color: #F56C6C;
+  background-color: #fef0f0;
+}
+
+.el-form-item.is-error .el-form-item__error {
+  color: #F56C6C;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* 菜单无障碍改进 */
+.el-menu-item,
+.el-submenu__title {
+  min-height: 48px;
+  line-height: 48px;
+  font-size: 14px;
+  padding: 0 20px;
+}
+
+.el-menu-item:focus,
+.el-submenu__title:focus {
+  outline: 2px solid #409EFF;
+  outline-offset: -2px;
+  background-color: rgba(64, 158, 255, 0.1);
+}
+
+/* 表格无障碍改进 */
+.el-table {
+  font-size: 14px;
+}
+
+.el-table th,
+.el-table td {
+  padding: 12px 0;
+  min-height: 44px;
+}
+
+.el-table th {
+  background-color: #f5f7fa;
+  color: #303133;
+  font-weight: 600;
+}
+
+.el-table__row:focus {
+  outline: 2px solid #409EFF;
+  outline-offset: -2px;
+}
+
+/* 对话框无障碍改进 */
+.el-dialog {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.el-dialog__header {
+  padding: 20px 20px 10px;
+}
+
+.el-dialog__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.el-dialog__close {
+  font-size: 18px;
+  width: 44px;
+  height: 44px;
+}
+
+.el-dialog__close:focus {
+  outline: 2px solid #409EFF;
+  outline-offset: 2px;
+}
+
+/* ========== 颜色对比度改进 ========== */
+
+/* 主要文本颜色 - 确保4.5:1对比度 */
+.text-primary {
+  color: #1f2937; /* 深灰色，与白色背景对比度 > 4.5:1 */
+}
+
+.text-secondary {
+  color: #374151; /* 次要文本颜色 */
+}
+
+.text-muted {
+  color: #6b7280; /* 静音文本，但仍保持足够对比度 */
+}
+
+/* 链接颜色改进 */
+a,
+.el-link {
+  color: #1e40af; /* 深蓝色，确保高对比度 */
+  text-decoration: underline;
+}
+
+a:hover,
+.el-link:hover {
+  color: #1e3a8a;
+  text-decoration: underline;
+}
+
+a:focus,
+.el-link:focus {
+  outline: 2px solid #409EFF;
+  outline-offset: 2px;
+}
+
+/* 成功、警告、错误状态颜色 */
+.text-success {
+  color: #059669; /* 深绿色 */
+}
+
+.text-warning {
+  color: #d97706; /* 深橙色 */
+}
+
+.text-danger {
+  color: #dc2626; /* 深红色 */
+}
+
+/* ========== 字体大小无障碍 ========== */
+
+/* 基础字体大小 */
+body {
+  font-size: 16px; /* 基础字体大小不小于16px */
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* 标题层级 */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.875rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.625rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+/* 段落间距 */
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* ========== 响应式无障碍设计 ========== */
+
+/* 移动设备适配 */
+@media (max-width: 768px) {
+  body {
+    font-size: 18px; /* 移动设备上字体稍大 */
+  }
+  
+  .el-button {
+    min-height: 48px; /* 移动设备上更大的点击目标 */
+    min-width: 48px;
+  }
+  
+  .el-input__inner,
+  .el-textarea__inner {
+    min-height: 44px;
+    font-size: 16px; /* 防止iOS缩放 */
+  }
+}
+
+/* ========== 高对比度模式支持 ========== */
+@media (prefers-contrast: high) {
+  *:focus {
+    outline: 3px solid #000;
+    outline-offset: 2px;
+  }
+  
+  .el-button {
+    border: 2px solid currentColor;
+  }
+  
+  .el-input__inner,
+  .el-textarea__inner {
+    border: 2px solid #000;
+  }
+  
+  a {
+    color: #0000EE; /* 经典高对比度链接颜色 */
+  }
+}
+
+/* ========== 减少动画模式支持 ========== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .el-loading-mask {
+    animation: none;
+  }
+}
+
+/* ========== 键盘导航增强 ========== */
+
+/* 键盘用户的额外焦点指示器 */
+.keyboard-user *:focus {
+  outline: 3px solid #409EFF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(64, 158, 255, 0.3);
+}
+
+/* ========== 实时宣告区域 ========== */
+[aria-live] {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ========== 表格无障碍增强 ========== */
+.accessible-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.accessible-table th,
+.accessible-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.accessible-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.accessible-table caption {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* ========== 错误和成功消息 ========== */
+.alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  background-color: #f0f9ff;
+  border-color: #059669;
+  color: #064e3b;
+}
+
+.alert-warning {
+  background-color: #fffbeb;
+  border-color: #d97706;
+  color: #92400e;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  border-color: #dc2626;
+  color: #991b1b;
+}
+
+/* ========== 打印样式 ========== */
+@media print {
+  .skip-link,
+  .sr-only {
+    display: none;
+  }
+  
+  *:focus {
+    outline: none;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+}

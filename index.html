@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>mall-admin-web</title>
+    <meta name="description" content="商城管理后台系统 - 支持商品管理、订单管理、用户管理等功能">
+    <meta name="keywords" content="商城管理,后台管理,电商管理">
+    <title>商城管理后台 - mall-admin-web</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-73YJPXJTLX"></script>
     <script>
@@ -24,9 +26,49 @@
     </script>
   </head>
   <body>
+    <!-- 跳转到主要内容的链接，提供键盘用户快速导航 -->
+    <a href="#main-content" class="skip-link" tabindex="1">跳转到主要内容</a>
+    
     <script src="./static/tinymce4.7.5/tinymce.min.js"></script>
     <!--<script src="https://unpkg.com/tinymce@4.7.5/tinymce.min.js"></script>-->
-    <div id="app"></div>
+    <div id="app" role="application" aria-label="商城管理后台应用"></div>
     <!-- built files will be auto injected -->
+    
+    <style>
+    /* 跳转链接样式 - 支持键盘导航 */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: #000;
+      color: #fff;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 10000;
+      border-radius: 4px;
+    }
+    .skip-link:focus {
+      top: 6px;
+    }
+    
+    /* 提高焦点可见性 */
+    *:focus {
+      outline: 2px solid #409EFF;
+      outline-offset: 2px;
+    }
+    
+    /* 屏幕阅读器专用内容 */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    </style>
   </body>
 </html>
