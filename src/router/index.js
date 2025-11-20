@@ -303,6 +303,21 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/analytics',
+    component: Layout,
+    redirect: '/analytics/revenue-forecast',
+    name: 'analytics',
+    meta: {title: '数据分析', icon: 'chart'},
+    children: [
+      {
+        path: 'revenue-forecast',
+        name: 'revenueForecast',
+        component: () => import('@/views/revenueForecast/index'),
+        meta: {title: '收入预测', icon: 'money'}
+      }
+    ]
+  },
+  {
     path:'/ums',
     component: Layout,
     redirect: '/ums/admin',

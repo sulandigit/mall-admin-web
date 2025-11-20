@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收入预测功能演示 - Mall Admin Web</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f0f2f5;
+        }
+        .demo-container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #1890ff, #096dd9);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        .control-panel {
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .result-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .summary-item {
+            display: inline-block;
+            margin: 10px 20px;
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            min-width: 150px;
+        }
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+            margin-bottom: 5px;
+        }
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .algorithm-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .algorithm-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .algorithm-card.active {
+            border-color: #1890ff;
+            background: #f0f9ff;
+        }
+        .algorithm-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1890ff;
+            margin-bottom: 10px;
+        }
+        .algorithm-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        .demo-table {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .positive {
+            color: #52c41a;
+        }
+        .negative {
+            color: #f5222d;
+        }
+        .predicted {
+            color: #fa8c16;
+            font-style: italic;
+        }
+        #chart {
+            width: 100%;
+            height: 400px;
+        }
+        .feature-highlight {
+            background: linear-gradient(45deg, #f0f9ff, #e6f7ff);
+            border-left: 4px solid #1890ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        .status-success { background: #52c41a; }
+        .status-warning { background: #faad14; }
+        .status-danger { background: #f5222d; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="demo-container">
+            <!-- 页面头部 -->
+            <div class="header">
+                <h1>🚀 收入预测功能演示</h1>
+                <p>基于Vue.js + Element UI + ECharts的智能收入预测系统</p>
+            </div>
+
+            <!-- 功能控制面板 -->
+            <el-row :gutter="20" class="control-panel">
+                <el-col :span="8">
+                    <el-card shadow="hover">
+                        <div slot="header">
+                            <i class="el-icon-date"></i> 数据配置
+                        </div>
+                        <el-form label-width="80px" size="small">
+                            <el-form-item label="时间范围">
+                                <el-date-picker
+                                    v-model="dateRange"
+                                    type="daterange"
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    size="small"
+                                    style="width: 100%">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="数据周期">
+                                <el-select v-model="period" style="width: 100%">
+                                    <el-option label="按日" value="daily"></el-option>
+                                    <el-option label="按周" value="weekly"></el-option>
+                                    <el-option label="按月" value="monthly"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                    </el-card>
+                </el-col>
+                
+                <el-col :span="8">
+                    <el-card shadow="hover">
+                        <div slot="header">
+                            <i class="el-icon-setting"></i> 预测参数
+                        </div>
+                        <el-form label-width="80px" size="small">
+                            <el-form-item label="预测周期">
+                                <el-input-number 
+                                    v-model="forecastPeriods" 
+                                    :min="1" 
+                                    :max="30"
+                                    style="width: 100%">
+                                </el-input-number>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button 
+                                    type="primary" 
+                                    @click="runPrediction"
+                                    :loading="predicting"
+                                    style="width: 100%">
+                                    <i class="el-icon-cpu"></i> 开始预测
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-card>
+                </el-col>
+
+                <el-col :span="8">
+                    <el-card shadow="hover">
+                        <div slot="header">
+                            <i class="el-icon-data-analysis"></i> 预测结果
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value">{{ formatCurrency(predictedTotal) }}</div>
+                            <div class="summary-label">预测总收入</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" :class="{'positive': growthRate > 0, 'negative': growthRate < 0}">
+                                {{ growthRate.toFixed(1) }}%
+                            </div>
+                            <div class="summary-label">增长率</div>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
+
+            <!-- 算法选择 -->
+            <el-card shadow="hover" style="margin-bottom: 20px;">
+                <div slot="header">
+                    <i class="el-icon-cpu"></i> 预测算法选择
+                </div>
+                <el-row :gutter="20">
+                    <el-col :span="8" v-for="algo in algorithms" :key="algo.key">
+                        <div 
+                            class="algorithm-card"
+                            :class="{'active': selectedAlgorithm === algo.key}"
+                            @click="selectAlgorithm(algo.key)">
+                            <div class="algorithm-name">{{ algo.name }}</div>
+                            <div class="algorithm-desc">{{ algo.description }}</div>
+                            <el-tag 
+                                :type="algo.type" 
+                                size="mini" 
+                                style="margin-top: 10px;">
+                                {{ algo.scenario }}
+                            </el-tag>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-card>
+
+            <!-- 图表展示 -->
+            <div class="chart-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0;"><i class="el-icon-trend-charts"></i> 收入趋势与预测分析</h3>
+                    <el-button-group>
+                        <el-button 
+                            size="mini" 
+                            :type="chartType === 'line' ? 'primary' : ''"
+                            @click="chartType = 'line'">
+                            线图
+                        </el-button>
+                        <el-button 
+                            size="mini" 
+                            :type="chartType === 'bar' ? 'primary' : ''"
+                            @click="chartType = 'bar'">
+                            柱图
+                        </el-button>
+                    </el-button-group>
+                </div>
+                <div id="chart"></div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="demo-table">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0;"><i class="el-icon-table"></i> 历史数据与预测结果</h3>
+                    <el-button size="mini" type="success">
+                        <i class="el-icon-download"></i> 导出数据
+                    </el-button>
+                </div>
+                <el-table :data="tableData" border stripe style="width: 100%">
+                    <el-table-column prop="date" label="日期" width="120" align="center"></el-table-column>
+                    <el-table-column label="实际收入" width="150" align="right">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.actualRevenue">
+                                {{ formatCurrency(scope.row.actualRevenue) }}
+                            </span>
+                            <span v-else style="color: #ccc;">-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="预测收入" width="150" align="right">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.predictedRevenue" class="predicted">
+                                {{ formatCurrency(scope.row.predictedRevenue) }}
+                            </span>
+                            <span v-else style="color: #ccc;">-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="预测精度" width="120" align="center">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.accuracy !== undefined">
+                                <el-tag 
+                                    :class="getAccuracyClass(scope.row.accuracy)"
+                                    size="mini">
+                                    {{ (scope.row.accuracy * 100).toFixed(1) }}%
+                                </el-tag>
+                            </span>
+                            <span v-else style="color: #ccc;">-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="趋势" align="center">
+                        <template slot-scope="scope">
+                            <el-tag 
+                                :type="getTrendType(scope.row.trend)"
+                                size="mini">
+                                {{ getTrendText(scope.row.trend) }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <!-- 功能特性说明 -->
+            <div class="feature-highlight">
+                <h3><i class="el-icon-star-on"></i> 功能特性展示</h3>
+                <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8;">
+                    <li><strong>智能预测算法：</strong> 支持线性回归、移动平均、指数平滑三种算法</li>
+                    <li><strong>可视化分析：</strong> 基于ECharts的动态图表，支持多种图表类型</li>
+                    <li><strong>实时计算：</strong> 前端实现预测算法，无需后端支持即可演示</li>
+                    <li><strong>响应式设计：</strong> 适配不同屏幕尺寸，提供优秀用户体验</li>
+                    <li><strong>数据导出：</strong> 支持预测结果的导出功能（演示版本）</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    dateRange: [],
+                    period: 'daily',
+                    forecastPeriods: 7,
+                    selectedAlgorithm: 'linear',
+                    chartType: 'line',
+                    predicting: false,
+                    
+                    // 预测结果
+                    predictedTotal: 0,
+                    growthRate: 0,
+                    
+                    // 算法配置
+                    algorithms: [
+                        {
+                            key: 'linear',
+                            name: '线性回归',
+                            description: '通过拟合历史数据的线性趋势来预测未来收入，适用于具有明显趋势的数据。',
+                            scenario: '稳定增长',
+                            type: 'success'
+                        },
+                        {
+                            key: 'moving_average',
+                            name: '移动平均',
+                            description: '基于最近N个时间段的平均值预测，能够平滑短期波动。',
+                            scenario: '数据波动',
+                            type: 'warning'
+                        },
+                        {
+                            key: 'exponential',
+                            name: '指数平滑',
+                            description: '对历史数据赋予不同权重，越近期的数据权重越大。',
+                            scenario: '快速响应',
+                            type: 'info'
+                        }
+                    ],
+                    
+                    // 表格数据
+                    tableData: [],
+                    
+                    // 图表实例
+                    chart: null
+                }
+            },
+            
+            mounted() {
+                this.initData()
+                this.initChart()
+                this.generateMockData()
+            },
+            
+            methods: {
+                initData() {
+                    // 设置默认日期范围
+                    const end = new Date()
+                    const start = new Date()
+                    start.setDate(start.getDate() - 30)
+                    this.dateRange = [start, end]
+                },
+                
+                initChart() {
+                    this.chart = echarts.init(document.getElementById('chart'))
+                    this.updateChart()
+                },
+                
+                generateMockData() {
+                    const data = []
+                    const startDate = new Date()
+                    startDate.setDate(startDate.getDate() - 30)
+                    
+                    let baseRevenue = 10000
+                    
+                    for (let i = 0; i < 30; i++) {
+                        const currentDate = new Date(startDate)
+                        currentDate.setDate(currentDate.getDate() + i)
+                        
+                        // 模拟收入数据
+                        const dayVariation = (Math.random() - 0.5) * 2000
+                        const trendFactor = Math.sin(i * 0.1) * 1000
+                        const actualRevenue = Math.max(0, baseRevenue + dayVariation + trendFactor)
+                        
+                        data.push({
+                            date: this.formatDate(currentDate),
+                            actualRevenue: Math.round(actualRevenue),
+                            predictedRevenue: null,
+                            accuracy: i > 20 ? 0.85 + Math.random() * 0.1 : undefined,
+                            trend: this.calculateTrend(actualRevenue, baseRevenue)
+                        })
+                        
+                        baseRevenue = actualRevenue * 0.95 + baseRevenue * 0.05
+                    }
+                    
+                    this.tableData = data
+                    this.updateChart()
+                },
+                
+                runPrediction() {
+                    this.predicting = true
+                    
+                    setTimeout(() => {
+                        const historicalData = this.tableData.map(item => item.actualRevenue)
+                        const predictions = this.calculatePredictions(historicalData)
+                        
+                        // 添加预测数据
+                        const lastDate = new Date(this.tableData[this.tableData.length - 1].date)
+                        for (let i = 0; i < this.forecastPeriods; i++) {
+                            const futureDate = new Date(lastDate)
+                            futureDate.setDate(futureDate.getDate() + i + 1)
+                            
+                            this.tableData.push({
+                                date: this.formatDate(futureDate),
+                                actualRevenue: null,
+                                predictedRevenue: predictions[i],
+                                accuracy: undefined,
+                                trend: 'predicted'
+                            })
+                        }
+                        
+                        // 更新结果
+                        this.predictedTotal = predictions.reduce((sum, val) => sum + val, 0)
+                        const recentTotal = historicalData.slice(-7).reduce((sum, val) => sum + val, 0)
+                        this.growthRate = ((this.predictedTotal - recentTotal) / recentTotal) * 100
+                        
+                        this.updateChart()
+                        this.predicting = false
+                        
+                        this.$message.success('预测完成！')
+                    }, 1500)
+                },
+                
+                calculatePredictions(data) {
+                    const predictions = []
+                    
+                    switch (this.selectedAlgorithm) {
+                        case 'linear':
+                            return this.linearRegression(data)
+                        case 'moving_average':
+                            return this.movingAverage(data)
+                        case 'exponential':
+                            return this.exponentialSmoothing(data)
+                        default:
+                            return this.linearRegression(data)
+                    }
+                },
+                
+                linearRegression(data) {
+                    const n = data.length
+                    const x = Array.from({ length: n }, (_, i) => i)
+                    const y = data
+                    
+                    const sumX = x.reduce((a, b) => a + b, 0)
+                    const sumY = y.reduce((a, b) => a + b, 0)
+                    const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0)
+                    const sumXX = x.reduce((sum, xi) => sum + xi * xi, 0)
+                    
+                    const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX)
+                    const intercept = (sumY - slope * sumX) / n
+                    
+                    const predictions = []
+                    for (let i = 0; i < this.forecastPeriods; i++) {
+                        const predicted = intercept + slope * (n + i)
+                        predictions.push(Math.max(0, Math.round(predicted)))
+                    }
+                    
+                    return predictions
+                },
+                
+                movingAverage(data) {
+                    const windowSize = Math.min(7, data.length)
+                    const predictions = []
+                    
+                    for (let i = 0; i < this.forecastPeriods; i++) {
+                        const window = data.slice(-windowSize)
+                        const average = window.reduce((sum, val) => sum + val, 0) / window.length
+                        predictions.push(Math.round(average))
+                    }
+                    
+                    return predictions
+                },
+                
+                exponentialSmoothing(data) {
+                    const alpha = 0.3
+                    let smoothed = data[0]
+                    
+                    for (let i = 1; i < data.length; i++) {
+                        smoothed = alpha * data[i] + (1 - alpha) * smoothed
+                    }
+                    
+                    const predictions = []
+                    for (let i = 0; i < this.forecastPeriods; i++) {
+                        predictions.push(Math.round(smoothed))
+                    }
+                    
+                    return predictions
+                },
+                
+                selectAlgorithm(algorithm) {
+                    this.selectedAlgorithm = algorithm
+                },
+                
+                updateChart() {
+                    if (!this.chart) return
+                    
+                    const categories = this.tableData.map(item => item.date)
+                    const actualData = this.tableData.map(item => item.actualRevenue)
+                    const predictedData = this.tableData.map(item => item.predictedRevenue)
+                    
+                    const option = {
+                        title: {
+                            text: '收入趋势分析',
+                            left: 'center',
+                            textStyle: { color: '#333', fontSize: 16 }
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            formatter: function(params) {
+                                let result = params[0].name + '<br/>'
+                                params.forEach(param => {
+                                    if (param.value !== null && param.value !== undefined) {
+                                        result += param.marker + param.seriesName + ': ¥' + 
+                                                param.value.toLocaleString() + '<br/>'
+                                    }
+                                })
+                                return result
+                            }
+                        },
+                        legend: {
+                            data: ['实际收入', '预测收入'],
+                            top: 30
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            top: '15%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: categories,
+                            axisLabel: {
+                                rotate: 45,
+                                formatter: function(value) {
+                                    return value.slice(5)
+                                }
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '¥{value}'
+                            }
+                        },
+                        series: [
+                            {
+                                name: '实际收入',
+                                type: this.chartType,
+                                data: actualData,
+                                smooth: true,
+                                itemStyle: { color: '#1890ff' },
+                                areaStyle: this.chartType === 'line' ? { opacity: 0.3 } : null
+                            },
+                            {
+                                name: '预测收入',
+                                type: this.chartType,
+                                data: predictedData,
+                                smooth: true,
+                                itemStyle: { color: '#52c41a' },
+                                lineStyle: { type: 'dashed' },
+                                areaStyle: this.chartType === 'line' ? { opacity: 0.2 } : null
+                            }
+                        ]
+                    }
+                    
+                    this.chart.setOption(option)
+                },
+                
+                // 工具方法
+                formatDate(date) {
+                    return date.toISOString().split('T')[0]
+                },
+                
+                formatCurrency(amount) {
+                    if (amount === null || amount === undefined) return '¥0'
+                    return '¥' + amount.toLocaleString('zh-CN')
+                },
+                
+                calculateTrend(current, base) {
+                    const diff = current - base
+                    if (Math.abs(diff) < base * 0.05) return 'stable'
+                    return diff > 0 ? 'up' : 'down'
+                },
+                
+                getTrendText(trend) {
+                    const trendMap = {
+                        'up': '上升',
+                        'down': '下降', 
+                        'stable': '稳定',
+                        'predicted': '预测'
+                    }
+                    return trendMap[trend] || '-'
+                },
+                
+                getTrendType(trend) {
+                    const typeMap = {
+                        'up': 'success',
+                        'down': 'danger',
+                        'stable': 'info',
+                        'predicted': 'warning'
+                    }
+                    return typeMap[trend] || 'info'
+                },
+                
+                getAccuracyClass(accuracy) {
+                    if (accuracy >= 0.9) return 'status-success'
+                    if (accuracy >= 0.7) return 'status-warning'
+                    return 'status-danger'
+                }
+            },
+            
+            watch: {
+                chartType() {
+                    this.updateChart()
+                }
+            }
+        })
+    </script>
+</body>
+</html>
