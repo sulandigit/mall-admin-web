@@ -42,6 +42,12 @@ export const constantRouterMap = [
       path: 'https://www.macrozheng.com/mall/foreword/mall_video.html',
       meta: {title: '视频教程', icon: 'video'}
     },
+    {
+      path: 'dashboard',
+      name: 'dashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: {title: '数据大屏', icon: 'monitor'}
+    }
     ]
   }
 ]
