@@ -1,0 +1,147 @@
+/* 积分管理页面专用样式 */
+
+.app-container {
+  padding: 20px;
+}
+
+.filter-container {
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+}
+
+.filter-item {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* 积分规则相关样式 */
+.rule-status-tag {
+  font-weight: 500;
+}
+
+.rule-type-tag {
+  font-size: 12px;
+}
+
+/* 积分记录相关样式 */
+.points-change-positive {
+  color: #67C23A;
+  font-weight: bold;
+}
+
+.points-change-negative {
+  color: #F56C6C;
+  font-weight: bold;
+}
+
+.record-detail-modal .el-dialog__body {
+  padding: 10px 20px;
+}
+
+/* 积分兑换相关样式 */
+.exchange-item-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.exchange-status-pending {
+  color: #E6A23C;
+}
+
+.exchange-status-approved {
+  color: #67C23A;
+}
+
+.exchange-status-rejected {
+  color: #F56C6C;
+}
+
+/* 会员等级相关样式 */
+.level-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 2px;
+}
+
+.level-color-preview {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.benefits-config {
+  padding: 20px 0;
+}
+
+.benefits-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.benefits-label {
+  width: 120px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+  }
+  
+  .filter-container {
+    padding: 10px;
+  }
+  
+  .filter-item {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .el-table {
+    font-size: 12px;
+  }
+}
+
+/* 表格优化 */
+.el-table .cell {
+  word-break: break-word;
+}
+
+.el-table .el-button--mini {
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+/* 卡片样式 */
+.overview-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-4px);
+}
+
+.overview-card .card-header {
+  opacity: 0.8;
+}
+
+.overview-card .card-value {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}

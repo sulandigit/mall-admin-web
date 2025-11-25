@@ -303,6 +303,54 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/member',
+    component: Layout,
+    redirect: '/member/points/rules',
+    name: 'member',
+    meta: { title: '会员管理', icon: 'user' },
+    children: [
+      {
+        path: 'points',
+        name: 'memberPoints',
+        component: () => import('@/views/member/points/rules'),
+        redirect: '/member/points/rules',
+        meta: { title: '积分管理', icon: 'money' },
+        children: [
+          {
+            path: 'rules',
+            name: 'pointsRules',
+            component: () => import('@/views/member/points/rules'),
+            meta: { title: '积分规则', icon: 'setting' }
+          },
+          {
+            path: 'records',
+            name: 'pointsRecords',
+            component: () => import('@/views/member/points/records'),
+            meta: { title: '积分记录', icon: 'list' }
+          },
+          {
+            path: 'exchange',
+            name: 'pointsExchange',
+            component: () => import('@/views/member/points/exchange'),
+            meta: { title: '积分兑换', icon: 'shopping' }
+          },
+          {
+            path: 'analytics',
+            name: 'pointsAnalytics',
+            component: () => import('@/views/member/points/analytics'),
+            meta: { title: '积分统计', icon: 'chart' }
+          }
+        ]
+      },
+      {
+        path: 'levels',
+        name: 'memberLevels',
+        component: () => import('@/views/member/levels'),
+        meta: { title: '等级管理', icon: 'star' }
+      }
+    ]
+  },
+  {
     path:'/ums',
     component: Layout,
     redirect: '/ums/admin',
