@@ -1,5 +1,11 @@
 <template>
   <div class="app-wrapper" :class="classObj">
+    <!-- 路由加载进度条 -->
+    <route-progress-bar></route-progress-bar>
+    
+    <!-- 预加载管理面板 -->
+    <preload-panel></preload-panel>
+    
     <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
       <navbar></navbar>
@@ -10,6 +16,8 @@
 
 <script>
 import { Navbar, Sidebar, AppMain } from './components'
+import RouteProgressBar from '@/components/RouteProgressBar'
+import PreloadPanel from '@/components/PreloadPanel'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
@@ -17,7 +25,9 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    RouteProgressBar,
+    PreloadPanel
   },
   mixins: [ResizeMixin],
   computed: {
