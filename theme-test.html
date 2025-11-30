@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主题切换功能测试</title>
+    <style>
+        /* 测试主题变量 */
+        :root {
+            --theme-bg-color: #FFFFFF;
+            --theme-text-color: #303133;
+            --theme-border-color: #DCDFE6;
+            --theme-primary-color: #409EFF;
+            --theme-menu-bg: #304156;
+            --theme-submenu-bg: #1f2d3d;
+            --theme-menu-hover: #001528;
+            --theme-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            --theme-card-bg: #FFFFFF;
+            --theme-transition: all 0.3s ease;
+        }
+
+        body.dark-theme {
+            --theme-bg-color: #1D1E1F;
+            --theme-text-color: #CFD3DC;
+            --theme-border-color: #4C4D4F;
+            --theme-menu-bg: #1F1F1F;
+            --theme-submenu-bg: #141414;
+            --theme-menu-hover: #2D2D2D;
+            --theme-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+            --theme-card-bg: #2D2D2D;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--theme-bg-color);
+            color: var(--theme-text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: var(--theme-transition);
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--theme-card-bg);
+            border: 1px solid var(--theme-border-color);
+            border-radius: 8px;
+            box-shadow: var(--theme-box-shadow);
+            transition: var(--theme-transition);
+        }
+
+        .theme-toggle-btn {
+            background-color: var(--theme-primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: var(--theme-transition);
+        }
+
+        .theme-toggle-btn:hover {
+            opacity: 0.8;
+        }
+
+        .test-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid var(--theme-border-color);
+            border-radius: 4px;
+            background-color: var(--theme-bg-color);
+            transition: var(--theme-transition);
+        }
+
+        .test-section h3 {
+            margin-top: 0;
+            color: var(--theme-primary-color);
+        }
+
+        .menu-simulation {
+            background-color: var(--theme-menu-bg);
+            color: var(--theme-text-color);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .menu-item {
+            padding: 8px 12px;
+            background-color: var(--theme-submenu-bg);
+            margin: 2px 0;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: var(--theme-transition);
+        }
+
+        .menu-item:hover {
+            background-color: var(--theme-menu-hover);
+        }
+
+        .status-info {
+            padding: 10px;
+            background-color: var(--theme-card-bg);
+            border: 1px solid var(--theme-border-color);
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .current-theme {
+            font-weight: bold;
+            color: var(--theme-primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>商城管理后台主题切换功能测试</h1>
+        
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+            切换主题
+        </button>
+
+        <div class="status-info">
+            <strong>当前主题：</strong>
+            <span class="current-theme" id="currentTheme">亮色主题</span>
+        </div>
+
+        <div class="test-section">
+            <h3>1. 主题变量测试</h3>
+            <p>这个段落使用主题文本颜色变量：<code>var(--theme-text-color)</code></p>
+            <p>背景使用主题背景颜色变量：<code>var(--theme-bg-color)</code></p>
+            <p>边框使用主题边框颜色变量：<code>var(--theme-border-color)</code></p>
+        </div>
+
+        <div class="test-section">
+            <h3>2. 菜单样式测试</h3>
+            <div class="menu-simulation">
+                <div class="menu-item">首页</div>
+                <div class="menu-item">商品管理</div>
+                <div class="menu-item">订单管理</div>
+                <div class="menu-item">用户管理</div>
+                <div class="menu-item">系统设置</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. 过渡效果测试</h3>
+            <p>切换主题时，所有元素都应该有平滑的过渡效果。</p>
+            <p>过渡时间设置为 <code>0.3s</code>，使用 <code>ease</code> 缓动函数。</p>
+        </div>
+
+        <div class="test-section">
+            <h3>4. 本地存储测试</h3>
+            <p>主题偏好会保存到 <code>localStorage</code> 中。</p>
+            <p>刷新页面后应该保持上次选择的主题。</p>
+            <button onclick="checkStorage()">检查存储状态</button>
+            <div id="storageInfo" style="margin-top: 10px;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. CSS变量检查</h3>
+            <button onclick="checkCSSVariables()">检查当前CSS变量值</button>
+            <div id="cssVarInfo" style="margin-top: 10px; font-family: monospace; font-size: 12px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // 简单的主题切换功能测试
+        let currentTheme = localStorage.getItem('mall-admin-theme') || 'light';
+        
+        // 初始化主题
+        function initTheme() {
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('currentTheme').textContent = '暗色主题';
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.getElementById('currentTheme').textContent = '亮色主题';
+            }
+        }
+
+        // 切换主题
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('mall-admin-theme', currentTheme);
+            initTheme();
+            
+            // 显示切换提示
+            console.log(`主题已切换为: ${currentTheme}`);
+        }
+
+        // 检查存储状态
+        function checkStorage() {
+            const stored = localStorage.getItem('mall-admin-theme');
+            const info = `存储的主题: ${stored || '未设置'}<br>当前主题: ${currentTheme}`;
+            document.getElementById('storageInfo').innerHTML = info;
+        }
+
+        // 检查CSS变量
+        function checkCSSVariables() {
+            const style = getComputedStyle(document.documentElement);
+            const variables = [
+                '--theme-bg-color',
+                '--theme-text-color',
+                '--theme-border-color',
+                '--theme-primary-color',
+                '--theme-menu-bg',
+                '--theme-submenu-bg',
+                '--theme-menu-hover'
+            ];
+            
+            let info = '';
+            variables.forEach(varName => {
+                const value = style.getPropertyValue(varName).trim();
+                info += `${varName}: ${value}<br>`;
+            });
+            
+            document.getElementById('cssVarInfo').innerHTML = info;
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            console.log('主题测试页面已加载');
+        });
+    </script>
+</body>
+</html>

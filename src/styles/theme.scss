@@ -1,0 +1,254 @@
+@import './variables.scss';
+
+/* 主题系统核心样式 */
+
+/* CSS变量定义 - 默认亮主题 */
+:root {
+  /* 主题基础色彩变量 */
+  --theme-bg-color: #{$light-bg-color};
+  --theme-text-color: #{$light-text-color};
+  --theme-border-color: #{$light-border-color};
+  --theme-primary-color: #{$primary-color};
+  
+  /* 菜单色彩变量 */
+  --theme-menu-bg: #{$light-menu-bg};
+  --theme-submenu-bg: #{$light-submenu-bg};
+  --theme-menu-hover: #{$light-menu-hover};
+  
+  /* 其他UI变量 */
+  --theme-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --theme-card-bg: #{$light-bg-color};
+  --theme-input-bg: #{$light-bg-color};
+  --theme-disabled-color: #C0C4CC;
+  --theme-placeholder-color: #C0C4CC;
+  
+  /* 过渡效果 */
+  --theme-transition: all #{$transition-duration} ease;
+}
+
+/* 暗主题变量覆盖 */
+body.dark-theme {
+  --theme-bg-color: #{$dark-bg-color};
+  --theme-text-color: #{$dark-text-color};
+  --theme-border-color: #{$dark-border-color};
+  
+  --theme-menu-bg: #{$dark-menu-bg};
+  --theme-submenu-bg: #{$dark-submenu-bg};
+  --theme-menu-hover: #{$dark-menu-hover};
+  
+  --theme-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+  --theme-card-bg: #2D2D2D;
+  --theme-input-bg: #2D2D2D;
+  --theme-disabled-color: #6B6B6B;
+  --theme-placeholder-color: #6B6B6B;
+}
+
+/* 全局主题样式应用 */
+html, body {
+  @include theme-background();
+  @include theme-text();
+  @include theme-transition();
+}
+
+/* 主题切换过渡效果 */
+.theme-transition {
+  transition: var(--theme-transition);
+}
+
+/* 通用主题类 */
+.theme-bg {
+  @include theme-background();
+}
+
+.theme-text {
+  @include theme-text();
+}
+
+.theme-border {
+  @include theme-border();
+}
+
+.theme-card {
+  background-color: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  box-shadow: var(--theme-box-shadow);
+  @include theme-transition();
+}
+
+/* Element UI 组件主题适配 */
+.el-menu {
+  background-color: var(--theme-menu-bg) !important;
+  border-right: 1px solid var(--theme-border-color) !important;
+}
+
+.el-menu-item {
+  color: var(--theme-text-color) !important;
+  background-color: transparent !important;
+  
+  &:hover {
+    background-color: var(--theme-menu-hover) !important;
+  }
+  
+  &.is-active {
+    background-color: var(--theme-menu-hover) !important;
+    color: var(--theme-primary-color) !important;
+  }
+}
+
+.el-submenu__title {
+  color: var(--theme-text-color) !important;
+  background-color: transparent !important;
+  
+  &:hover {
+    background-color: var(--theme-menu-hover) !important;
+  }
+}
+
+.el-menu--popup {
+  background-color: var(--theme-submenu-bg) !important;
+  border: 1px solid var(--theme-border-color) !important;
+}
+
+/* 输入框主题适配 */
+.el-input__inner {
+  background-color: var(--theme-input-bg) !important;
+  border-color: var(--theme-border-color) !important;
+  color: var(--theme-text-color) !important;
+  
+  &::placeholder {
+    color: var(--theme-placeholder-color) !important;
+  }
+  
+  &:focus {
+    border-color: var(--theme-primary-color) !important;
+  }
+}
+
+/* 表格主题适配 */
+.el-table {
+  background-color: var(--theme-bg-color) !important;
+  color: var(--theme-text-color) !important;
+  
+  th {
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text-color) !important;
+    border-bottom: 1px solid var(--theme-border-color) !important;
+  }
+  
+  td {
+    border-bottom: 1px solid var(--theme-border-color) !important;
+  }
+  
+  tr {
+    background-color: var(--theme-bg-color) !important;
+    
+    &:hover {
+      background-color: var(--theme-card-bg) !important;
+    }
+  }
+}
+
+/* 卡片主题适配 */
+.el-card {
+  background-color: var(--theme-card-bg) !important;
+  border-color: var(--theme-border-color) !important;
+  color: var(--theme-text-color) !important;
+  
+  .el-card__header {
+    background-color: var(--theme-card-bg) !important;
+    border-bottom: 1px solid var(--theme-border-color) !important;
+    color: var(--theme-text-color) !important;
+  }
+}
+
+/* 按钮主题适配 */
+.el-button--default {
+  background-color: var(--theme-card-bg) !important;
+  border-color: var(--theme-border-color) !important;
+  color: var(--theme-text-color) !important;
+  
+  &:hover {
+    border-color: var(--theme-primary-color) !important;
+    color: var(--theme-primary-color) !important;
+  }
+}
+
+/* 分页器主题适配 */
+.el-pagination {
+  .el-pager li {
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text-color) !important;
+    border: 1px solid var(--theme-border-color) !important;
+    
+    &:hover {
+      color: var(--theme-primary-color) !important;
+    }
+    
+    &.active {
+      background-color: var(--theme-primary-color) !important;
+      color: #fff !important;
+    }
+  }
+  
+  .btn-prev, .btn-next {
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text-color) !important;
+    border: 1px solid var(--theme-border-color) !important;
+    
+    &:hover {
+      color: var(--theme-primary-color) !important;
+    }
+  }
+}
+
+/* 下拉框主题适配 */
+.el-dropdown-menu {
+  background-color: var(--theme-card-bg) !important;
+  border: 1px solid var(--theme-border-color) !important;
+  box-shadow: var(--theme-box-shadow) !important;
+  
+  .el-dropdown-menu__item {
+    color: var(--theme-text-color) !important;
+    
+    &:hover {
+      background-color: var(--theme-menu-hover) !important;
+      color: var(--theme-primary-color) !important;
+    }
+  }
+}
+
+/* 对话框主题适配 */
+.el-dialog {
+  background-color: var(--theme-card-bg) !important;
+  border: 1px solid var(--theme-border-color) !important;
+  
+  .el-dialog__header {
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text-color) !important;
+    border-bottom: 1px solid var(--theme-border-color) !important;
+  }
+  
+  .el-dialog__body {
+    background-color: var(--theme-card-bg) !important;
+    color: var(--theme-text-color) !important;
+  }
+}
+
+/* 选择器主题适配 */
+.el-select-dropdown {
+  background-color: var(--theme-card-bg) !important;
+  border: 1px solid var(--theme-border-color) !important;
+  
+  .el-select-dropdown__item {
+    color: var(--theme-text-color) !important;
+    
+    &:hover {
+      background-color: var(--theme-menu-hover) !important;
+    }
+    
+    &.selected {
+      color: var(--theme-primary-color) !important;
+      background-color: var(--theme-menu-hover) !important;
+    }
+  }
+}
