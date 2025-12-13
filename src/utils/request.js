@@ -2,12 +2,16 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import { installInterceptors } from '@/utils/interceptor'
 
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000 // 请求超时时间
 })
+
+// 安装日志拦截器
+installInterceptors(service)
 
 // request拦截器
 service.interceptors.request.use(config => {
