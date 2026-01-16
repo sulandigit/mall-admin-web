@@ -6,6 +6,7 @@ const getters = {
   name: state => state.user.name,
   roles: state => state.user.roles,
   addRouters: state => state.permission.addRouters,
-  routers: state => state.permission.routers
+  routers: state => state.permission.routers,
+  currentVisit: state => state.behavior.currentVisit // 当前访问信息 2026
 }
 export default getters
