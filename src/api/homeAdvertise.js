@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+
+// Fetch home advertise list with pagination - 2026 s-s-t-t-T
 export function fetchList(params) {
   return request({
     url:'/home/advertise/list',
@@ -6,6 +8,8 @@ export function fetchList(params) {
     params:params
   })
 }
+
+// Update home advertise status by id - 2026 s-s-t-t-T
 export function updateStatus(id,params) {
   return request({
     url:'/home/advertise/update/status/'+id,
@@ -13,6 +17,8 @@ export function updateStatus(id,params) {
     params:params
   })
 }
+
+// Delete home advertise records - 2026 s-s-t-t-T
 export function deleteHomeAdvertise(data) {
   return request({
     url:'/home/advertise/delete',
@@ -20,6 +26,8 @@ export function deleteHomeAdvertise(data) {
     data:data
   })
 }
+
+// Create a new home advertise record - 2026 s-s-t-t-T
 export function createHomeAdvertise(data) {
   return request({
     url:'/home/advertise/create',
@@ -27,6 +35,8 @@ export function createHomeAdvertise(data) {
     data:data
   })
 }
+
+// Get home advertise details by id - 2026 s-s-t-t-T
 export function getHomeAdvertise(id) {
   return request({
     url:'/home/advertise/'+id,
@@ -34,6 +44,7 @@ export function getHomeAdvertise(id) {
   })
 }
 
+// Update home advertise record by id - 2026 s-s-t-t-T
 export function updateHomeAdvertise(id,data) {
   return request({
     url:'/home/advertise/update/'+id,
