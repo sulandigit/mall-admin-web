@@ -1,0 +1,368 @@
+/**
+ * 响应式断点 Mixins
+ * 提供移动端优先的响应式设计工具
+ */
+
+@import './responsive-variables.scss';
+
+// ===== 断点 Mixins =====
+
+// 移动端及以下
+@mixin mobile-only {
+  @media (max-width: $mobile-max) {
+    @content;
+  }
+}
+
+// 平板及以上
+@mixin tablet-up {
+  @media (min-width: $tablet-min) {
+    @content;
+  }
+}
+
+// 仅平板
+@mixin tablet-only {
+  @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+    @content;
+  }
+}
+
+// 桌面及以上
+@mixin desktop-up {
+  @media (min-width: $desktop-min) {
+    @content;
+  }
+}
+
+// 仅桌面
+@mixin desktop-only {
+  @media (min-width: $desktop-min) and (max-width: $desktop-large-min - 1px) {
+    @content;
+  }
+}
+
+// 大屏桌面
+@mixin desktop-large-up {
+  @media (min-width: $desktop-large-min) {
+    @content;
+  }
+}
+
+// 移动设备（手机+平板）
+@mixin mobile-device {
+  @media (max-width: $tablet-max) {
+    @content;
+  }
+}
+
+// 桌面设备
+@mixin desktop-device {
+  @media (min-width: $desktop-min) {
+    @content;
+  }
+}
+
+// 横向模式
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+// 纵向模式
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+// 高分辨率屏幕
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
+// ===== 容器 Mixins =====
+
+// 响应式容器
+@mixin responsive-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 $mobile-spacing-sm;
+  
+  @include tablet-up {
+    max-width: $container-tablet;
+    padding: 0 $desktop-spacing-md;
+  }
+  
+  @include desktop-up {
+    max-width: $container-desktop;
+  }
+  
+  @include desktop-large-up {
+    max-width: $container-desktop-large;
+  }
+}
+
+// ===== 间距 Mixins =====
+
+// 响应式内边距
+@mixin responsive-padding($mobile: $mobile-spacing-md, $desktop: $desktop-spacing-md) {
+  padding: $mobile;
+  
+  @include desktop-up {
+    padding: $desktop;
+  }
+}
+
+// 响应式外边距
+@mixin responsive-margin($mobile: $mobile-spacing-md, $desktop: $desktop-spacing-md) {
+  margin: $mobile;
+  
+  @include desktop-up {
+    margin: $desktop;
+  }
+}
+
+// 响应式水平间距
+@mixin responsive-horizontal-spacing($mobile: $mobile-spacing-sm, $desktop: $desktop-spacing-sm) {
+  padding-left: $mobile;
+  padding-right: $mobile;
+  
+  @include desktop-up {
+    padding-left: $desktop;
+    padding-right: $desktop;
+  }
+}
+
+// 响应式垂直间距
+@mixin responsive-vertical-spacing($mobile: $mobile-spacing-sm, $desktop: $desktop-spacing-sm) {
+  padding-top: $mobile;
+  padding-bottom: $mobile;
+  
+  @include desktop-up {
+    padding-top: $desktop;
+    padding-bottom: $desktop;
+  }
+}
+
+// ===== 字体 Mixins =====
+
+// 响应式字体大小
+@mixin responsive-font-size($mobile: $mobile-font-md, $desktop: $desktop-font-md) {
+  font-size: $mobile;
+  
+  @include desktop-up {
+    font-size: $desktop;
+  }
+}
+
+// 标题字体
+@mixin title-font($level: 1) {
+  @if $level == 1 {
+    @include responsive-font-size($mobile-font-xxl, $desktop-font-xxl);
+    font-weight: 600;
+    line-height: $line-height-tight;
+  } @else if $level == 2 {
+    @include responsive-font-size($mobile-font-xl, $desktop-font-xl);
+    font-weight: 600;
+    line-height: $line-height-normal;
+  } @else if $level == 3 {
+    @include responsive-font-size($mobile-font-lg, $desktop-font-lg);
+    font-weight: 500;
+    line-height: $line-height-normal;
+  }
+}
+
+// ===== 触摸交互 Mixins =====
+
+// 触摸目标尺寸
+@mixin touch-target($size: $touch-target-min) {
+  min-height: $size;
+  min-width: $size;
+  
+  // 确保可点击区域足够大
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: $size;
+    min-width: $size;
+    z-index: -1;
+  }
+}
+
+// 触摸反馈
+@mixin touch-feedback($color: rgba(0, 0, 0, 0.1)) {
+  position: relative;
+  cursor: pointer;
+  
+  &:active {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: $color;
+      pointer-events: none;
+    }
+  }
+}
+
+// 禁用选择
+@mixin disable-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// 平滑滚动
+@mixin smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+// ===== 布局 Mixins =====
+
+// Flexbox 居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flexbox 垂直居中
+@mixin flex-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+// Flexbox 水平分布
+@mixin flex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// 响应式网格
+@mixin responsive-grid($mobile-cols: 1, $tablet-cols: 2, $desktop-cols: 3) {
+  display: grid;
+  gap: $mobile-spacing-md;
+  grid-template-columns: repeat($mobile-cols, 1fr);
+  
+  @include tablet-up {
+    grid-template-columns: repeat($tablet-cols, 1fr);
+    gap: $desktop-spacing-md;
+  }
+  
+  @include desktop-up {
+    grid-template-columns: repeat($desktop-cols, 1fr);
+  }
+}
+
+// ===== 视觉效果 Mixins =====
+
+// 响应式阴影
+@mixin responsive-shadow($mobile: $mobile-shadow-base, $desktop: $shadow-base) {
+  box-shadow: $mobile;
+  
+  @include desktop-up {
+    box-shadow: $desktop;
+  }
+}
+
+// 响应式边框半径
+@mixin responsive-border-radius($mobile: $mobile-border-radius-base, $desktop: $border-radius-base) {
+  border-radius: $mobile;
+  
+  @include desktop-up {
+    border-radius: $desktop;
+  }
+}
+
+// 卡片样式
+@mixin card-style {
+  background: white;
+  @include responsive-border-radius();
+  @include responsive-shadow();
+  @include responsive-padding();
+}
+
+// ===== 动画 Mixins =====
+
+// 过渡动画
+@mixin transition($property: all, $duration: $transition-normal, $easing: $ease-out-quart) {
+  transition: $property $duration $easing;
+}
+
+// 淡入动画
+@mixin fade-in($duration: $transition-normal) {
+  opacity: 0;
+  animation: fadeIn $duration $ease-out-quart forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+// 滑入动画
+@mixin slide-in-from-left($duration: $transition-normal) {
+  transform: translateX(-100%);
+  animation: slideInFromLeft $duration $ease-out-quart forwards;
+}
+
+@keyframes slideInFromLeft {
+  to {
+    transform: translateX(0);
+  }
+}
+
+// ===== 实用工具 Mixins =====
+
+// 隐藏元素（保持在DOM中）
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// 截断文本
+@mixin text-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 多行文本截断
+@mixin text-truncate-multiline($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
