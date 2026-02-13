@@ -14,17 +14,33 @@
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10MB</div>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="fileList[0].url" alt="">
+      <!-- 使用LazyImage组件替代普通img标签 -->
+      <lazy-image 
+        v-if="fileList[0] && fileList[0].url"
+        :src="fileList[0].url" 
+        width="100%" 
+        :enable-webp="enableWebP"
+        alt="预览图片"
+      />
     </el-dialog>
   </div>
 </template>
 <script>
   import {policy} from '@/api/oss'
+  import LazyImage from '@/components/LazyImage'
 
   export default {
     name: 'singleUpload',
+    components: {
+      LazyImage
+    },
     props: {
-      value: String
+      value: String,
+      // 是否启用WebP优化
+      enableWebP: {
+        type: Boolean,
+        default: true
+      }
     },
     computed: {
       imageUrl() {

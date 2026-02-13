@@ -1,0 +1,505 @@
+/**
+ * 图片优化相关样式
+ * 包含懒加载动画、WebP转换进度、响应式图片样式等
+ */
+
+/* ==========================================================================
+   懒加载相关样式
+   ========================================================================== */
+
+/* 懒加载容器 */
+.lazy-image-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+/* 懒加载图片基础样式 */
+.lazy-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 占位符样式 */
+.lazy-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  color: #999;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+/* 加载中状态 */
+.lazy-loading {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* 加载完成状态 */
+.lazy-loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 错误状态 */
+.lazy-error {
+  opacity: 0.6;
+  filter: grayscale(100%);
+  background-color: #fef0f0;
+  border: 1px dashed #f56c6c;
+}
+
+/* 加载动画 - 闪烁效果 */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 加载动画 - 脉冲效果 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 淡入动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 加载完成的淡入效果 */
+.lazy-image.lazy-loaded {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* ==========================================================================
+   WebP上传相关样式
+   ========================================================================== */
+
+/* WebP上传容器 */
+.webp-upload-container {
+  width: 100%;
+}
+
+.webp-upload-container .el-upload {
+  border: 2px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.webp-upload-container .el-upload:hover {
+  border-color: #409eff;
+  background-color: rgba(64, 158, 255, 0.05);
+}
+
+/* 转换进度对话框 */
+.convert-progress {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.convert-progress .el-progress {
+  margin-bottom: 20px;
+}
+
+.convert-info {
+  margin-top: 15px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.convert-progress .el-icon-loading {
+  font-size: 24px;
+  color: #409eff;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   响应式图片样式
+   ========================================================================== */
+
+/* 响应式图片容器 */
+.responsive-image-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+/* 不同尺寸断点的图片适配 */
+@media screen and (max-width: 768px) {
+  .responsive-image-container .lazy-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .lazy-placeholder {
+    min-height: 200px;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .responsive-image-container .lazy-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .lazy-placeholder {
+    min-height: 300px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .responsive-image-container .lazy-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .lazy-placeholder {
+    min-height: 400px;
+  }
+}
+
+/* ==========================================================================
+   图片网格布局
+   ========================================================================== */
+
+/* 图片网格容器 */
+.image-grid {
+  display: grid;
+  grid-gap: 16px;
+  padding: 16px;
+}
+
+/* 网格响应式布局 */
+@media screen and (max-width: 768px) {
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 12px;
+    padding: 12px;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+/* 网格项样式 */
+.image-grid-item {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.image-grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   加载状态指示器
+   ========================================================================== */
+
+/* 全局加载指示器 */
+.loading-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.loading-indicator .loading-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #409eff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 图片加载进度条 */
+.image-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.image-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #409eff, #67c23a);
+  transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   图片预览相关样式
+   ========================================================================== */
+
+/* 图片预览遮罩 */
+.image-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.image-preview-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 预览图片容器 */
+.image-preview-container {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.image-preview-overlay.active .image-preview-container {
+  transform: scale(1);
+}
+
+.image-preview-container img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   性能优化相关样式
+   ========================================================================== */
+
+/* 图片骨架屏 */
+.image-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 低质量图片占位符 */
+.lqip-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px);
+  transform: scale(1.1);
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.lqip-placeholder.fade-out {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   错误处理相关样式
+   ========================================================================== */
+
+/* 错误图片样式 */
+.error-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #fef0f0;
+  border: 1px dashed #f56c6c;
+  border-radius: 4px;
+  color: #f56c6c;
+}
+
+.error-image .error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.error-image .error-text {
+  font-size: 14px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.error-image .retry-button {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: #f56c6c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.error-image .retry-button:hover {
+  background: #f78989;
+}
+
+/* ==========================================================================
+   工具类样式
+   ========================================================================== */
+
+/* 隐藏元素 */
+.image-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* 显示元素 */
+.image-visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* 圆角图片 */
+.image-rounded {
+  border-radius: 8px;
+}
+
+/* 圆形图片 */
+.image-circle {
+  border-radius: 50%;
+}
+
+/* 阴影效果 */
+.image-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-shadow-hover:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 边框效果 */
+.image-border {
+  border: 1px solid #e0e0e0;
+}
+
+/* 缩放效果 */
+.image-zoom:hover {
+  transform: scale(1.05);
+}
+
+/* 旋转效果 */
+.image-rotate {
+  animation: rotate 2s linear infinite;
+}
+
+/* ==========================================================================
+   深色主题适配
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .lazy-placeholder {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    color: #888;
+  }
+  
+  .lazy-image-container {
+    background-color: #2a2a2a;
+  }
+  
+  .image-grid-item {
+    background: #1e1e1e;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+  }
+  
+  .error-image {
+    background-color: #2a1f1f;
+    border-color: #5a3a3a;
+    color: #ff6b6b;
+  }
+}
