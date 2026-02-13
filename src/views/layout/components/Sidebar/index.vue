@@ -15,23 +15,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import SidebarItem from './SidebarItem'
-import ScrollBar from '@/components/ScrollBar'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import SidebarItem from './SidebarItem.vue'
+import ScrollBar from '@/components/ScrollBar/index.vue'
 
 export default {
+  name: 'Sidebar',
   components: { SidebarItem, ScrollBar },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'routers'
-    ]),
-    routes() {
-      // return this.$router.options.routes
-      return this.routers
-    },
-    isCollapse() {
-      return !this.sidebar.opened
+  setup() {
+    const route = useRoute()
+    
+    // 临时使用默认值，后续接入Pinia
+    const sidebar = computed(() => ({
+      opened: true
+    }))
+    
+    const routes = computed(() => [])
+    
+    const isCollapse = computed(() => !sidebar.value.opened)
+    
+    return {
+      sidebar,
+      routes,
+      isCollapse
     }
   }
 }

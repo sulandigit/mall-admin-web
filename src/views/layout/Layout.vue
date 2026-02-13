@@ -9,30 +9,37 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { Navbar, Sidebar, AppMain } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
+// import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
-  name: 'layout',
+  name: 'Layout',
   components: {
     Navbar,
     Sidebar,
     AppMain
   },
-  mixins: [ResizeMixin],
-  computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
-    classObj() {
-      return {
-        hideSidebar: !this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
-      }
+  // mixins: [ResizeMixin], // 临时注释，后续更新
+  setup() {
+    // 临时使用默认值，后续接入Pinia
+    const sidebar = computed(() => ({
+      opened: true,
+      withoutAnimation: false
+    }))
+    
+    const device = computed(() => 'desktop')
+    
+    const classObj = computed(() => ({
+      hideSidebar: !sidebar.value.opened,
+      withoutAnimation: sidebar.value.withoutAnimation,
+      mobile: device.value === 'mobile'
+    }))
+    
+    return {
+      sidebar,
+      device,
+      classObj
     }
   }
 }

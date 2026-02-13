@@ -1,19 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import app from './modules/app'
-import user from './modules/user'
-import permission from './modules/permission'
-import getters from './getters'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
-  modules: {
-    app,
-    user,
-    permission
-  },
-  getters
-})
+// 临时兼容 - 先创建空的store对象
+const store = {
+  state: {},
+  getters: {},
+  dispatch: () => Promise.resolve(),
+  commit: () => {}
+}
 
 export default store

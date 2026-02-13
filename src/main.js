@@ -1,30 +1,35 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import 'normalize.css/normalize.css'// A modern alternative to CSS resets
-
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
-import VCharts from 'v-charts'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import '@/styles/index.scss' // global css
 
-import App from './App'
+import App from './App.vue'
 import router from './router'
-import store from './store'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 import '@/icons' // icon
 import '@/permission' // permission control
 
-Vue.use(ElementUI, { locale })
-Vue.use(VCharts)
+const app = createApp(App)
 
-Vue.config.productionTip = false
+// 注册Element Plus图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
-})
+// 注册SvgIcon组件
+app.component('svg-icon', SvgIcon)
+
+// 使用插件
+app.use(createPinia())
+app.use(router)
+app.use(ElementPlus, { locale: zhCn })
+
+// 挂载应用
+app.mount('#app')

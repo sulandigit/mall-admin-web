@@ -7,44 +7,60 @@
         <img class="user-avatar" :src="avatar">
         <i class="el-icon-caret-bottom"></i>
       </div>
-      <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            首页
+      <template #dropdown>
+        <el-dropdown-menu class="user-dropdown">
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              首页
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
+            <span @click="logout" style="display:block;">退出</span>
           </el-dropdown-item>
-        </router-link>
-        <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
+        </el-dropdown-menu>
+      </template>
     </el-dropdown>
   </el-menu>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
 
 export default {
+  name: 'Navbar',
   components: {
     Breadcrumb,
     Hamburger
   },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
-  },
-  methods: {
-    toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar')
-    },
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
+  setup() {
+    const router = useRouter()
+    
+    // 临时使用默认值，后续接入Pinia
+    const sidebar = computed(() => ({
+      opened: true
+    }))
+    
+    const avatar = computed(() => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+    
+    const toggleSideBar = () => {
+      // 后续接入Pinia store
+      console.log('Toggle sidebar')
+    }
+    
+    const logout = () => {
+      // 后续接入Pinia store
+      console.log('Logout')
+      router.push('/login')
+    }
+    
+    return {
+      sidebar,
+      avatar,
+      toggleSideBar,
+      logout
     }
   }
 }
