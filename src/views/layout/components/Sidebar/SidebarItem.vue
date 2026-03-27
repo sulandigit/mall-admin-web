@@ -1,65 +1,106 @@
 <template>
-  <div class="menu-wrapper">
-    <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
-      <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="item.path+'/'+item.children[0].path"
-        :key="item.children[0].name">
-        <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
-          <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
-          <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{item.children[0].meta.title}}</span>
+  <div v-if="!item.meta?.hidden">
+    <!-- 单个路由或者只有一个显示的子路由 -->
+    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild?.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
+      <app-link v-if="onlyOneChild?.meta" :to="resolvePath(onlyOneChild.path)">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
+          <svg-icon v-if="onlyOneChild.meta.icon" :icon-class="onlyOneChild.meta.icon" class="menu-icon" />
+          <template #title>
+            <span>{{ onlyOneChild.meta.title }}</span>
+          </template>
         </el-menu-item>
-      </router-link>
-
-      <el-submenu v-else :index="item.name||item.path" :key="item.name">
-        <template slot="title">
-          <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
-          <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
-        </template>
-
-        <template v-for="child in item.children" v-if="!child.hidden">
-          <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>
-          <!--支持外链功能-->
-          <a v-else-if="child.path.startsWith('http')" v-bind:href="child.path" target="_blank" :key="child.name">
-            <el-menu-item :index="item.path+'/'+child.path">
-              <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-              <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
-            </el-menu-item>
-          </a>
-          <router-link v-else :to="item.path+'/'+child.path" :key="child.name">
-            <el-menu-item :index="item.path+'/'+child.path">
-              <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-              <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
-            </el-menu-item>
-          </router-link>
-        </template>
-      </el-submenu>
-
+      </app-link>
     </template>
+
+    <!-- 多个子路由 -->
+    <el-sub-menu v-else :index="resolvePath(item.path)">
+      <template #title>
+        <svg-icon v-if="item.meta?.icon" :icon-class="item.meta.icon" class="menu-icon" />
+        <span>{{ item.meta?.title }}</span>
+      </template>
+      <sidebar-item
+        v-for="child in item.children"
+        :key="child.path"
+        :is-nest="true"
+        :item="child"
+        :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
+    </el-sub-menu>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SidebarItem',
-  props: {
-    routes: {
-      type: Array
-    },
-    isNest: {
-      type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-    hasOneShowingChildren(children) {
-      const showingChildren = children.filter(item => {
-        return !item.hidden
-      })
-      if (showingChildren.length === 1) {
-        return true
-      }
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
+import AppLink from './AppLink.vue'
+import SvgIcon from '@/components/SvgIcon/index.vue'
+
+interface Props {
+  item: RouteRecordRaw
+  isNest?: boolean
+  basePath?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isNest: false,
+  basePath: ''
+})
+
+const onlyOneChild = ref<RouteRecordRaw | null>(null)
+
+// 判断是否只有一个显示的子路由
+const hasOneShowingChild = (children: RouteRecordRaw[] = [], parent: RouteRecordRaw): boolean => {
+  const showingChildren = children.filter((item: RouteRecordRaw) => {
+    if (item.meta?.hidden) {
       return false
+    } else {
+      // 临时设置(will be used if only has one showing child)
+      onlyOneChild.value = item
+      return true
     }
+  })
+
+  // 当只有一个子路由时，默认显示该子路由
+  if (showingChildren.length === 1) {
+    return true
   }
+
+  // 没有子路由时，显示父路由
+  if (showingChildren.length === 0) {
+    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true } as RouteRecordRaw & { noShowingChildren: boolean }
+    return true
+  }
+
+  return false
+}
+
+// 解析路径
+const resolvePath = (routePath: string): string => {
+  if (routePath.startsWith('/')) {
+    return routePath
+  }
+  if (props.basePath.endsWith('/')) {
+    return props.basePath + routePath
+  }
+  return props.basePath + '/' + routePath
 }
 </script>
+
+<style lang="scss" scoped>
+.menu-icon {
+  margin-right: 5px;
+  width: 18px;
+  height: 18px;
+}
+
+.nest-menu {
+  :deep(.el-sub-menu__title) {
+    padding-left: 40px !important;
+  }
+  
+  :deep(.el-menu-item) {
+    padding-left: 40px !important;
+  }
+}
+</style>
