@@ -3,6 +3,8 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+@import './responsive-mixins.scss';
+@import './touch.scss';
 
 body {
   -moz-osx-font-smoothing: grayscale;
