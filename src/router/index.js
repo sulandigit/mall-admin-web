@@ -370,6 +370,20 @@ export const asyncRouterMap = [
       }
     ]
   },
+  // 数据分析模块 2026
+  {
+    path: '/analytics',
+    component: Layout,
+    redirect: '/analytics/behavior',
+    name: 'analytics',
+    meta: {title: '数据分析', icon: 'ums'},
+    children: [{
+      path: 'behavior',
+      name: 'behaviorAnalytics',
+      component: () => import('@/views/analytics/behavior/index'),
+      meta: {title: '用户行为分析', icon: 'ums-admin'}
+    }]
+  },
   {path: '*', redirect: '/404', hidden: true}
 ]
 
@@ -378,4 +392,3 @@ export default new Router({
   scrollBehavior: () => ({y: 0}),
   routes: constantRouterMap
 })
-

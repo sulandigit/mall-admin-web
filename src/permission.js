@@ -8,6 +8,10 @@ import { getToken } from '@/utils/auth' // 验权
 const whiteList = ['/login'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  // 结束上一个页面的访问记录 2026
+  if (store.getters.currentVisit && from.path !== '/login') {
+    store.dispatch('EndVisit')
+  }
   if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' })
@@ -41,6 +45,16 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-router.afterEach(() => {
+router.afterEach((to) => {
   NProgress.done() // 结束Progress
+  // 开始新页面的访问记录 2026
+  if (getToken() && to.path !== '/login' && to.path !== '/404') {
+    const module = to.path.split('/')[1] || ''
+    store.dispatch('StartVisit', {
+      path: to.path,
+      name: to.name || '',
+      title: (to.meta && to.meta.title) || '',
+      module: module
+    })
+  }
 })
