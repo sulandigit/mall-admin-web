@@ -25,12 +25,12 @@ export const constantRouterMap = [
     path: '',
     component: Layout,
     redirect: '/home',
-    meta: {title: '首页', icon: 'home'},
+    meta: {title: '首页', icon: 'home', i18n: 'menu.dashboard'},
     children: [{
       path: 'home',
       name: 'home',
       component: () => import('@/views/home/index'),
-      meta: {title: '仪表盘', icon: 'dashboard'}
+      meta: {title: '仪表盘', icon: 'dashboard', i18n: 'menu.dashboard'}
     },
     {
       name: 'document',
@@ -52,18 +52,18 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/pms/product',
     name: 'pms',
-    meta: {title: '商品', icon: 'product'},
+    meta: {title: '商品', icon: 'product', i18n: 'menu.product.title'},
     children: [{
       path: 'product',
       name: 'product',
       component: () => import('@/views/pms/product/index'),
-      meta: {title: '商品列表', icon: 'product-list'}
+      meta: {title: '商品列表', icon: 'product-list', i18n: 'menu.product.list'}
     },
       {
         path: 'addProduct',
         name: 'addProduct',
         component: () => import('@/views/pms/product/add'),
-        meta: {title: '添加商品', icon: 'product-add'}
+        meta: {title: '添加商品', icon: 'product-add', i18n: 'menu.product.add'}
       },
       {
         path: 'updateProduct',
@@ -76,7 +76,7 @@ export const asyncRouterMap = [
         path: 'productCate',
         name: 'productCate',
         component: () => import('@/views/pms/productCate/index'),
-        meta: {title: '商品分类', icon: 'product-cate'}
+        meta: {title: '商品分类', icon: 'product-cate', i18n: 'menu.product.category'}
       },
       {
         path: 'addProductCate',
@@ -96,7 +96,7 @@ export const asyncRouterMap = [
         path: 'productAttr',
         name: 'productAttr',
         component: () => import('@/views/pms/productAttr/index'),
-        meta: {title: '商品类型', icon: 'product-attr'}
+        meta: {title: '商品类型', icon: 'product-attr', i18n: 'menu.product.type'}
       },
       {
         path: 'productAttrList',
@@ -123,7 +123,7 @@ export const asyncRouterMap = [
         path: 'brand',
         name: 'brand',
         component: () => import('@/views/pms/brand/index'),
-        meta: {title: '品牌管理', icon: 'product-brand'}
+        meta: {title: '品牌管理', icon: 'product-brand', i18n: 'menu.product.brand'}
       },
       {
         path: 'addBrand',
@@ -146,13 +146,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/oms/order',
     name: 'oms',
-    meta: {title: '订单', icon: 'order'},
+    meta: {title: '订单', icon: 'order', i18n: 'menu.order.title'},
     children: [
       {
         path: 'order',
         name: 'order',
         component: () => import('@/views/oms/order/index'),
-        meta: {title: '订单列表', icon: 'product-list'}
+        meta: {title: '订单列表', icon: 'product-list', i18n: 'menu.order.list'}
       },
       {
         path: 'orderDetail',
@@ -172,19 +172,19 @@ export const asyncRouterMap = [
         path: 'orderSetting',
         name: 'orderSetting',
         component: () => import('@/views/oms/order/setting'),
-        meta: {title: '订单设置', icon: 'order-setting'}
+        meta: {title: '订单设置', icon: 'order-setting', i18n: 'menu.order.setting'}
       },
       {
         path: 'returnApply',
         name: 'returnApply',
         component: () => import('@/views/oms/apply/index'),
-        meta: {title: '退货申请处理', icon: 'order-return'}
+        meta: {title: '退货申请处理', icon: 'order-return', i18n: 'menu.order.return'}
       },
       {
         path: 'returnReason',
         name: 'returnReason',
         component: () => import('@/views/oms/apply/reason'),
-        meta: {title: '退货原因设置', icon: 'order-return-reason'}
+        meta: {title: '退货原因设置', icon: 'order-return-reason', i18n: 'menu.order.returnReason'}
       },
       {
         path: 'returnApplyDetail',
@@ -200,13 +200,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/sms/coupon',
     name: 'sms',
-    meta: {title: '营销', icon: 'sms'},
+    meta: {title: '营销', icon: 'sms', i18n: 'menu.marketing.title'},
     children: [
       {
         path: 'flash',
         name: 'flash',
         component: () => import('@/views/sms/flash/index'),
-        meta: {title: '秒杀活动列表', icon: 'sms-flash'}
+        meta: {title: '秒杀活动列表', icon: 'sms-flash', i18n: 'menu.marketing.flash'}
       },
       {
         path: 'flashSession',
@@ -233,7 +233,7 @@ export const asyncRouterMap = [
         path: 'coupon',
         name: 'coupon',
         component: () => import('@/views/sms/coupon/index'),
-        meta: {title: '优惠券列表', icon: 'sms-coupon'}
+        meta: {title: '优惠券列表', icon: 'sms-coupon', i18n: 'menu.marketing.coupon'}
       },
       {
         path: 'addCoupon',
@@ -307,19 +307,19 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/ums/admin',
     name: 'ums',
-    meta: {title: '权限', icon: 'ums'},
+    meta: {title: '权限', icon: 'ums', i18n: 'menu.permission.title'},
     children: [
       {
         path: 'admin',
         name: 'admin',
         component: () => import('@/views/ums/admin/index'),
-        meta: {title: '用户列表', icon: 'ums-admin'}
+        meta: {title: '用户列表', icon: 'ums-admin', i18n: 'menu.permission.user'}
       },
       {
         path: 'role',
         name: 'role',
         component: () => import('@/views/ums/role/index'),
-        meta: {title: '角色列表', icon: 'ums-role'}
+        meta: {title: '角色列表', icon: 'ums-role', i18n: 'menu.permission.role'}
       },
       {
         path: 'allocMenu',
@@ -339,7 +339,7 @@ export const asyncRouterMap = [
         path: 'menu',
         name: 'menu',
         component: () => import('@/views/ums/menu/index'),
-        meta: {title: '菜单列表', icon: 'ums-menu'}
+        meta: {title: '菜单列表', icon: 'ums-menu', i18n: 'menu.permission.menu'}
       },
       {
         path: 'addMenu',
@@ -359,7 +359,7 @@ export const asyncRouterMap = [
         path: 'resource',
         name: 'resource',
         component: () => import('@/views/ums/resource/index'),
-        meta: {title: '资源列表', icon: 'ums-resource'}
+        meta: {title: '资源列表', icon: 'ums-resource', i18n: 'menu.permission.resource'}
       },
       {
         path: 'resourceCategory',
