@@ -7,7 +7,16 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:csp": "node build/build-with-csp.js",
+    "csp:demo": "node build/csp-demo.js",
+    "csp:test": "node build/csp-test.js",
+    "csp:test-suite": "node build/csp-test-suite.js",
+    "csp:test-report": "node build/csp-test-suite.js --report",
+    "csp:dev": "node build/csp-test.js env development",
+    "csp:prod": "node build/csp-test.js env production",
+    "csp:server": "node build/csp-report-server.js",
+    "csp:validate": "node build/csp-test.js compat"
   },
   "dependencies": {
     "axios": "^0.18.0",
