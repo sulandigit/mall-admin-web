@@ -5,9 +5,10 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
-      background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#409EFF"
+      :background-color="menuBackgroundColor"
+      :text-color="menuTextColor"
+      :active-text-color="menuActiveTextColor"
+      class="sidebar-menu"
     >
       <sidebar-item :routes="routes"></sidebar-item>
     </el-menu>
@@ -24,7 +25,9 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'routers'
+      'routers',
+      'currentTheme',
+      'themeConfig'
     ]),
     routes() {
       // return this.$router.options.routes
@@ -32,6 +35,16 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    },
+    // 动态菜单颜色
+    menuBackgroundColor() {
+      return this.themeConfig[this.currentTheme].menuBg
+    },
+    menuTextColor() {
+      return this.currentTheme === 'light' ? '#bfcbd9' : '#CFD3DC'
+    },
+    menuActiveTextColor() {
+      return '#409EFF'
     }
   }
 }

@@ -26,5 +26,9 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created() {
+    // 初始化主题系统
+    this.$store.dispatch('initTheme')
+  }
 })
