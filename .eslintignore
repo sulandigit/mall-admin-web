@@ -1,0 +1,42 @@
+# 构建产物
+dist/
+build/
+
+# 依赖包
+node_modules/
+
+# 静态资源
+static/
+
+# 配置文件
+*.config.js
+.postcssrc.js
+
+# 第三方库
+src/utils/tinymce/
+
+# 缓存文件
+.eslintcache
+
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 临时文件
+.tmp
+.temp
+
+# IDE文件
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 系统文件
+.DS_Store
+Thumbs.db
